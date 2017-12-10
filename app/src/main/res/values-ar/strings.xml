@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">1000Salama</string>
+    <string name="user_name_hint">User Name or Mobile Number</string>
+    <string name="password">Password</string>
+    <string name="login">login</string>
+    <string name="registration">Registration</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="remember_me">Rembmer Me</string>
+    <string name="firstname">First Name</string>
+    <string name="Secondname">Second Name</string>
+    <string name="SurName">surname</string>
+    <string name="id">ID number</string>
+    <string name="confirmpasswrod">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="DateOfBirth">Date Of Birth</string>
+    <string name="male">Male</string>
+    <string name="Female">Female</string>
+    <string name="mobilenumber">Mobile Number</string>
+</resources>

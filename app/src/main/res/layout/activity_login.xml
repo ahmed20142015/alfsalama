@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_login"
+    tools:context=".Login.Login">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:weightSum="3">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1.75"
+            android:orientation="vertical"
+
+           >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/logo_login"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:weightSum="2"
+                android:orientation="vertical"
+
+                >
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/username_mobile"
+                android:hint="@string/user_name_hint"
+                android:textColorHint="@android:color/white"
+                android:layout_weight="1"
+                />
+
+
+            <EditText
+                android:id="@+id/paasword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/pass"
+                android:hint="@string/password"
+                android:textColorHint="@android:color/white"
+                android:layout_weight="1"
+
+                />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/remberme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/remember_me"
+                    android:textColorHint="@android:color/white"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:textDirection="rtl"
+                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+
+                    />
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="bottom|center"
+            android:background="@drawable/rond_button"
+            android:text="@string/login"
+            android:textColor="#000"
+            />
+
+
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="bottom|center"
+            android:background="@drawable/button_round_corner"
+            android:textColor="#FFF"
+            android:text="@string/registration"
+            />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="bottom|center"
+            android:background="@drawable/button_round_corner"
+            android:textColor="#FFF"
+            android:text="@string/forget_password"
+            />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
