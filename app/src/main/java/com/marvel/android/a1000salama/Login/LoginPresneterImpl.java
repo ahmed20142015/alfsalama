@@ -1,8 +1,10 @@
 package com.marvel.android.a1000salama.Login;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Utils;
 
 import org.json.JSONException;
@@ -15,6 +17,7 @@ import APIClient.ApiClient;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
 import Model.SystemMessage;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +37,42 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
     public void setView(Login loginView) {
         this.loginView = loginView;
 
+    }
+
+    public void onLoginClicked(){
+        String email = loginView.edEmail();
+        String password = loginView.edPassword();
+        if (email.isEmpty()){
+            loginView.showUserNameError(R.string.user_name_error);
+            showDialog();
+        }
+        else if(password.isEmpty()){
+            loginView.showPasswordError(R.string.password_error);
+            showDialog();
+        }
+        else  if (Utils.isInternetOn(loginView))
+        {
+            int response = RequestLogin(loginView.edEmail(),
+                    loginView.edPassword());
+
+        }
+
+        else {
+            new SweetAlertDialog(loginView, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("خطأ")
+                    .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
+
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override
@@ -72,7 +111,7 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
 
                         JSONObject responCodeObj = new JSONObject(Body);
                         ResponseCode =      responCodeObj.getInt("P1OUT");
-
+                        Log.w("response",ResponseCode+"");
 
                         if(ResponseCode <0)
                         {
@@ -230,5 +269,22 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         }
     }
 
+    private void showDialog(){
+        new SweetAlertDialog(loginView, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("خطأ")
+                .setContentText( "من فضلك استكمل البيانات الفارغة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+
+    }
 
 }
