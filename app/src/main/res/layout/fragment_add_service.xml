@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AddServiceProvider.AddServiceProviderFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ContactUs"
+            android:visibility="invisible"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="@string/ServiceProviderName"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+          <Button
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginLeft="20dp"
+              android:layout_marginTop="10dp"
+              android:background="@drawable/plus"/>
+
+        <fr.ganfra.materialspinner.MaterialSpinner
+            android:id="@+id/services"
+            style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:textDirection="rtl"
+            app:ms_alignLabels="true"
+            app:ms_arrowSize="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:ms_enableErrorLabel="false"
+            app:ms_enableFloatingLabel="false"
+            app:ms_hint="@string/Services"
+            app:ms_hintColor="#000"
+            app:ms_multiline="false">
+        </fr.ganfra.materialspinner.MaterialSpinner>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Message"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="20dp"
+            />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:drawable/editbox_background_normal"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_round_corner"
+            android:text="@string/Send"
+            android:textColor="#fff"/>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</FrameLayout>

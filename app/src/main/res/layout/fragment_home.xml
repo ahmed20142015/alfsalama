@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/homecontent"
+    android:background="#e7d6d4d4"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Home.Home"
+
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+
+        <com.marvel.android.a1000salama.CustomEditText
+           android:id="@+id/searchEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_round_corner_withebg"
+            android:hint="@string/Search"
+            android:textColorHint="#dedcdc"
+            android:textColor="#000"
+            android:textAlignment="gravity"
+            android:gravity="right|center_vertical"
+            android:paddingRight="10dp"
+
+            android:drawableLeft="@drawable/search"
+            android:visibility="gone"
+            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@drawable/bg_signup"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/searchbtn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="0.2"
+         android:background="@mipmap/ic_launcher_foreground"
+                android:layout_gravity="center"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.75"
+                android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/advancedSearchLY"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:weightSum="3"
+            android:orientation="horizontal">
+            <com.jaredrummler.materialspinner.MaterialSpinner
+
+                android:id="@+id/goervnatre"
+                android:layout_width="match_parent"
+                 android:layout_height="45dp"
+                android:layout_marginLeft="5dp"
+
+                android:textAlignment="center"
+                android:textColor="#fff"
+                app:ms_arrowSize="10dp"
+                android:textDirection="rtl"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="false"
+                app:ms_hint="نوع الخدمة"
+                app:ms_hintColor="#fff"
+                app:ms_multiline="false"
+                android:textColorHint="#fff"
+                app:ms_background_color="#3F51B5"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/advancedSearchLY2"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/city"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="5dp"
+
+                android:textAlignment="center"
+                android:textColor="#fff"
+                app:ms_arrowSize="10dp"
+                android:textDirection="rtl"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="false"
+                app:ms_hint=" المدينة"
+                app:ms_hintColor="#fff"
+                app:ms_multiline="false"
+                android:layout_weight="1"
+                android:textColorHint="#fff"
+                app:ms_background_color="#3F51B5"
+            />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/area"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="5dp"
+
+                android:textAlignment="center"
+                android:textColor="#fff"
+                app:ms_arrowSize="10dp"
+                android:textDirection="rtl"
+                app:ms_enableErrorLabel="false"
+                app:ms_enableFloatingLabel="false"
+                app:ms_hint=" المنطقة"
+                app:ms_hintColor="#fff"
+                app:ms_multiline="false"
+                android:textColorHint="#fff"
+                android:layout_weight="1"
+                app:ms_background_color="#3F51B5"
+                />
+
+
+
+
+
+
+        </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+             android:visibility="gone"
+            android:layout_marginTop="10dp"
+            >
+
+            <Button
+                android:id="@+id/searchBtn"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/button_round_corner_withebg"
+                android:textColor="#2710f2"
+                android:text="@string/AdvancedSearch"
+                />
+
+
+            <Button
+                android:id="@+id/searchadvancedBtn"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/button_round_corner_withebg"
+                android:textColor="#2710f2"
+                android:text="تنفيذ البحث "
+                android:layout_marginLeft="5dp"
+
+                />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/serviceporviderlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:padding="10dp"
+            android:layout_centerInParent="true"/>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>

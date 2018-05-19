@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_home"
+    tools:context=".ServiceDetials.DetailsFragment">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="2"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".45">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+           />
+
+        <TextView
+            android:id="@+id/spname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/logo"
+            android:textStyle="bold"
+            android:text="@string/requestService"
+            android:textColor="#fff"/>
+
+
+    </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cardview_compat_inset_shadow"
+            android:layout_weight="2"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:weightSum="3">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight=".8"
+                android:padding="5dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+
+                <Button
+                    android:id="@+id/requestService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/requestService"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:textAlignment="gravity"
+                    android:paddingBottom="10dp"
+                    android:gravity="center_horizontal|bottom"
+                    android:background="@drawable/book"/>
+
+                <Button
+                    android:id="@+id/requestServiceDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/requestservicedetails"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:paddingBottom="10dp"
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal|bottom"
+                    android:background="@drawable/book_betails"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight=".8"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+
+                <Button
+                    android:id="@+id/mapbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginRight="5dp"
+                    android:text="@string/Map"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:paddingBottom="10dp"
+
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal|bottom"
+                    android:background="@drawable/map"/>
+
+                <Button
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/Rating"
+
+                    android:textColor="#000"
+                    android:paddingBottom="10dp"
+                    android:textAlignment="gravity"
+                    android:textSize="18sp"
+                    android:gravity="center_horizontal|bottom"
+                    android:background="@drawable/rating"/>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight=".8"
+                android:padding="5dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                >
+
+                <Button
+                    android:id="@+id/commentsbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginRight="5dp"
+                    android:text="@string/Comments"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:paddingBottom="10dp"
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal|bottom"
+                    android:background="@drawable/comments"/>
+
+                <Button
+                    android:id="@+id/serviceproivderbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/ServiceProvider"
+                    android:textSize="18sp"
+                    android:textColor="#000"
+                    android:paddingBottom="10dp"
+                    android:textAlignment="gravity"
+                    android:gravity="center_horizontal|bottom"
+                    android:background="@drawable/about"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+</LinearLayout>
+
+</FrameLayout>

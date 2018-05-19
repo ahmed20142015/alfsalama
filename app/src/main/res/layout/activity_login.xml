@@ -41,8 +41,14 @@
                 android:layout_marginTop="20dp"
                 android:drawableRight="@drawable/username_mobile"
                 android:hint="@string/user_name_hint"
-                android:textColorHint="@android:color/white"
+              android:textColor="@android:color/white"
                 android:layout_weight="1"
+                android:backgroundTint="#fff"
+                android:textColorHint="#ddffffff"
+                android:textCursorDrawable="@drawable/cursoercolor"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:singleLine="true"
                 />
 
 
@@ -53,10 +59,16 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:drawableRight="@drawable/pass"
+                android:textColor="@android:color/white"
                 android:hint="@string/password"
-                android:textColorHint="@android:color/white"
-                android:layout_weight="1"
-
+                android:password="true"
+               android:layout_weight="1"
+                android:backgroundTint="#fff"
+                android:textColorHint="#ddffffff"
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/cursoercolor"
+                android:textSize="20sp"
+                android:maxLines="1"
                 />
 
                 <android.support.v7.widget.AppCompatCheckBox
@@ -70,8 +82,8 @@
                     android:layout_weight="1"
                     android:button="@null"
                     android:textDirection="rtl"
-                    android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-
+                    android:drawableRight="@drawable/check_box_selector"
+                    android:textSize="20sp"
                     />
             </LinearLayout>
 
@@ -81,12 +93,14 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/loginBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_gravity="bottom|center"
             android:background="@drawable/rond_button"
             android:text="@string/login"
+            android:textSize="20sp"
             android:textColor="#000"
             />
 
@@ -94,6 +108,7 @@
 
 
         <Button
+            android:id="@+id/RegBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -101,6 +116,7 @@
             android:background="@drawable/button_round_corner"
             android:textColor="#FFF"
             android:text="@string/registration"
+            android:textSize="20sp"
             />
 
 
@@ -111,6 +127,7 @@
             android:layout_gravity="bottom|center"
             android:background="@drawable/button_round_corner"
             android:textColor="#FFF"
+            android:textSize="20sp"
             android:text="@string/forget_password"
             />
 

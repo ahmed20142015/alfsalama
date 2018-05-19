@@ -28,34 +28,51 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:weightSum="2"
+        android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         >
+
+
+
         <EditText
             android:id="@+id/firstname"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:hint="@string/Secondname"
-            android:textColorHint="@android:color/white"
+            android:hint="@string/firstname"
+            android:maxLines="1"
+            android:textColor="#fff"
+            android:drawableRight="@drawable/user"
+            android:backgroundTint="#fff"
+            android:textColorHint="#ddffffff"
             android:layout_weight="1"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursoercolor"
+
             />
 
 
         <EditText
             android:id="@+id/secondname"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="3dp"
-            android:drawableRight="@drawable/user"
-            android:hint="@string/firstname"
-            android:textColorHint="@android:color/white"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
+            android:hint="@string/Secondname"
+            android:focusable="true"
 
-            />
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursoercolor"
+            android:backgroundTint="#fff"
+            android:textColor="#fff"
+            android:focusableInTouchMode="true"
+            android:textColorHint="#ddffffff" />
+
 
 
     </LinearLayout>
@@ -67,9 +84,14 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:hint="@string/SurName"
-        android:textColorHint="@android:color/white"
+        android:maxLines="1"
+        android:textColor="#fff"
+        android:textColorHint="#ddffffff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:backgroundTint="#fff"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/cursoercolor"
 
         />
 
@@ -80,11 +102,17 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:hint="@string/mobilenumber"
+        android:maxLines="1"
+        android:textColor="#fff"
+        android:maxLength="11"
         android:drawableRight="@drawable/mobile"
-        android:textColorHint="@android:color/white"
-        android:layout_marginLeft="20dp"
+        android:textColorHint="#ddffffff"
+         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:phoneNumber="true"
+        android:singleLine="true"
+        android:backgroundTint="#fff"
+        android:textCursorDrawable="@drawable/cursoercolor"
 
         />
 
@@ -97,10 +125,15 @@
         android:layout_marginTop="5dp"
         android:hint="@string/id"
         android:drawableRight="@drawable/id"
-        android:textColorHint="@android:color/white"
+        android:textColorHint="#ddffffff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:maxLines="1"
+        android:visibility="gone"
+        android:textColor="#fff"
+        android:singleLine="true"
         android:numeric="decimal"
+        android:textCursorDrawable="@drawable/cursoercolor"
 
         />
 
@@ -113,11 +146,16 @@
         android:layout_marginTop="5dp"
         android:hint="@string/password"
         android:drawableRight="@drawable/pass"
-        android:textColorHint="@android:color/white"
-        android:layout_marginLeft="20dp"
+        android:textColorHint="#ddffffff"
+       android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:password="true"
+        android:maxLines="1"
+        android:textColor="#fff"
         android:textDirection="rtl"
+        android:backgroundTint="#fff"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/cursoercolor"
 
         />
 
@@ -130,11 +168,17 @@
         android:layout_marginTop="5dp"
         android:hint="@string/confirmpasswrod"
         android:drawableRight="@drawable/pass"
-        android:textColorHint="@android:color/white"
+        android:textColorHint="#ddffffff"
+
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:password="true"
+        android:maxLines="1"
+        android:textColor="#fff"
         android:textDirection="rtl"
+        android:backgroundTint="#fff"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/cursoercolor"
 
         />
 
@@ -146,16 +190,20 @@
         android:layout_marginTop="5dp"
         android:hint="@string/email"
         android:drawableRight="@drawable/email"
-        android:textColorHint="@android:color/white"
+        android:textColorHint="#ddffffff"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:password="true"
+        android:backgroundTint="#fff"
+        android:maxLines="1"
+        android:textColor="#fff"
         android:textDirection="rtl"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/cursoercolor"
 
         />
 
 
-    <EditText
+    <TextView
         android:id="@+id/dateofbirth"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -163,11 +211,15 @@
         android:layout_marginTop="5dp"
         android:hint="@string/DateOfBirth"
         android:drawableRight="@drawable/birthdate"
-        android:textColorHint="@android:color/white"
-        android:layout_marginLeft="20dp"
+        android:textColorHint="#ddffffff"
+       android:layout_marginLeft="10dp"
         android:layout_marginRight="20dp"
         android:textDirection="rtl"
-         android:enabled="false"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:backgroundTint="#fff"
+        android:textColor="#fff"
+
         />
     <RadioGroup
         android:id="@+id/radioSex"
@@ -204,6 +256,7 @@
 
 
     <Button
+        android:id="@+id/RegesrationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -211,6 +264,8 @@
         android:background="@drawable/button_round_corner_withebg"
         android:textColor="#000"
         android:text="@string/registration"
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp"
         />
 
 

@@ -6,8 +6,8 @@ package com.marvel.android.a1000salama.Login;
 
 public interface LoginPresenter {
 
-
-public int RequestLogin (String UserName , String Password );
+    public void setView(Login loginView);
+    public int RequestLogin (String UserName , String Password );
 
 
 

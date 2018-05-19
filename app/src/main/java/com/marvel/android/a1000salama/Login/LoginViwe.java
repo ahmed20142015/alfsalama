@@ -15,6 +15,8 @@ public interface LoginViwe {
     void btnLogin();
     void imgPassView();
     void txtForgetPass();
+    void showalert(String Message);
+    void NavigateToHome(int ID);
     void requestLogin(String userName , String Password);
     void requestWaring(String string);
 }

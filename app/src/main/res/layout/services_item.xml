@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:padding="20dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/service_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="ضياء السيد"
+        />
+
+    <TextView
+        android:id="@+id/before_discount_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:text="الخدمة قبل الخصم"
+        android:gravity="right"
+        app:layout_constraintTop_toBottomOf="@+id/service_name"
+
+        />
+
+
+
+
+    <TextView
+        android:id="@+id/after_discount_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:text="الخدمة بعد الخصم"
+        android:gravity="right"
+        app:layout_constraintTop_toBottomOf="@+id/before_discount_value"
+
+        />
+
+
+</android.support.constraint.ConstraintLayout>
