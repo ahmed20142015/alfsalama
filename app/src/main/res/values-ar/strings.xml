@@ -61,5 +61,6 @@
     <string name="emptyfileds">من فضلك استكمل البيانات الفارغة</string>
     <string name="user_name_error">الإيميل لا يمكن أن يكون فارغ</string>
     <string name="password_error">الرقم السري لا يمكن أن يكون فارغ</string>
+    <string name="add_photo">إضافة صورة</string>
 
 </resources>

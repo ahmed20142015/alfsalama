@@ -101,17 +101,19 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
        String Return = "-1";
 
         Call<String> QueryCall = ServicesConnection.GetService().login("WS2",body.toString(), ServicesConnection.CONTENT_TYPE);
+        Log.w("content",ServicesConnection.CONTENT_TYPE);
         QueryCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String Body =   response.body();
+                Log.w("response",Body+"");
                 if (response.isSuccessful()) {
 
                     try {
 
                         JSONObject responCodeObj = new JSONObject(Body);
                         ResponseCode =      responCodeObj.getInt("P1OUT");
-                        Log.w("response",ResponseCode+"");
+
 
                         if(ResponseCode <0)
                         {

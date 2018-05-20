@@ -80,124 +80,7 @@ public class Registration extends AppCompatActivity implements RegistartionView 
         RegistrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (firstNameET.getEditableText().toString().equals("")
-                        || secondNameEt.getEditableText().toString().equals("")
-                        || mobileNumberEt.getEditableText().toString().equals("")
-                        || passwordEt.getEditableText().toString().equals("")
-                        || confirmPasswordEt.getEditableText().toString().equals("")
-                        || emailEt.getEditableText().toString().equals(""))
-                {
-                    new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("خطأ")
-                            .setContentText("من فضلك أكمل البيانات الفارغة")
-                            .setConfirmText("تم")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    // reuse previous dialog instance
-                                    sDialog.dismiss();
-
-
-                                }
-                            })
-                            .show();
-
-                } else if (!confirmPasswordEt.getEditableText().toString()
-                        .equals(passwordEt.getEditableText().toString())
-                        )
-                {
-                    new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("خطأ")
-                            .setContentText("كلمة المرور غير متطابقة")
-                            .setConfirmText("تم")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    // reuse previous dialog instance
-                                    sDialog.dismiss();
-
-
-                                }
-                            })
-                            .show();
-                }
-
-                else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEt.getEditableText().toString()).matches()
-                        )
-                {
-                    new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("خطأ")
-                            .setContentText("البريد الإلكتروني غير صحيح")
-                            .setConfirmText("تم")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    // reuse previous dialog instance
-                                    sDialog.dismiss();
-
-
-                                }
-                            })
-                            .show();
-                }
-
-
-                else if ( mobileNumberEt.getEditableText().toString().length()!=11
-                        || mobileNumberEt.getEditableText().toString().charAt(0)!='0'|| mobileNumberEt.getEditableText().toString().charAt(1)!='1')
-                {
-                    new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("خطأ")
-                            .setContentText("رقم الهاتف غير صحيح ")
-                            .setConfirmText("تم")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    // reuse previous dialog instance
-                                    sDialog.dismiss();
-
-
-                                }
-                            })
-                            .show();
-                }
-
-
-
-
-
-
-
-                else {
-
-                    if(Utils.isInternetOn(Registration.this)) {
-                        DateOFBirth = dateOfBirthTV.getText().toString();
-                        registartionPresnterImpl.RequestRegistration(firstNameET.getEditableText().toString(),
-                                secondNameEt.getEditableText().toString(),
-                                surNameEt.getEditableText().toString(),
-                                mobileNumberEt.getEditableText().toString(),
-                                NationalIDEt.getEditableText().toString(),
-                                emailEt.getEditableText().toString(),
-                                passwordEt.getEditableText().toString(),
-                                emailEt.getEditableText().toString(),
-                                DateOFBirth, Gender);
-                    }
-                    else
-                        new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
-                                .setTitleText("خطأ")
-                                .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
-                                .setConfirmText("تم")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sDialog) {
-                                        // reuse previous dialog instance
-                                        sDialog.dismiss();
-
-
-                                    }
-                                })
-                                .show();
-                }
+                registartionPresnterImpl.onRegisterClicked();
             }
         });
 
@@ -329,5 +212,73 @@ public class Registration extends AppCompatActivity implements RegistartionView 
     @Override
     public void requestWaring(String string) {
 
+    }
+
+    @Override
+    public String getFirstName() {
+        return firstNameET.getEditableText().toString();
+    }
+
+    @Override
+    public String getSecondName() {
+        return secondNameEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getSurName() {
+        return surNameEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getMobileNumber() {
+        return mobileNumberEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getNationalID() {
+        return NationalIDEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getEmail() {
+        return emailEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getPass() {
+        return passwordEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getConfirmPass() {
+        return confirmPasswordEt.getEditableText().toString();
+    }
+
+    @Override
+    public String getDateOFBirth() {
+        return dateOfBirthTV.getText().toString();
+    }
+
+    @Override
+    public String getGender() {
+        return Gender;
+    }
+
+    @Override
+    public void showErrorInputs() {
+        new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("خطأ")
+                .setContentText("من فضلك أكمل البيانات الفارغة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
     }
 }

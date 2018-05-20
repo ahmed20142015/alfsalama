@@ -8,10 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.marvel.android.a1000salama.Home.Home;
 import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Registartion.Registration;
@@ -36,6 +38,7 @@ public class Login extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //Log.w("token", FirebaseInstanceId.getInstance().getToken());
         getSupportActionBar().hide();
         Locale locale = new Locale("ar");
         Locale.setDefault(locale);
@@ -151,8 +154,6 @@ public class Login extends AppCompatActivity implements LoginView {
                     public void onClick(SweetAlertDialog sDialog) {
                         // reuse previous dialog instance
                         sDialog.dismiss();
-
-
                     }
                 })
                 .show();

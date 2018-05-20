@@ -14,6 +14,7 @@ import APIClient.ApiClient;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
 import Model.SystemMessage;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +33,109 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
     @Override
     public void setView(Registration registartionView) {
         this.registartionView = registartionView;
+    }
+
+    public void onRegisterClicked(){
+        String firstName = registartionView.getFirstName(),
+                secondName = registartionView.getSecondName(),
+                lastName = registartionView.getSurName(),
+                mobileNumber = registartionView.getMobileNumber(),
+                idNumber = registartionView.getNationalID(),
+                email = registartionView.getEmail(),
+                password = registartionView.getPass(),
+                conFirmPass = registartionView.getConfirmPass(),
+                UserName = registartionView.getEmail(),
+                DateOfBirth = registartionView.getDateOFBirth(),
+                Gender = registartionView.getGender();
+        if(firstName.isEmpty()||secondName.isEmpty()||lastName.isEmpty()||mobileNumber.isEmpty()
+                ||email.isEmpty()||password.isEmpty()||UserName.isEmpty()
+                ||DateOfBirth.isEmpty()||Gender.isEmpty()){
+
+            registartionView.showErrorInputs();
+        }
+        else if (!conFirmPass.equals(password))
+        {
+            new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("خطأ")
+                    .setContentText("كلمة المرور غير متطابقة")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
+
+
+                        }
+                    })
+                    .show();
+        }
+
+        else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                )
+        {
+            new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("خطأ")
+                    .setContentText("البريد الإلكتروني غير صحيح")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
+
+
+                        }
+                    })
+                    .show();
+        }
+
+
+        else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
+        {
+            new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("خطأ")
+                    .setContentText("رقم الهاتف غير صحيح ")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
+
+
+                        }
+                    })
+                    .show();
+        }
+
+
+
+
+
+
+
+        else {
+
+            if(Utils.isInternetOn(registartionView)) {
+                        RequestRegistration(firstName, secondName, lastName, mobileNumber, idNumber, email, password, UserName, DateOfBirth, Gender);
+            }
+            else
+                new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("خطأ")
+                        .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                        .setConfirmText("تم")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                // reuse previous dialog instance
+                                sDialog.dismiss();
+
+
+                            }
+                        })
+                        .show();
+        }
     }
 
     @Override

@@ -1,15 +1,32 @@
 package com.marvel.android.a1000salama.BookingFragment;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +48,16 @@ import com.marvel.android.a1000salama.ServiceDetials.DetailsFragment;
 import com.marvel.android.a1000salama.Utils;
 import com.taishi.flipprogressdialog.FlipProgressDialog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Adapters.SelectedServicesAdapter;
@@ -74,6 +100,11 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     private ServiceProidveritem SP;
     private  RecyclerView serviceaddedlistviwe;
     SelectedServicesAdapter mAdapter;
+    private Button addPicture;
+    private static final String IMAGE_DIRECTORY = "/demonuts";
+    private String filePath;
+    private static final int REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE = 600,
+            REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 601;
     private  ArrayList<Services> BookedServicesList = new ArrayList<>();
     private  ArrayList<Services> ServicesList = new ArrayList<>();
     public BookingFragment() {
@@ -133,6 +164,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         sendBook  = view.findViewById(R.id.sendbook);
         serviceaddedlistviwe = view.findViewById(R.id.serviceaddedlistviwe);
         AddRequestItemBtn =view.findViewById(R.id.addservicerequestitembtn);
+        addPicture = view.findViewById(R.id.add_pic);
 
         progressDialog = new FlipProgressDialog();
         List<Integer> imageList = new ArrayList<Integer>();
@@ -295,6 +327,203 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         });
 
         return  view;
+    }
+    private boolean checkReadExternalPermission() {
+        boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if (!isGranted)
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE);
+
+        return isGranted;
+    }
+
+    private boolean checkWriteExternalPermission() {
+        boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if (!isGranted)
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+
+        return isGranted;
+    }
+
+    private void openImageChooser() {
+//        Intent intent_gallery = new Intent(Intent.ACTION_PICK);
+//        intent_gallery.setType("image/*");
+//        startActivityForResult(intent_gallery, 100);
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent, 100);
+    }
+
+    private void takeCameraPhoto()
+    {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 200);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DialogInterface.OnClickListener onDialogClickWithImage;
+
+                {
+                    onDialogClickWithImage = new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            switch (item) {
+                                case 0:
+                                    if (checkReadExternalPermission())
+                                        openImageChooser();
+                                    break;
+                                case 1:
+                                    if (checkWriteExternalPermission())
+                                        takeCameraPhoto();
+                                    break;
+
+                                case 2:
+                                    dialog.dismiss();
+                                    break;
+                            }
+                        }
+                    };
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(getString(R.string.add_photo));
+
+                builder.setItems(new CharSequence[]{getString(R.string.choose_photo), getString(R.string.take_photo), getString(R.string.cancle_photo)}, onDialogClickWithImage);
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openImageChooser();
+
+                } else {
+                    Toast.makeText(getActivity(), "readFromGalleryPhotoPermissionRequired", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takeCameraPhoto();
+                } else {
+                    Toast.makeText(getActivity(), "takingCameraPhotoPermissionRequired", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == getActivity().RESULT_CANCELED) {
+                return;
+            }
+            if (requestCode == 100) {
+                if (data != null) {
+                    Uri contentURI = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
+                        String path = saveImage(bitmap);
+                        String encodedImage = encodeImage(path);
+                        Log.w("path",encodedImage);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            } else if (requestCode == 200) {
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                String path = saveImage(thumbnail);
+                String encodedImage = encodeImage(path);
+                Log.w("path",encodedImage);            }
+
+        }
+        catch (Exception e){
+                Toast.makeText(getActivity(), "حدث خطأ", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
+    }
+
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance()
+                    .getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(getActivity(),
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return f.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
+
+    private String encodeImage(String path)
+    {
+        File imagefile = new File(path);
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(imagefile);
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        //Base64.de
+        return encImage;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

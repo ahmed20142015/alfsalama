@@ -17,13 +17,13 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class LoginPresneterImplTest {
-    @Test
-    public void onLoginClicked() throws Exception {
-    }
+
     @Mock
     LoginView view;
+
     @Mock
     LoginPresenter presenter;
+
     LoginPresneterImpl loginPresneter;
     @Before
     public void setUp() throws Exception {

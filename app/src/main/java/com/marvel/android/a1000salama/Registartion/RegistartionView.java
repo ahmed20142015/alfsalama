@@ -16,4 +16,18 @@ public interface RegistartionView {
     void NavigateToHome(int ID);
     void requestRegistartion(String firstName, String secondName, String lastName, String mobileNumber, String idNumber, String email, String password, String UserName, String DateOfBirth, String Gender);
     void requestWaring(String string);
+    String getFirstName();
+    String getSecondName();
+    String getSurName();
+    String getMobileNumber();
+    String getNationalID();
+    String getEmail();
+    String getPass();
+    String getConfirmPass();
+    String getDateOFBirth();
+    String getGender();
+    void showErrorInputs();
+
+
+
 }
