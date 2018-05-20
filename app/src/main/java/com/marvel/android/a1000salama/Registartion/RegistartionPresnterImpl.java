@@ -55,58 +55,22 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         }
         else if (!conFirmPass.equals(password))
         {
-            new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText("خطأ")
-                    .setContentText("كلمة المرور غير متطابقة")
-                    .setConfirmText("تم")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            // reuse previous dialog instance
-                            sDialog.dismiss();
+            showErrorMessage("كلمة المرور غير متطابقة");
 
-
-                        }
-                    })
-                    .show();
         }
 
         else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 )
         {
-            new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText("خطأ")
-                    .setContentText("البريد الإلكتروني غير صحيح")
-                    .setConfirmText("تم")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            // reuse previous dialog instance
-                            sDialog.dismiss();
+            showErrorMessage("البريد الإلكتروني غير صحيح");
 
-
-                        }
-                    })
-                    .show();
         }
 
 
         else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
         {
-            new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
-                    .setTitleText("خطأ")
-                    .setContentText("رقم الهاتف غير صحيح ")
-                    .setConfirmText("تم")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            // reuse previous dialog instance
-                            sDialog.dismiss();
+            showErrorMessage("رقم الهاتف غير صحيح ");
 
-
-                        }
-                    })
-                    .show();
         }
 
 
@@ -121,20 +85,8 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
                         RequestRegistration(firstName, secondName, lastName, mobileNumber, idNumber, email, password, UserName, DateOfBirth, Gender);
             }
             else
-                new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("خطأ")
-                        .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
-                        .setConfirmText("تم")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                // reuse previous dialog instance
-                                sDialog.dismiss();
-
-
-                            }
-                        })
-                        .show();
+                showErrorMessage("من فضلك تأكد من الإتصال بالإنترنت");
+                
         }
     }
 
@@ -417,6 +369,22 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         }
     }
 
+    private void showErrorMessage(String message){
+        new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("خطأ")
+                .setContentText(message)
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+    }
 
 
 
