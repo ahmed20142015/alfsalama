@@ -86,7 +86,7 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
             }
             else
                 showErrorMessage("من فضلك تأكد من الإتصال بالإنترنت");
-                
+
         }
     }
 

@@ -36,7 +36,7 @@ public class RegistartionPresnterImplTest {
         when(view.getSecondName()).thenReturn("");
         when(view.getSurName()).thenReturn("");
         when(view.getMobileNumber()).thenReturn("");
-        when(view.getNationalID()).thenReturn("");
+        //when(view.getNationalID()).thenReturn("");
         when(view.getEmail()).thenReturn("");
         when(view.getPass()).thenReturn("");
         when(view.getConfirmPass()).thenReturn("");

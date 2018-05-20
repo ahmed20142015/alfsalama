@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -339,13 +340,15 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         return isGranted;
     }
 
-    private boolean checkWriteExternalPermission() {
+    private boolean checkCameraPermission() {
         boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
 
         if (!isGranted)
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+
+        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE }, REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+
 
         return isGranted;
     }
@@ -363,8 +366,8 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
     private void takeCameraPhoto()
     {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 200);
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 200);
     }
 
     @Override
@@ -386,7 +389,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                                         openImageChooser();
                                     break;
                                 case 1:
-                                    if (checkWriteExternalPermission())
+                                    if (checkCameraPermission())
                                         takeCameraPhoto();
                                     break;
 
@@ -435,6 +438,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                     Toast.makeText(getActivity(), "takingCameraPhotoPermissionRequired", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
             }
         }
     }
