@@ -1,13 +1,11 @@
 package com.marvel.android.a1000salama.BookingFragment;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
@@ -56,10 +54,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import Adapters.SelectedServicesAdapter;
@@ -336,7 +332,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             public void onClick(View view) {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View dialogView = inflater.inflate(R.layout.fragment_booking_dialog, null);
+                View dialogView = inflater.inflate(R.layout.add_service_pop_up, null);
                 dialogBuilder.setView(dialogView);
 
                 Button serviceArabic = dialogView.findViewById(R.id.arabic_service);
