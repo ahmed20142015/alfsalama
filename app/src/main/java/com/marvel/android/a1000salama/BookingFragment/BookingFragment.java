@@ -39,6 +39,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marvel.android.a1000salama.BaseFragment;
@@ -97,7 +98,8 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     private OnFragmentInteractionListener mListener;
     private Boolean BookForMeFlage = true;
     private Spinner servicesSpinner;
-    private  Button  AddRequestItemBtn;
+   // private  Button  AddRequestItemBtn;
+    private Button addService;
     private ServiceProidveritem SP;
     private  RecyclerView serviceaddedlistviwe;
     SelectedServicesAdapter mAdapter;
@@ -155,7 +157,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         otherAccountLy = view.findViewById(R.id.otheraccountLy);
         BookPersenter = new BookingPersnterImpl();
         BookPersenter.setView(this);
-        servicesSpinner = (Spinner) view.findViewById(R.id.spinner);
+        //servicesSpinner = (Spinner) view.findViewById(R.id.spinner);
 
         toggle_contents(otherAccountLy);
 //        mServicesRecyclerView = view.findViewById(R.id.servceslist);
@@ -164,7 +166,9 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         mComments = view.findViewById(R.id.Notes);
         sendBook  = view.findViewById(R.id.sendbook);
         serviceaddedlistviwe = view.findViewById(R.id.serviceaddedlistviwe);
-        AddRequestItemBtn =view.findViewById(R.id.addservicerequestitembtn);
+       // AddRequestItemBtn =view.findViewById(R.id.addservicerequestitembtn);
+        addService = view.findViewById(R.id.add_service);
+
         addPicture = view.findViewById(R.id.add_pic);
 
         progressDialog = new FlipProgressDialog();
@@ -183,7 +187,9 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
         }
 
-        BookPersenter.getAllServices();
+
+        addServiceDialog();
+
         AccountTypeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -319,7 +325,52 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             }
         });
 
-        AddRequestItemBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        return  view;
+    }
+
+    private void addServiceDialog() {
+        addService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View dialogView = inflater.inflate(R.layout.fragment_booking_dialog, null);
+                dialogBuilder.setView(dialogView);
+
+                Button serviceArabic = dialogView.findViewById(R.id.arabic_service);
+                Button serviceEnglish = dialogView.findViewById(R.id.english_service);
+                Button addRequestItemBtn =dialogView.findViewById(R.id.addservicerequestitembtn);
+                servicesSpinner = (Spinner) dialogView.findViewById(R.id.spinner);
+                TextView hide = dialogView.findViewById(R.id.hide_pop_up);
+
+                final AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                alertDialog.show();
+                hide.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                serviceArabic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BookPersenter.getAllServices("ar");
+                    }
+                });
+
+                serviceEnglish.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BookPersenter.getAllServices("en");
+                    }
+                });
+
+            addRequestItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 BookedServicesList.add(ServicesList.get(servicesSpinner.getSelectedItemPosition()));
@@ -327,8 +378,14 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             }
         });
 
-        return  view;
+
+            }
+        });
+
+
+
     }
+
     private boolean checkReadExternalPermission() {
         boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
@@ -591,7 +648,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     }
 
     @Override
-    public void setServiceList(   ArrayList<Services> ServicesList ) {
+    public void setServiceList(ArrayList<Services> ServicesList,String language ) {
 
        ArrayList<String> services = new ArrayList<>();
 

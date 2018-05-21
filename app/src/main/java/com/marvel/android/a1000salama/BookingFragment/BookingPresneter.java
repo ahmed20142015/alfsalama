@@ -13,7 +13,7 @@ public interface BookingPresneter {
     public int BookService (int patientID , String otherPersonName ,
                             String otherPersonMobileNumber, ArrayList<Integer> servicesList ,
                              String comments , int branchID);
-    public  void getAllServices();
+    public  void getAllServices(String lanuage);
 
 
 }

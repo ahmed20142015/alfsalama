@@ -62,5 +62,9 @@
     <string name="user_name_error">الإيميل لا يمكن أن يكون فارغ</string>
     <string name="password_error">الرقم السري لا يمكن أن يكون فارغ</string>
     <string name="add_photo">إضافة صورة</string>
+    <string name="add_service">إضافة خدمة جديدة</string>
+    <string name="arabic">عربـــي</string>
+    <string name="english">إنجليــزي</string>
+
 
 </resources>

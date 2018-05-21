@@ -23,6 +23,7 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
     BookingFragment BookingFragViwe ;
     ArrayList<Services> ServicesList  =  new ArrayList<>();
     int ResponseCode = -1;
+    String lanuage="ar";
     @Override
     public void setView(BookingFragment BookingFragment) {
         this.BookingFragViwe = BookingFragment;
@@ -88,10 +89,10 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
     }
 
     @Override
-    public void getAllServices() {
+    public void getAllServices(String lang) {
         BookingFragViwe.showLoader();
+        lanuage=lang;
         getServices();
-
     }
 
 
@@ -160,8 +161,7 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
 
                 String Body =   response.body();
                 if (response.isSuccessful()) {
-
-
+                    ServicesList.clear();
                     try {
                         JSONObject responCodeObj = new JSONObject(Body);
                         JSONArray servicesArr= responCodeObj.getJSONArray("items");
@@ -169,14 +169,17 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
 
                             Services service = new Services();
                             service.setID(servicesArr.getJSONObject(i).getInt("id"));
+                            if (lanuage.equals("en"))
                             service.setName(servicesArr.getJSONObject(i).getString("name_en"));
+                            else if (lanuage.equals("ar"))
+                            service.setName(servicesArr.getJSONObject(i).getString("name_ar"));
 
                             ServicesList.add(service);
                         }
 
 
                         BookingFragViwe.hideLoader();
-                        BookingFragViwe.setServiceList(ServicesList );
+                        BookingFragViwe.setServiceList(ServicesList,lanuage);
 
 
                     } catch (JSONException e) {

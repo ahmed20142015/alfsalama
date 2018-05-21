@@ -121,28 +121,20 @@
 
 
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:popupBackground="#fff"
-            android:spinnerMode="dropdown"
-            android:dropDownWidth="200dp"
-            android:pointerIcon="arrow"
-            tools:listitem="@layout/spinneritem"
+
+        <Button
+            android:id="@+id/add_service"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/add_service"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:background="@color/Withe"
+            android:padding="5dp"
             />
 
 
-        <Button
-            android:id="@+id/addservicerequestitembtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/plus_edit"/>
 
     </LinearLayout>
 
