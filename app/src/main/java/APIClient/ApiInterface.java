@@ -59,8 +59,6 @@ public interface ApiInterface {
 
 
 
-
-
     @POST("alf/WS21/")
     Call<String> getCat(@Body String body, @Header("Content-Type") String content_type);
 
@@ -81,9 +79,8 @@ public interface ApiInterface {
     @POST("alf/WS22/")
     Call<String> GetBrnchrates( @Body String body, @Header("Content-Type") String content_type);
 
-
-
-
+    @POST("alf/WS24/")
+    Call<String> GetServiceProvidor( @Body String body, @Header("Content-Type") String content_type);
 
 
 }

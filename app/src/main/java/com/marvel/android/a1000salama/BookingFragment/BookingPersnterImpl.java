@@ -244,6 +244,11 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
         return null;
     }
 
+    @Override
+    public Call<String> GetServiceProvidor(String body, String content_type) {
+        return null;
+    }
+
 
     @Override
     public Call<String> login(String webserviceNumber, String body, String content_type) {

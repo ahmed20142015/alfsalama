@@ -324,4 +324,9 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
     public Call<String> GetBrnchrates(String body, String content_type) {
         return null;
     }
+
+    @Override
+    public Call<String> GetServiceProvidor(String body, String content_type) {
+        return null;
+    }
 }

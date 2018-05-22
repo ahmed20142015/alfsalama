@@ -340,6 +340,11 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         return null;
     }
 
+    @Override
+    public Call<String> GetServiceProvidor(String body, String content_type) {
+        return null;
+    }
+
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {
 
 

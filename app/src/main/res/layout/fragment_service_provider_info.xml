@@ -20,12 +20,11 @@
 
 
         <TextView
+            android:id="@+id/about_service_provider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="معلومات مقدم الخدمة
-معلومات عن مقدم الخدمة
-معلومات عن مقدمة الخدمة"
+            android:text="معلومات مقدم الخدمة"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:gravity="right"/>
