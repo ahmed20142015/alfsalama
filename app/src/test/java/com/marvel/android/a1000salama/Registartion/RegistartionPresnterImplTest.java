@@ -1,6 +1,7 @@
 package com.marvel.android.a1000salama.Registartion;
 
 import com.marvel.android.a1000salama.R;
+import com.marvel.android.a1000salama.ServiceDetials.DetailsFragment;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,7 @@ public class RegistartionPresnterImplTest {
     @Before
     public void setUp() throws Exception {
         registartionPresnter = new RegistartionPresnterImpl();
+
     }
 
     @Test

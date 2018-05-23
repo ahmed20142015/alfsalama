@@ -660,6 +660,40 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
     }
 
+    @Override
+    public int getServiceItems() {
+        return ServicesIds.size();
+    }
+
+    @Override
+    public String getServiceComment() {
+        return mComments.getEditableText().toString();
+    }
+
+    @Override
+    public int getBranchId() {
+        return SP.getBRANCH_ID();
+    }
+
+    @Override
+    public void showErrorInputs() {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("خطأ")
+                .setContentText( "من فضلك استكمل البيانات الفارغة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+
+    }
+
 
     public void addBookedService( ArrayList<Services> ServicesList ) {
 

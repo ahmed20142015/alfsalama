@@ -80,7 +80,7 @@ public interface ApiInterface {
     Call<String> GetBrnchrates( @Body String body, @Header("Content-Type") String content_type);
 
     @POST("alf/WS24/")
-    Call<String> GetServiceProvidor( @Body String body, @Header("Content-Type") String content_type);
+    Call<String> GetAboutUsServiceProvidor(@Body String body, @Header("Content-Type") String content_type);
 
 
 }

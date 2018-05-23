@@ -29,6 +29,11 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
         this.BookingFragViwe = BookingFragment;
     }
 
+    public void onBookClick(){
+
+
+    }
+
     @Override
     public int BookService(int patientID, String otherPersonName, String otherPersonMobileNumber, ArrayList<Integer> servicesList, String comments, int branchID) {
 
@@ -245,7 +250,7 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
     }
 
     @Override
-    public Call<String> GetServiceProvidor(String body, String content_type) {
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
         return null;
     }
 

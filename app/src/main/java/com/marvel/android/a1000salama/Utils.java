@@ -354,7 +354,7 @@ import static android.content.Context.MODE_PRIVATE;
     }
 
     @Override
-    public Call<String> GetServiceProvidor(String body, String content_type) {
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
         return null;
     }
 

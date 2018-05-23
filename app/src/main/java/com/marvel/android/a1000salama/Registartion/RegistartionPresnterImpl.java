@@ -341,7 +341,7 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
     }
 
     @Override
-    public Call<String> GetServiceProvidor(String body, String content_type) {
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
         return null;
     }
 

@@ -1,5 +1,9 @@
 package com.marvel.android.a1000salama.Registartion;
 
+import com.marvel.android.a1000salama.ServicesProviderInfo.ServiceProviderInfo;
+
+import Model.ServiceProidveritem;
+
 /**
  * Created by ahmed on 14/12/17.
  */

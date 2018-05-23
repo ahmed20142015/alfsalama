@@ -2,14 +2,26 @@ package com.marvel.android.a1000salama.ServicesProviderInfo;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.R;
+import com.marvel.android.a1000salama.Utils;
+import com.taishi.flipprogressdialog.FlipProgressDialog;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import Model.AboutServiceProvidor;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,15 +31,14 @@ import com.marvel.android.a1000salama.R;
  * Use the {@link ServiceProviderInfo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ServiceProviderInfo extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ServiceProviderInfo extends BaseFragment implements ServiceProviderInfoView {
+    ServiceProviderInfoPresenterImp presenterImp;
+    TextView aboutServiceProvidor;
+    FlipProgressDialog progressDialog;
+    int serviceItemId;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,20 +46,10 @@ public class ServiceProviderInfo extends BaseFragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ServiceProviderInfo.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ServiceProviderInfo newInstance(String param1, String param2) {
+    public static ServiceProviderInfo newInstance(int serviceItemId) {
         ServiceProviderInfo fragment = new ServiceProviderInfo();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt("serviceItemId", serviceItemId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,8 +58,7 @@ public class ServiceProviderInfo extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            serviceItemId = getArguments().getInt("serviceItemId");
         }
     }
 
@@ -66,7 +66,51 @@ public class ServiceProviderInfo extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_service_provider_info, container, false);
+        View view= inflater.inflate(R.layout.fragment_service_provider_info, container, false);
+        presenterImp = new ServiceProviderInfoPresenterImp();
+        presenterImp.setView(this);
+        aboutServiceProvidor = view.findViewById(R.id.about_service_provider);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        progressDialog = new FlipProgressDialog();
+        List<Integer> imageList = new ArrayList<Integer>();
+        imageList.add(R.drawable.ic_hourglass_empty_white_24dp);
+        imageList.add(R.drawable.ic_hourglass_full_white_24dp);
+        progressDialog.setImageList(imageList);
+        progressDialog.setOrientation("rotationY");
+        progressDialog.setCancelable(false);
+        progressDialog.setDimAmount(0.8f);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            progressDialog.setBackgroundColor(getActivity().getColor(R.color.colorPrimary));
+        } else {
+            progressDialog.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+
+        if(Utils.isInternetOn(this.getContext())) {
+            presenterImp.RequestAboutServiceProvidor(getArguments().getInt("serviceItemId"));
+        }
+        else {
+            new SweetAlertDialog(this.getContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("خطأ")
+                    .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
+
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -91,6 +135,38 @@ public class ServiceProviderInfo extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void showLoader() {
+        progressDialog.show(getActivity().getFragmentManager(), "l");
+    }
+
+    @Override
+    public void hideLoader() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public void setServiceProviderAbout(ArrayList<AboutServiceProvidor> aboutUs) {
+        aboutServiceProvidor.setText(aboutUs.get(0).getAboutUs());
+    }
+
+    @Override
+    public void serviceProvidorError() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("عفواً")
+                .setContentText("لا يوجد معلومات عن مقدم الخدمة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     /**

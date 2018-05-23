@@ -38,7 +38,6 @@ public class Login extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //Log.w("token", FirebaseInstanceId.getInstance().getToken());
         getSupportActionBar().hide();
         Locale locale = new Locale("ar");
         Locale.setDefault(locale);
