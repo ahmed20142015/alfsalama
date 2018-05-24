@@ -358,6 +358,11 @@ import static android.content.Context.MODE_PRIVATE;
         return null;
     }
 
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
 
     public static void slide_down(Context ctx, View v) {
         Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);

@@ -2,52 +2,42 @@ package com.marvel.android.a1000salama.ContactUs;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.R;
+import com.marvel.android.a1000salama.Utils;
+import com.taishi.flipprogressdialog.FlipProgressDialog;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ContactUsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ContactUsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ContactUsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
+public class ContactUsFragment extends BaseFragment implements ContactUsView {
+    EditText contactToUsSubject,contactToUsMessage;
+    Button sendToUs;
     private OnFragmentInteractionListener mListener;
-
+    ContactUsPresenterImp presenter;
+    FlipProgressDialog progressDialog;
     public ContactUsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ContactUsFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static ContactUsFragment newInstance(String param1, String param2) {
         ContactUsFragment fragment = new ContactUsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,8 +46,7 @@ public class ContactUsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -65,9 +54,84 @@ public class ContactUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View viwe = inflater.inflate(R.layout.fragment_contact_us, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
+        contactToUsMessage = view.findViewById(R.id.contact_us_message);
+        contactToUsSubject = view.findViewById(R.id.contact_us_subject);
+        sendToUs = view.findViewById(R.id.sendContactToUs);
 
-        return  viwe;
+        presenter = new ContactUsPresenterImp();
+        presenter.setView(this);
+        return  view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        progressDialog = new FlipProgressDialog();
+        List<Integer> imageList = new ArrayList<Integer>();
+        imageList.add(R.drawable.ic_hourglass_empty_white_24dp);
+        imageList.add(R.drawable.ic_hourglass_full_white_24dp);
+        progressDialog.setImageList(imageList);
+        progressDialog.setOrientation("rotationY");
+        progressDialog.setCancelable(false);
+        progressDialog.setDimAmount(0.8f);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            progressDialog.setBackgroundColor(getActivity().getColor(R.color.colorPrimary));
+        } else {
+            progressDialog.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+
+        sendToUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String subject = contactToUsSubject.getText().toString();
+                String message = contactToUsMessage.getText().toString();
+
+                if (!subject.isEmpty() || !message.isEmpty()){
+                    if(Utils.isInternetOn(getActivity())) {
+                        int id = Utils.getUserID(getContext());
+                        Integer replayToContactId = null;
+                        presenter.sendToUs(subject,id,message,replayToContactId);
+                    }
+                    else {
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("خطأ")
+                                .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                                .setConfirmText("تم")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        // reuse previous dialog instance
+                                        sDialog.dismiss();
+
+
+                                    }
+                                })
+                                .show();
+                    }
+                }
+                else {
+
+                    new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("خطأ")
+                            .setContentText( "من فضلك استكمل البيانات الفارغة")
+                            .setConfirmText("تم")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    // reuse previous dialog instance
+                                    sDialog.dismiss();
+
+
+                                }
+                            })
+                            .show();
+
+                }
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -94,16 +158,56 @@ public class ContactUsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void showLoader() {
+        progressDialog.show(getActivity().getFragmentManager(), "l");
+    }
+
+    @Override
+    public void hideLoader() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public void successfullySend() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("حسناً")
+                .setContentText("تم إرسال الرسالة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void errorWhileSend() {
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("خطأ")
+                .setContentText("لم يتم إرسال الرسالة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void setEmpty() {
+        contactToUsSubject.setText("");
+        contactToUsMessage.setText("");
+    }
+
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

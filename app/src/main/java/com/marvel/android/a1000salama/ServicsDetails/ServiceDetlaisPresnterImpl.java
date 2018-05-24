@@ -176,5 +176,10 @@ public class ServiceDetlaisPresnterImpl implements ServiceDetalisPresneter , Api
         return null;
     }
 
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
 
 }

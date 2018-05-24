@@ -329,4 +329,9 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
     public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
         return null;
     }
+
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
 }

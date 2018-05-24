@@ -82,5 +82,8 @@ public interface ApiInterface {
     @POST("alf/WS24/")
     Call<String> GetAboutUsServiceProvidor(@Body String body, @Header("Content-Type") String content_type);
 
+    @POST("alf/WS13/")
+    Call<String> sendToUs(@Body String body, @Header("Content-Type") String content_type);
+
 
 }

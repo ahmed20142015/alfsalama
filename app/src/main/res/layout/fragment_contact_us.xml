@@ -18,57 +18,46 @@
         android:background="#8097ff"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="center"
-            android:text="@string/ContactUs"
-            />
+
 
     </LinearLayout>
 
+
     <EditText
+        android:id="@+id/contact_us_subject"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/ContactUs"
-        android:visibility="invisible"
-
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="@string/ContactUs"
+        android:hint="الموضـــوع"
 
         />
 
 
 
-    <fr.ganfra.materialspinner.MaterialSpinner
-        android:id="@+id/city"
-        style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textAlignment="center"
-        android:textColor="#fff"
-        android:textDirection="rtl"
-        app:ms_alignLabels="true"
-        app:ms_arrowSize="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        app:ms_enableErrorLabel="false"
-        app:ms_enableFloatingLabel="false"
-        app:ms_hint="@string/ContactType"
-        app:ms_hintColor="#000"
-        app:ms_multiline="false">
-    </fr.ganfra.materialspinner.MaterialSpinner>
+    <!--<fr.ganfra.materialspinner.MaterialSpinner-->
+        <!--android:id="@+id/city"-->
+        <!--style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="#fff"-->
+        <!--android:textDirection="rtl"-->
+        <!--app:ms_alignLabels="true"-->
+        <!--app:ms_arrowSize="10dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--app:ms_enableErrorLabel="false"-->
+        <!--app:ms_enableFloatingLabel="false"-->
+        <!--app:ms_hint="@string/ContactType"-->
+        <!--app:ms_hintColor="#000"-->
+        <!--app:ms_multiline="false">-->
+    <!--</fr.ganfra.materialspinner.MaterialSpinner>-->
 
       <TextView
           android:layout_width="wrap_content"
@@ -77,10 +66,13 @@
           android:layout_marginRight="20dp"
           android:layout_gravity="right"
           android:layout_marginTop="20dp"
+          android:textSize="17sp"
+
           />
 
 
     <EditText
+        android:id="@+id/contact_us_message"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginRight="20dp"
@@ -90,12 +82,15 @@
         />
 
     <Button
+        android:id="@+id/sendContactToUs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_round_corner"
         android:text="@string/Send"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="#fff"/>
 
 

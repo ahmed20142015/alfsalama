@@ -1,43 +1,41 @@
-package com.marvel.android.a1000salama.ServicesProviderInfo;
+package com.marvel.android.a1000salama.ContactUs;
 
-import com.marvel.android.a1000salama.Login.Login;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
-import Model.AboutServiceProvidor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by ahmedpc on 22/5/2018.
+ * Created by ahmedpc on 24/5/2018.
  */
 
-public class ServiceProviderInfoPresenterImp implements ServiceProviderInfoPresenter, ApiInterface {
-    ServiceProviderInfoView view;
-    ArrayList<AboutServiceProvidor> aboutProvidorList = new ArrayList();
+public class ContactUsPresenterImp implements ContactUsPresenter, ApiInterface {
+    ContactUsView view;
     @Override
-    public void setView(ServiceProviderInfoView view) {
+    public void setView(ContactUsView view) {
         this.view = view;
     }
 
     @Override
-    public int RequestAboutServiceProvidor(int branchId) {
+    public int sendToUs(String subject, int patientID, String message, Integer replayToContactID) {
         view.showLoader();
         JSONObject authBody = new JSONObject();
         try {
-            authBody.put("P1",branchId);
+            authBody.put("P1",subject);
+            authBody.put("P2",patientID);
+            authBody.put("P3",message);
+            authBody.put("P4",replayToContactID);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        GetAboutUsServiceProvidor(authBody.toString(),ServicesConnection.CONTENT_TYPE);
+        sendToUs(authBody.toString(),ServicesConnection.CONTENT_TYPE);
         return 0;
+
     }
 
     @Override
@@ -117,44 +115,42 @@ public class ServiceProviderInfoPresenterImp implements ServiceProviderInfoPrese
 
     @Override
     public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
-        Call<String> QueryCall = ServicesConnection.GetService().GetAboutUsServiceProvidor(body,content_type);
+        return null;
+    }
+
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        Call<String> QueryCall = ServicesConnection.GetService().sendToUs(body,content_type);
         QueryCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String body = response.body();
                 if (response.isSuccessful()){
                     try {
-                        JSONArray aboutProvidor = new JSONArray(body);
-                        for(int i=0;i<aboutProvidor.length();i++){
-                            AboutServiceProvidor aboutServiceProvidor = new AboutServiceProvidor();
-                            aboutServiceProvidor.setAboutUs(aboutProvidor.getJSONObject(i).getString("About Us"));
-                            aboutProvidorList.add(aboutServiceProvidor);
+                        JSONObject jsonObject = new JSONObject(body);
+                        int responseResult = jsonObject.getInt("P1OUT");
+                        if (responseResult == 200){
+                            view.hideLoader();
+                            view.successfullySend();
+                            view.setEmpty();
                         }
-
+                        else {
+                            view.hideLoader();
+                            view.errorWhileSend();
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    view.hideLoader();
-                    if (aboutProvidorList.size()>0)
-                    view.setServiceProviderAbout(aboutProvidorList);
-                    else
-                        view.serviceProvidorError();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 view.hideLoader();
+                view.errorWhileSend();
             }
         });
-        
-        return null;
-    }
-
-    @Override
-    public Call<String> sendToUs(String body, String content_type) {
         return null;
     }
 }

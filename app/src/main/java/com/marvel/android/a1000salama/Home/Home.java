@@ -20,6 +20,7 @@ import com.marvel.android.a1000salama.AboutUs.AboutUsFragment;
 import com.marvel.android.a1000salama.AddServiceProvider.AddServiceProviderFragment;
 import com.marvel.android.a1000salama.BookingFragment.BookingFragment;
 import com.marvel.android.a1000salama.BookingHistory.BookingHistoryFragment;
+import com.marvel.android.a1000salama.ContactUs.ContactUsFragment;
 import com.marvel.android.a1000salama.FireBase.MyFirebaseMessagingService;
 import com.marvel.android.a1000salama.Login.Login;
 import com.marvel.android.a1000salama.R;
@@ -36,10 +37,11 @@ public class Home extends AppCompatActivity
         DetailsFragment.OnFragmentInteractionListener ,
         BServiceDetailsFragment.OnFragmentInteractionListener,
         RatingFragment.OnFragmentInteractionListener
-, ServiceProviderInfo.OnFragmentInteractionListener ,
+       , ServiceProviderInfo.OnFragmentInteractionListener ,
         BookingFragment.OnFragmentInteractionListener ,
        BookingHistoryFragment.OnFragmentInteractionListener ,
-AboutUsFragment.OnFragmentInteractionListener{
+       AboutUsFragment.OnFragmentInteractionListener,
+        ContactUsFragment.OnFragmentInteractionListener{
 
 
     private FragmentManager manager;
@@ -254,7 +256,19 @@ catch (Exception e)
 
         }
 
-
+        else if(id == R.id.contactud){
+            ToolBarTitle.setText(getString(R.string.ContactUs));
+            Fragment fragment = new ContactUsFragment();
+            manager = getSupportFragmentManager();
+            if(manager == null)
+                manager  =  getSupportFragmentManager();
+            transaction = manager.beginTransaction();
+//        transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+            transaction.replace(R.id.content_home, fragment, "ContactUs");
+            // Add this transaction to the back stack (name is an optional name for this back stack state, or null).
+            transaction.addToBackStack(null)
+                    .commit();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

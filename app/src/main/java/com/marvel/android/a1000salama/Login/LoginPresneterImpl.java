@@ -246,6 +246,11 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         return null;
     }
 
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
 
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {
 
