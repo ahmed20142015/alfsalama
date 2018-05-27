@@ -127,6 +127,11 @@ public  class commentsPresneterImpl implements  commentsPresenter , ApiInterface
         return null;
     }
 
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
+
 
     @Override
     public Call<String> login(String webserviceNumber, String body, String content_type) {

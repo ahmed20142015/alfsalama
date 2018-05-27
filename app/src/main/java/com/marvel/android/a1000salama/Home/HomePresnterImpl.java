@@ -334,4 +334,9 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
     public Call<String> sendToUs(String body, String content_type) {
         return null;
     }
+
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
 }

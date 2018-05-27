@@ -65,6 +65,7 @@
     <string name="add_service">إضافة خدمة جديدة</string>
     <string name="arabic">عربـــي</string>
     <string name="english">إنجليــزي</string>
-
+    <string name="subject">الموضـــوع</string>
+    <string name="send_ticks">الرسائل المرسلة</string>
 
 </resources>

@@ -26,6 +26,9 @@ public class SystemMessage {
 
 
     }
+    public SystemMessage() {
+
+    }
 
     public SystemMessage(Cursor cursor) {
         this.id = cursor.getString(SystemMessage.COL_System_Message_ID);

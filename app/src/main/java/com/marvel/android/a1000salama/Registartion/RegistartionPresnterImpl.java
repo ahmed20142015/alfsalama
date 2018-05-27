@@ -350,6 +350,11 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         return null;
     }
 
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
+
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {
 
 

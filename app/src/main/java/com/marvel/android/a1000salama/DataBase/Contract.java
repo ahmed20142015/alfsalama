@@ -61,6 +61,8 @@ public static final class alfsalamaEntry implements BaseColumns {
     public static final String COLUMN_CAT_ID= "CATID ";
     public static final String COLUMN_CAT_IDID= "ID ";
 
+
+
     public static Uri buildalfsalamaUri(long id) {
         return ContentUris.withAppendedId(CONTENT_URI, id);
     }

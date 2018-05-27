@@ -13,6 +13,7 @@ import Model.Area;
 import Model.Catoegry;
 import Model.City;
 import Model.Governrate;
+import Model.SystemMessage;
 
 /**
  * Created by ahmed on 26/01/18.
@@ -30,12 +31,12 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + Contract.alfsalamaEntry.SystemMessagesTable + " (" +
+        final String SQL_CREATE_MESSAGE_TABLE = "CREATE TABLE " + Contract.alfsalamaEntry.SystemMessagesTable + " (" +
                 Contract.alfsalamaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Contract.alfsalamaEntry.COLUMN_SystemMessages_ID + " INTEGER NOT NULL, " +
                 Contract.alfsalamaEntry.COLUMN_SystemMessages_message + " TEXT NOT NULL);";
+        db.execSQL(SQL_CREATE_MESSAGE_TABLE);
 
-        db.execSQL(SQL_CREATE_MOVIE_TABLE);
         final String SQL_CREATE_GOV_TABLE = "CREATE TABLE " + Contract.alfsalamaEntry.GOVERNRATETABLE + " (" +
                 Contract.alfsalamaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Contract.alfsalamaEntry.COLUMN_GOVERNRATE_ID + " INTEGER NOT NULL, " +
@@ -72,6 +73,7 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
 
 
 
+
         final String SQL_CREATE_SP_TABLE = "CREATE TABLE " + Contract.alfsalamaEntry.SPTable + " (" +
                 Contract.alfsalamaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Contract.alfsalamaEntry.COLUMN_SystemMessages_ID + " INTEGER NOT NULL, " +
@@ -88,6 +90,62 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
+    public void insertSystemMessages(ContentValues values){
+        SQLiteDatabase database = this.getWritableDatabase();
+
+//        ContentValues values = new ContentValues();
+//        values.put(Contract.alfsalamaEntry.COLUMN_SystemMessages_ID,systemMessage.getId());
+//        values.put(Contract.alfsalamaEntry.COLUMN_SystemMessages_message,systemMessage.getMessage());
+        // Inserting Row
+        database.insert(Contract.alfsalamaEntry.SystemMessagesTable, null, values);
+        Log.w("table", "data inseted");
+        database.close(); // Closing database connection
+    }
+
+    public ArrayList<SystemMessage>getSystemMessages(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + Contract.alfsalamaEntry.SystemMessagesTable;
+        ArrayList<SystemMessage> messages = new ArrayList<>();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        while (cursor.moveToNext()) {
+            SystemMessage message = new SystemMessage();
+            message.setId(cursor.getString(1));
+            message.setMessage(cursor.getString(2));
+            messages.add(message);
+        }
+
+        Log.w("table", "Data selected");
+        Log.w("table", messages.size() + "");
+
+        cursor.close();
+        db.close();
+
+        return messages;
+    }
+
+    public void deleteSystemMessages() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(Contract.alfsalamaEntry.SystemMessagesTable, null, null);
+        Log.w("table", "dataDeleted");
+        db.close();
+    }
+    public SystemMessage getMessage(int messageId){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + Contract.alfsalamaEntry.SystemMessagesTable + " WHERE "
+                + Contract.alfsalamaEntry.COLUMN_SystemMessages_ID + " = " + messageId;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        SystemMessage message = new SystemMessage();
+        message.setId(cursor.getString(1));
+        message.setMessage(cursor.getString(2));
+
+        return message;
+    }
 
 
     public long InsertArea(Area area) {

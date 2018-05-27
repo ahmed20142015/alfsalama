@@ -79,8 +79,7 @@ import static android.content.Context.MODE_PRIVATE;
 
                 String Body =   response.body();
                 if (response.isSuccessful()) {
-
-
+                    alfSamalaSDBHelper dbHelper = new alfSamalaSDBHelper(context);
                     try {
                         JSONObject responCodeObj = new JSONObject(Body);
                         ContentValues values = new ContentValues();
@@ -89,8 +88,8 @@ import static android.content.Context.MODE_PRIVATE;
                         {
                            values.put(Contract.alfsalamaEntry.COLUMN_SystemMessages_ID,  systemMessageArray.getJSONObject(i).getString("id"));
                             values.put(Contract.alfsalamaEntry.COLUMN_SystemMessages_message,  systemMessageArray.getJSONObject(i).getString("message"));
-                            context.getContentResolver().insert(Contract.alfsalamaEntry.CONTENT_URI,
-                                    values);
+                            context.getContentResolver().insert(Contract.alfsalamaEntry.CONTENT_URI, values);
+                            dbHelper.insertSystemMessages(values);
                         }
 
 
@@ -360,6 +359,11 @@ import static android.content.Context.MODE_PRIVATE;
 
     @Override
     public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
         return null;
     }
 

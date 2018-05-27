@@ -28,6 +28,7 @@ import com.marvel.android.a1000salama.Rating.RatingFragment;
 import com.marvel.android.a1000salama.ServiceDetials.DetailsFragment;
 import com.marvel.android.a1000salama.ServicesProviderInfo.ServiceProviderInfo;
 import com.marvel.android.a1000salama.ServicsDetails.BServiceDetailsFragment;
+import com.marvel.android.a1000salama.Ticks.TicksFragment;
 import com.marvel.android.a1000salama.Utils;
 
 public class Home extends AppCompatActivity
@@ -41,7 +42,8 @@ public class Home extends AppCompatActivity
         BookingFragment.OnFragmentInteractionListener ,
        BookingHistoryFragment.OnFragmentInteractionListener ,
        AboutUsFragment.OnFragmentInteractionListener,
-        ContactUsFragment.OnFragmentInteractionListener{
+        ContactUsFragment.OnFragmentInteractionListener ,
+        TicksFragment.OnFragmentInteractionListener{
 
 
     private FragmentManager manager;

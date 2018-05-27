@@ -85,5 +85,8 @@ public interface ApiInterface {
     @POST("alf/WS13/")
     Call<String> sendToUs(@Body String body, @Header("Content-Type") String content_type);
 
+    @POST("alf/WS14/")
+    Call<String> getOldTicks(@Body String body, @Header("Content-Type") String content_type);
+
 
 }

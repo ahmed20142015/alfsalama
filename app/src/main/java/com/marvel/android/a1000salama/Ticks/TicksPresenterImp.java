@@ -1,41 +1,43 @@
-package com.marvel.android.a1000salama.ContactUs;
+package com.marvel.android.a1000salama.Ticks;
 
+import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
+import Model.Tick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by ahmedpc on 24/5/2018.
+ * Created by ahmedpc on 25/5/2018.
  */
 
-public class ContactUsPresenterImp implements ContactUsPresenter, ApiInterface {
-    ContactUsView view;
+public class TicksPresenterImp implements TicksPresenter , ApiInterface {
+    TicksView view;
+    ArrayList<Tick> ticks = new ArrayList<>();
     @Override
-    public void setView(ContactUsView view) {
-        this.view = view;
-    }
-
-    @Override
-    public int sendToUs(String subject, int patientID, String message, Integer replayToContactID) {
+    public void getTicks(int patientID) {
         view.showLoader();
         JSONObject authBody = new JSONObject();
         try {
-            authBody.put("P1",subject);
-            authBody.put("P2",patientID);
-            authBody.put("P3",message);
-            authBody.put("P4",replayToContactID);
+            authBody.put("P1",patientID);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        sendToUs(authBody.toString(),ServicesConnection.CONTENT_TYPE);
-        return 0;
+        getOldTicks(authBody.toString(),ServicesConnection.CONTENT_TYPE);
+    }
 
+    @Override
+    public void setView(TicksView view) {
+        this.view = view;
     }
 
     @Override
@@ -120,42 +122,56 @@ public class ContactUsPresenterImp implements ContactUsPresenter, ApiInterface {
 
     @Override
     public Call<String> sendToUs(String body, String content_type) {
-        Call<String> QueryCall = ServicesConnection.GetService().sendToUs(body,content_type);
-        QueryCall.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String body = response.body();
-                if (response.isSuccessful()){
-                    try {
-                        JSONObject jsonObject = new JSONObject(body);
-                        int responseResult = jsonObject.getInt("P1OUT");
-                        if (responseResult == 200){
-                            view.hideLoader();
-                            view.successfullySend();
-                            view.setEmpty();
-                        }
-                        else {
-                            view.hideLoader();
-                            view.errorWhileSend();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                view.hideLoader();
-                view.errorWhileSend();
-            }
-        });
         return null;
     }
 
     @Override
     public Call<String> getOldTicks(String body, String content_type) {
+        Call<String> QueryCall = ServicesConnection.GetService().getOldTicks(body,content_type);
+        QueryCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String body = response.body();
+                if (response.isSuccessful()){
+                    Log.e("dddddddddddddd",body);
+                    try {
+
+                        JSONArray ticksList = new JSONArray(body);
+
+                        for (int i=0;i<ticksList.length();i++){
+                            Tick tick = new Tick();
+                            tick.setId(ticksList.getJSONObject(i).getInt("ID"));
+                            tick.setSubject(ticksList.getJSONObject(i).getString("Subject"));
+                            tick.setMessage(ticksList.getJSONObject(i).getString("Message"));
+                            ticks.add(tick);
+                        }
+
+                        view.hideLoader();
+                        if (ticks.size()>0)
+                            view.setTicksList(ticks);
+                        else
+                            view.noOldTicks();
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else {
+                    view.hideLoader();
+                    view.showError();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                view.hideLoader();
+                view.showError();
+            }
+        });
+
         return null;
     }
 }

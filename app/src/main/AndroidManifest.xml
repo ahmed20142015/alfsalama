@@ -24,7 +24,9 @@
         android:roundIcon="@mipmap/finalicon_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.AppCompat.Light"
-        tools:replace="android:icon">
+        tools:replace="android:icon"
+        android:largeHeap="true"
+        >
 
 
         <meta-data

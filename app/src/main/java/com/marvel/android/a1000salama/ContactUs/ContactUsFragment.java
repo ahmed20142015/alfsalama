@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.marvel.android.a1000salama.BaseFragment;
+import com.marvel.android.a1000salama.Home.Home;
 import com.marvel.android.a1000salama.R;
+import com.marvel.android.a1000salama.Ticks.TicksFragment;
 import com.marvel.android.a1000salama.Utils;
 import com.taishi.flipprogressdialog.FlipProgressDialog;
 
@@ -25,10 +29,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ContactUsFragment extends BaseFragment implements ContactUsView {
     EditText contactToUsSubject,contactToUsMessage;
-    Button sendToUs;
+    Button sendToUs,getOldTicks;
     private OnFragmentInteractionListener mListener;
     ContactUsPresenterImp presenter;
     FlipProgressDialog progressDialog;
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
     public ContactUsFragment() {
         // Required empty public constructor
     }
@@ -58,7 +64,7 @@ public class ContactUsFragment extends BaseFragment implements ContactUsView {
         contactToUsMessage = view.findViewById(R.id.contact_us_message);
         contactToUsSubject = view.findViewById(R.id.contact_us_subject);
         sendToUs = view.findViewById(R.id.sendContactToUs);
-
+        getOldTicks = view.findViewById(R.id.get_old_ticks);
         presenter = new ContactUsPresenterImp();
         presenter.setView(this);
         return  view;
@@ -130,6 +136,23 @@ public class ContactUsFragment extends BaseFragment implements ContactUsView {
                             .show();
 
                 }
+            }
+        });
+
+        getOldTicks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new TicksFragment();
+                manager = getActivity().getSupportFragmentManager();
+                if(manager == null)
+                    manager  =  getActivity().getSupportFragmentManager();
+                transaction = manager.beginTransaction();
+                Home.ToolBarTitle.setText(getString(R.string.send_ticks));
+                transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+                transaction.replace(R.id.content_home, fragment, "ticks");
+                transaction.addToBackStack(null
+                );
+                transaction.commit();
             }
         });
     }
