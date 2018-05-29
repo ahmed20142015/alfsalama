@@ -21,4 +21,6 @@ public interface BookingViwe {
     String getServiceComment();
     int getBranchId();
     void showErrorInputs();
+    void sendBookingPhotos(int bookId);
+    void successUpload(int successNumb);
 }

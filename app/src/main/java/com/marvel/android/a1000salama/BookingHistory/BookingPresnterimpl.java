@@ -261,6 +261,13 @@ public class BookingPresnterimpl implements BooKingHistoryPresneter , ApiInterfa
     }
 
     @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+
+
+    @Override
     public Call<String> login(String webserviceNumber, String body, String content_type) {
         return null;
     }

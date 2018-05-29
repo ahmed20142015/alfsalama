@@ -75,16 +75,16 @@
         <!--app:ms_multiline="false">-->
     <!--</fr.ganfra.materialspinner.MaterialSpinner>-->
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/Message"
-          android:layout_marginRight="20dp"
-          android:layout_gravity="right"
-          android:layout_marginTop="20dp"
-          android:textSize="17sp"
+      <!--<TextView-->
+          <!--android:layout_width="wrap_content"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:text="@string/Message"-->
+          <!--android:layout_marginRight="20dp"-->
+          <!--android:layout_gravity="right"-->
+          <!--android:layout_marginTop="20dp"-->
+          <!--android:textSize="17sp"-->
 
-          />
+          <!--/>-->
 
 
     <EditText
@@ -94,7 +94,11 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:background="@android:drawable/editbox_background_normal"
+        android:background="#fff"
+        android:padding="5dp"
+        android:hint="الرسـالـــه"
+        android:textColor="#000"
+        android:textDirection="rtl"
         />
 
     <Button

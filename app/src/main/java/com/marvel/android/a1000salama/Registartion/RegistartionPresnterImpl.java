@@ -355,6 +355,13 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         return null;
     }
 
+    @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+
+
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {
 
 

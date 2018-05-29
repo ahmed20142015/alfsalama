@@ -2,6 +2,8 @@ package APIClient;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -87,6 +89,13 @@ public interface ApiInterface {
 
     @POST("alf/WS14/")
     Call<String> getOldTicks(@Body String body, @Header("Content-Type") String content_type);
+
+    @FormUrlEncoded
+    @POST("index.php")
+    Call<String> uploadBookingPhotos(@Field("P1") int P1, @Field("P2") int P2,@Field("P3") String P3,
+                                     @Field("P4") String P4,@Field("P5") String P5);
+
+
 
 
 }

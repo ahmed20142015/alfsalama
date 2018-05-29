@@ -1,11 +1,13 @@
 package com.marvel.android.a1000salama.BookingFragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
@@ -34,6 +36,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -79,9 +82,10 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     BookingPresneter BookPersenter;
     private Button sendBook;
     private ArrayList<Integer> ServicesIds = new ArrayList<>();
+    private ArrayList<String>bookingPhotos = new ArrayList<>();
     private RecyclerView mServicesRecyclerView;
     private EditText mOtherPersonName  , mOtherPErsonMobileNumber , mComments;
-
+    private LinearLayout selectedImages;
     RadioGroup AccountTypeRadio ;
     CheckBox radiotheraccount ;
     FlipProgressDialog progressDialog;
@@ -161,6 +165,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         mOtherPErsonMobileNumber  = view.findViewById(R.id.otherpersonmobilenumber);
         mComments = view.findViewById(R.id.Notes);
         sendBook  = view.findViewById(R.id.sendbook);
+        selectedImages = view.findViewById(R.id.show_selected_photo);
         serviceaddedlistviwe = view.findViewById(R.id.serviceaddedlistviwe);
        // AddRequestItemBtn =view.findViewById(R.id.addservicerequestitembtn);
         addService = view.findViewById(R.id.add_service);
@@ -503,27 +508,60 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             if (resultCode == getActivity().RESULT_CANCELED) {
                 return;
             }
-            if (requestCode == 100) {
+            if (requestCode == 100&& resultCode == Activity.RESULT_OK && null != data) {
                 if (data != null) {
                     Uri contentURI = data.getData();
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
-                        String path = saveImage(bitmap);
-                        String encodedImage = encodeImage(path);
-                        Log.w("path",encodedImage);
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(getActivity(), "Failed!", Toast.LENGTH_SHORT).show();
-                    }
+                    Cursor cursor =  getActivity().getContentResolver().query(
+                            selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    filePath = cursor.getString(columnIndex);
+                    Log.w("filepath",filePath);
+                    cursor.close();
+                    String encodedImage = encodeImage(filePath);
+                    bookingPhotos.add(encodedImage);
+                    Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+
+                    ImageView imageView = new ImageView(getActivity());
+                    LinearLayout.LayoutParams layoutParams =
+                            new LinearLayout.LayoutParams(250,
+                                    270);
+                    imageView.setLayoutParams(layoutParams);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    imageView.setPadding(10, 10, 10, 10);
+                   // imageView.setAdjustViewBounds(true);
+                    imageView.setImageBitmap(yourSelectedImage);
+                    if (selectedImages.getVisibility() == View.GONE)
+                        selectedImages.setVisibility(View.VISIBLE);
+                    selectedImages.addView(imageView);
+                    Log.w("path",encodedImage);
+
                 }
 
             } else if (requestCode == 200) {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
                 String path = saveImage(thumbnail);
                 String encodedImage = encodeImage(path);
-                Log.w("path",encodedImage);            }
+                bookingPhotos.add(encodedImage);
+                Bitmap yourSelectedImage = BitmapFactory.decodeFile(path);
 
+                ImageView imageView = new ImageView(getActivity());
+                LinearLayout.LayoutParams layoutParams =
+                        new LinearLayout.LayoutParams(250,
+                                270);
+                imageView.setLayoutParams(layoutParams);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setPadding(10, 10, 10, 10);
+                // imageView.setAdjustViewBounds(true);
+                imageView.setImageBitmap(yourSelectedImage);
+                if (selectedImages.getVisibility() == View.GONE)
+                    selectedImages.setVisibility(View.VISIBLE);
+                selectedImages.addView(imageView);
+            }
         }
         catch (Exception e){
                 Toast.makeText(getActivity(), "حدث خطأ", Toast.LENGTH_SHORT).show();
@@ -692,6 +730,25 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                 })
                 .show();
 
+    }
+
+    @Override
+    public void sendBookingPhotos(int bookId) {
+        int id = Utils.getUserID(getContext());
+        if (bookingPhotos.size() == 1)
+            BookPersenter.BookPhotos(id,bookId,bookingPhotos.get(0),null,null);
+        else if (bookingPhotos.size() == 2)
+            BookPersenter.BookPhotos(id,bookId,bookingPhotos.get(0),bookingPhotos.get(1),null);
+        else if (bookingPhotos.size() >= 3 )
+            BookPersenter.BookPhotos(id,bookId,bookingPhotos.get(0),bookingPhotos.get(1),bookingPhotos.get(2));
+    }
+
+    @Override
+    public void successUpload(int successNumb) {
+        if(successNumb > 0)
+        Toast.makeText(getActivity(),"تم إضافة"+successNumb+"صوره بنجاح", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(), "لم يتم إضافة الصور", Toast.LENGTH_SHORT).show();
     }
 
 

@@ -1,5 +1,7 @@
 package com.marvel.android.a1000salama.BookingFragment;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import APIClient.ApiInterface;
+import APIClient.PhotoConnection;
 import APIClient.ServicesConnection;
 import Model.Services;
 import retrofit2.Call;
@@ -94,6 +97,12 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
     }
 
     @Override
+    public int BookPhotos(int patientID, int bookId, String firPhoto, String secPhoto, String thirPhoto) {
+        uploadBookingPhotos(patientID,bookId,firPhoto,secPhoto,thirPhoto);
+        return 0;
+    }
+
+    @Override
     public void getAllServices(String lang) {
         BookingFragViwe.showLoader();
         lanuage=lang;
@@ -108,6 +117,7 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String Body =   response.body();
+                Log.w("responseBody",Body);
                 if (response.isSuccessful()) {
                       //P1OUT
 
@@ -117,8 +127,8 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
                         ResponseCode = responCodeObj.getInt("P1OUT");
                         if(ResponseCode > -1)
                         {
-
                             BookingFragViwe.NavigateToSPPAge(ResponseCode);
+                            BookingFragViwe.sendBookingPhotos(ResponseCode);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -263,6 +273,43 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
     public Call<String> getOldTicks(String body, String content_type) {
         return null;
     }
+
+    @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        Call<String> QueryCall = PhotoConnection.GetPhotoService().uploadBookingPhotos(P1,P2,P3,P4,P5);
+        QueryCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String body = response.body().toString();
+                int counter = 0;
+                if (response.isSuccessful()){
+                    Log.w("photoresponse",body);
+                    try {
+                        JSONObject object = new JSONObject(body);
+                        if(object.getInt("P3") == 200)
+                            counter++;
+                        if(object.getInt("P4") == 200)
+                            counter++;
+                        if(object.getInt("P5") == 200)
+                            counter++;
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    BookingFragViwe.successUpload(counter);
+                }
+             }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.w("photoresponse",t.getCause());
+            }
+        });
+        return null;
+    }
+
+
 
 
     @Override
