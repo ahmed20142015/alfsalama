@@ -8,10 +8,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.marvel.android.a1000salama.Home.Home;
 import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Registartion.Registration;
@@ -24,13 +26,14 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class Login extends AppCompatActivity implements LoginViwe {
+public class Login extends AppCompatActivity implements LoginView {
 
     FlipProgressDialog progressDialog;
     LoginPresneterImpl loginPresenter;
     Button RegistrationBtn  , LoginBtn;
     private EditText username , paasword;
     AppCompatCheckBox remberMe;
+    LoginView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,7 @@ public class Login extends AppCompatActivity implements LoginViwe {
 
 
         loginPresenter = new LoginPresneterImpl();
+
         loginPresenter.setView(this);
         RegistrationBtn  = findViewById(R.id.RegBtn);
         LoginBtn  = findViewById(R.id.loginBtn);
@@ -85,51 +89,7 @@ public class Login extends AppCompatActivity implements LoginViwe {
         LoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(username.getEditableText().toString().equals("")
-                        || paasword.getEditableText().toString().equals("")) {
-                    new SweetAlertDialog(Login.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("خطأ")
-                            .setContentText( "من فضلك استكمل البيانات الفارغة")
-                            .setConfirmText("تم")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    // reuse previous dialog instance
-                                    sDialog.dismiss();
-
-
-                                }
-                            })
-                            .show();
-                }
-                else  if (Utils.isInternetOn(Login.this))
-                {
-                   int response = loginPresenter.RequestLogin(username.getEditableText().toString(),
-                            paasword.getEditableText().toString());
-
-
-
-
-                }
-
-                else {
-                    new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("خطأ")
-                            .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
-                            .setConfirmText("تم")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    // reuse previous dialog instance
-                                    sDialog.dismiss();
-
-
-                                }
-                            })
-                            .show();
-                }
-//
+                loginPresenter.onLoginClicked();
 
             }
         });
@@ -148,13 +108,13 @@ public class Login extends AppCompatActivity implements LoginViwe {
     }
 
     @Override
-    public void edEmail() {
-
+    public String edEmail() {
+        return username.getText().toString();
     }
 
     @Override
-    public void edPassword() {
-
+    public String edPassword() {
+        return paasword.getText().toString();
     }
 
     @Override
@@ -193,8 +153,6 @@ public class Login extends AppCompatActivity implements LoginViwe {
                     public void onClick(SweetAlertDialog sDialog) {
                         // reuse previous dialog instance
                         sDialog.dismiss();
-
-
                     }
                 })
                 .show();
@@ -223,8 +181,15 @@ public class Login extends AppCompatActivity implements LoginViwe {
 
     }
 
+    @Override
+    public void showUserNameError(int resId) {
+        username.setError(getString(resId));
+    }
 
-
+    @Override
+    public void showPasswordError(int resId) {
+        paasword.setError(getString(resId));
+    }
 
 
 }

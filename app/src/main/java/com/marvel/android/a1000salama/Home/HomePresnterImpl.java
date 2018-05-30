@@ -157,12 +157,12 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
     public Call<String> getSystemMessages() {
         return null;
     }
-
     @Override
     public Call<String> getAllServiceProvider(String webserviceNumber, String body, String content_type) {
         String Return = "-1";
 
         Call<String> QueryCall = ServicesConnection.GetService().getAllServiceProvider("WS4",body,content_type);
+
         QueryCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -324,4 +324,26 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
     public Call<String> GetBrnchrates(String body, String content_type) {
         return null;
     }
+
+    @Override
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+
 }

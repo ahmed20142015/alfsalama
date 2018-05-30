@@ -59,5 +59,13 @@
     <string name="AdvancedSearch">بحث متقدم</string>
     <string name="title_activity_home">مرحبا</string>
     <string name="emptyfileds">من فضلك استكمل البيانات الفارغة</string>
+    <string name="user_name_error">الإيميل لا يمكن أن يكون فارغ</string>
+    <string name="password_error">الرقم السري لا يمكن أن يكون فارغ</string>
+    <string name="add_photo">إضافة صورة</string>
+    <string name="add_service">إضافة خدمة جديدة</string>
+    <string name="arabic">عربـــي</string>
+    <string name="english">إنجليــزي</string>
+    <string name="subject">الموضـــوع</string>
+    <string name="send_ticks">الرسائل المرسلة</string>
 
 </resources>

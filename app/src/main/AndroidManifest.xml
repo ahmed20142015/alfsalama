@@ -4,6 +4,9 @@
     package="com.marvel.android.a1000salama">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -21,7 +24,9 @@
         android:roundIcon="@mipmap/finalicon_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.AppCompat.Light"
-        tools:replace="android:icon">
+        tools:replace="android:icon"
+        android:largeHeap="true"
+        >
 
 
         <meta-data

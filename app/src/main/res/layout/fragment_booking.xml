@@ -121,28 +121,20 @@
 
 
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="start"
-            android:popupBackground="#fff"
-            android:spinnerMode="dropdown"
-            android:dropDownWidth="200dp"
-            android:pointerIcon="arrow"
-            tools:listitem="@layout/spinneritem"
+
+        <Button
+            android:id="@+id/add_service"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/add_service"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:background="@color/Withe"
+            android:padding="5dp"
             />
 
 
-        <Button
-            android:id="@+id/addservicerequestitembtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/plus_edit"/>
 
     </LinearLayout>
 
@@ -155,6 +147,44 @@
         android:layout_marginTop="10dp"
 
         />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/add_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/add_photo"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:background="@color/Withe"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="بحد أقصى 3 صور"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                android:layout_marginRight="20dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/show_selected_photo"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            android:layout_marginRight="15dp"
+            >
+
+        </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -166,6 +196,7 @@
         android:textSize="20sp"
         />
 
+
     <EditText
         android:id="@+id/Notes"
         android:layout_width="match_parent"
@@ -175,11 +206,10 @@
         android:textColorHint="#000"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:maxLines="1"
         android:textColor="#000"
         android:background="#fff"
         android:textDirection="rtl"
-
+        android:padding="5dp"
         />
 
     <Button

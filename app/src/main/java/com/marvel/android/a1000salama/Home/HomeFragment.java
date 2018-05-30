@@ -454,6 +454,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
     @Override
     public void NavigateToSPDeatials(ServiceProidveritem sp) {
+
         Fragment fragment = new DetailsFragment();
         manager = getActivity().getSupportFragmentManager();
         if(manager == null)
@@ -503,6 +504,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
         homePersenter.GetCities(this.getContext());
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

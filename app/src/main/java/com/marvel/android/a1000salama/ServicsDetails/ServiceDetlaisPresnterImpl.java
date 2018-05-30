@@ -171,5 +171,25 @@ public class ServiceDetlaisPresnterImpl implements ServiceDetalisPresneter , Api
         return null;
     }
 
+    @Override
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
 
 }

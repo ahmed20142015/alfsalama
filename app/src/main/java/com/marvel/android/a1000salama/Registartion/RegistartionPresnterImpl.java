@@ -14,6 +14,7 @@ import APIClient.ApiClient;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
 import Model.SystemMessage;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +33,61 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
     @Override
     public void setView(Registration registartionView) {
         this.registartionView = registartionView;
+    }
+
+    public void onRegisterClicked(){
+        String firstName = registartionView.getFirstName(),
+                secondName = registartionView.getSecondName(),
+                lastName = registartionView.getSurName(),
+                mobileNumber = registartionView.getMobileNumber(),
+                idNumber = registartionView.getNationalID(),
+                email = registartionView.getEmail(),
+                password = registartionView.getPass(),
+                conFirmPass = registartionView.getConfirmPass(),
+                UserName = registartionView.getEmail(),
+                DateOfBirth = registartionView.getDateOFBirth(),
+                Gender = registartionView.getGender();
+        if(firstName.isEmpty()||secondName.isEmpty()||lastName.isEmpty()||mobileNumber.isEmpty()
+                ||email.isEmpty()||password.isEmpty()||UserName.isEmpty()
+                ||DateOfBirth.isEmpty()||Gender.isEmpty()){
+
+            registartionView.showErrorInputs();
+        }
+        else if (!conFirmPass.equals(password))
+        {
+            showErrorMessage("كلمة المرور غير متطابقة");
+
+        }
+
+        else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                )
+        {
+            showErrorMessage("البريد الإلكتروني غير صحيح");
+
+        }
+
+
+        else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
+        {
+            showErrorMessage("رقم الهاتف غير صحيح ");
+
+        }
+
+
+
+
+
+
+
+        else {
+
+            if(Utils.isInternetOn(registartionView)) {
+                        RequestRegistration(firstName, secondName, lastName, mobileNumber, idNumber, email, password, UserName, DateOfBirth, Gender);
+            }
+            else
+                showErrorMessage("من فضلك تأكد من الإتصال بالإنترنت");
+
+        }
     }
 
     @Override
@@ -284,6 +340,28 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         return null;
     }
 
+    @Override
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+
+
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {
 
 
@@ -313,6 +391,22 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         }
     }
 
+    private void showErrorMessage(String message){
+        new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("خطأ")
+                .setContentText(message)
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+    }
 
 
 

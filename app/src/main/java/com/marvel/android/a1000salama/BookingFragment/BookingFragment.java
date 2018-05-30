@@ -1,15 +1,33 @@
 package com.marvel.android.a1000salama.BookingFragment;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +36,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marvel.android.a1000salama.BaseFragment;
@@ -31,7 +51,14 @@ import com.marvel.android.a1000salama.ServiceDetials.DetailsFragment;
 import com.marvel.android.a1000salama.Utils;
 import com.taishi.flipprogressdialog.FlipProgressDialog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import Adapters.SelectedServicesAdapter;
@@ -55,9 +82,10 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     BookingPresneter BookPersenter;
     private Button sendBook;
     private ArrayList<Integer> ServicesIds = new ArrayList<>();
+    private ArrayList<String>bookingPhotos = new ArrayList<>();
     private RecyclerView mServicesRecyclerView;
     private EditText mOtherPersonName  , mOtherPErsonMobileNumber , mComments;
-
+    private LinearLayout selectedImages;
     RadioGroup AccountTypeRadio ;
     CheckBox radiotheraccount ;
     FlipProgressDialog progressDialog;
@@ -70,10 +98,16 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     private OnFragmentInteractionListener mListener;
     private Boolean BookForMeFlage = true;
     private Spinner servicesSpinner;
-    private  Button  AddRequestItemBtn;
+   // private  Button  AddRequestItemBtn;
+    private Button addService;
     private ServiceProidveritem SP;
     private  RecyclerView serviceaddedlistviwe;
     SelectedServicesAdapter mAdapter;
+    private Button addPicture;
+    private static final String IMAGE_DIRECTORY = "/demonuts";
+    private String filePath;
+    private static final int REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE = 600,
+            REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 601;
     private  ArrayList<Services> BookedServicesList = new ArrayList<>();
     private  ArrayList<Services> ServicesList = new ArrayList<>();
     public BookingFragment() {
@@ -123,7 +157,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         otherAccountLy = view.findViewById(R.id.otheraccountLy);
         BookPersenter = new BookingPersnterImpl();
         BookPersenter.setView(this);
-        servicesSpinner = (Spinner) view.findViewById(R.id.spinner);
+        //servicesSpinner = (Spinner) view.findViewById(R.id.spinner);
 
         toggle_contents(otherAccountLy);
 //        mServicesRecyclerView = view.findViewById(R.id.servceslist);
@@ -131,8 +165,12 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         mOtherPErsonMobileNumber  = view.findViewById(R.id.otherpersonmobilenumber);
         mComments = view.findViewById(R.id.Notes);
         sendBook  = view.findViewById(R.id.sendbook);
+        selectedImages = view.findViewById(R.id.show_selected_photo);
         serviceaddedlistviwe = view.findViewById(R.id.serviceaddedlistviwe);
-        AddRequestItemBtn =view.findViewById(R.id.addservicerequestitembtn);
+       // AddRequestItemBtn =view.findViewById(R.id.addservicerequestitembtn);
+        addService = view.findViewById(R.id.add_service);
+
+        addPicture = view.findViewById(R.id.add_pic);
 
         progressDialog = new FlipProgressDialog();
         List<Integer> imageList = new ArrayList<Integer>();
@@ -150,7 +188,9 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
         }
 
-        BookPersenter.getAllServices();
+
+        addServiceDialog();
+
         AccountTypeRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -286,7 +326,52 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             }
         });
 
-        AddRequestItemBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        return  view;
+    }
+
+    private void addServiceDialog() {
+        addService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View dialogView = inflater.inflate(R.layout.add_service_pop_up, null);
+                dialogBuilder.setView(dialogView);
+
+                Button serviceArabic = dialogView.findViewById(R.id.arabic_service);
+                Button serviceEnglish = dialogView.findViewById(R.id.english_service);
+                Button addRequestItemBtn =dialogView.findViewById(R.id.addservicerequestitembtn);
+                servicesSpinner = (Spinner) dialogView.findViewById(R.id.spinner);
+                TextView hide = dialogView.findViewById(R.id.hide_pop_up);
+
+                final AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.setCancelable(false);
+                alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                alertDialog.show();
+                hide.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                serviceArabic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BookPersenter.getAllServices("ar");
+                    }
+                });
+
+                serviceEnglish.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        BookPersenter.getAllServices("en");
+                    }
+                });
+
+            addRequestItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 BookedServicesList.add(ServicesList.get(servicesSpinner.getSelectedItemPosition()));
@@ -294,7 +379,246 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             }
         });
 
-        return  view;
+
+            }
+        });
+
+
+
+    }
+
+    private boolean checkReadExternalPermission() {
+        boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if (!isGranted)
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE);
+
+        return isGranted;
+    }
+
+    private boolean checkCameraPermission() {
+        boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+        if (!isGranted)
+
+        ActivityCompat.requestPermissions(getActivity(), new String[] { Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE }, REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+
+
+        return isGranted;
+    }
+
+    private void openImageChooser() {
+//        Intent intent_gallery = new Intent(Intent.ACTION_PICK);
+//        intent_gallery.setType("image/*");
+//        startActivityForResult(intent_gallery, 100);
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent, 100);
+    }
+
+    private void takeCameraPhoto()
+    {
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 200);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DialogInterface.OnClickListener onDialogClickWithImage;
+
+                {
+                    onDialogClickWithImage = new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            switch (item) {
+                                case 0:
+                                    if (checkReadExternalPermission())
+                                        openImageChooser();
+                                    break;
+                                case 1:
+                                    if (checkCameraPermission())
+                                        takeCameraPhoto();
+                                    break;
+
+                                case 2:
+                                    dialog.dismiss();
+                                    break;
+                            }
+                        }
+                    };
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(getString(R.string.add_photo));
+
+                builder.setItems(new CharSequence[]{getString(R.string.choose_photo), getString(R.string.take_photo), getString(R.string.cancle_photo)}, onDialogClickWithImage);
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openImageChooser();
+
+                } else {
+                    Toast.makeText(getActivity(), "readFromGalleryPhotoPermissionRequired", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takeCameraPhoto();
+                } else {
+                    Toast.makeText(getActivity(), "takingCameraPhotoPermissionRequired", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == getActivity().RESULT_CANCELED) {
+                return;
+            }
+            if (requestCode == 100&& resultCode == Activity.RESULT_OK && null != data) {
+                if (data != null) {
+                    Uri contentURI = data.getData();
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor =  getActivity().getContentResolver().query(
+                            selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    filePath = cursor.getString(columnIndex);
+                    Log.w("filepath",filePath);
+                    cursor.close();
+                    String encodedImage = encodeImage(filePath);
+                    bookingPhotos.add(encodedImage);
+                    Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+
+                    ImageView imageView = new ImageView(getActivity());
+                    LinearLayout.LayoutParams layoutParams =
+                            new LinearLayout.LayoutParams(250,
+                                    270);
+                    imageView.setLayoutParams(layoutParams);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    imageView.setPadding(10, 10, 10, 10);
+                   // imageView.setAdjustViewBounds(true);
+                    imageView.setImageBitmap(yourSelectedImage);
+                    if (selectedImages.getVisibility() == View.GONE)
+                        selectedImages.setVisibility(View.VISIBLE);
+                    selectedImages.addView(imageView);
+                    Log.w("path",encodedImage);
+
+                }
+
+            } else if (requestCode == 200) {
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                String path = saveImage(thumbnail);
+                String encodedImage = encodeImage(path);
+                bookingPhotos.add(encodedImage);
+                Bitmap yourSelectedImage = BitmapFactory.decodeFile(path);
+
+                ImageView imageView = new ImageView(getActivity());
+                LinearLayout.LayoutParams layoutParams =
+                        new LinearLayout.LayoutParams(250,
+                                270);
+                imageView.setLayoutParams(layoutParams);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setPadding(10, 10, 10, 10);
+                // imageView.setAdjustViewBounds(true);
+                imageView.setImageBitmap(yourSelectedImage);
+                if (selectedImages.getVisibility() == View.GONE)
+                    selectedImages.setVisibility(View.VISIBLE);
+                selectedImages.addView(imageView);
+            }
+        }
+        catch (Exception e){
+                Toast.makeText(getActivity(), "حدث خطأ", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
+    }
+
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File wallpaperDirectory = new File(
+                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
+        }
+
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance()
+                    .getTimeInMillis() + ".jpg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(getActivity(),
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return f.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
+
+    private String encodeImage(String path)
+    {
+        File imagefile = new File(path);
+        FileInputStream fis = null;
+        try{
+            fis = new FileInputStream(imagefile);
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        Bitmap bm = BitmapFactory.decodeStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        //Base64.de
+        return encImage;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -358,7 +682,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     }
 
     @Override
-    public void setServiceList(   ArrayList<Services> ServicesList ) {
+    public void setServiceList(ArrayList<Services> ServicesList,String language ) {
 
        ArrayList<String> services = new ArrayList<>();
 
@@ -372,6 +696,59 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         servicesSpinner.setAdapter(adapter);
 
+    }
+
+    @Override
+    public int getServiceItems() {
+        return ServicesIds.size();
+    }
+
+    @Override
+    public String getServiceComment() {
+        return mComments.getEditableText().toString();
+    }
+
+    @Override
+    public int getBranchId() {
+        return SP.getBRANCH_ID();
+    }
+
+    @Override
+    public void showErrorInputs() {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("خطأ")
+                .setContentText( "من فضلك استكمل البيانات الفارغة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+
+    }
+
+    @Override
+    public void sendBookingPhotos(int bookId) {
+        int id = Utils.getUserID(getContext());
+        if (bookingPhotos.size() == 1)
+            BookPersenter.BookPhotos(id,bookId,bookingPhotos.get(0),null,null);
+        else if (bookingPhotos.size() == 2)
+            BookPersenter.BookPhotos(id,bookId,bookingPhotos.get(0),bookingPhotos.get(1),null);
+        else if (bookingPhotos.size() >= 3 )
+            BookPersenter.BookPhotos(id,bookId,bookingPhotos.get(0),bookingPhotos.get(1),bookingPhotos.get(2));
+    }
+
+    @Override
+    public void successUpload(int successNumb) {
+        if(successNumb > 0)
+        Toast.makeText(getActivity(),"تم إضافة"+successNumb+"صوره بنجاح", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getActivity(), "لم يتم إضافة الصور", Toast.LENGTH_SHORT).show();
     }
 
 

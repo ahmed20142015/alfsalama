@@ -159,7 +159,7 @@ public class DetailsFragment extends BaseFragment {
         SerivceProivderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new ServiceProviderInfo();
+                Fragment fragment = ServiceProviderInfo.newInstance(SP.getBRANCH_ID());
                 manager = getActivity().getSupportFragmentManager();
                 if(manager == null)
                     manager  =  getActivity().getSupportFragmentManager();

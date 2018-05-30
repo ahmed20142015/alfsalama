@@ -13,7 +13,6 @@ public class ServicesConnection {
     public static final String BASE_URL = "https://a12c.enciva.com/apex/salama/";
 
 
-
     private ServicesConnection(){}
 
     public static ApiInterface GetService(){
@@ -23,7 +22,6 @@ public class ServicesConnection {
 
         return  apiInterface;
     }
-
 
 
 

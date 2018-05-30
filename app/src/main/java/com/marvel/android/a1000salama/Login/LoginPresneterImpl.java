@@ -1,8 +1,10 @@
 package com.marvel.android.a1000salama.Login;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Utils;
 
 import org.json.JSONException;
@@ -15,6 +17,7 @@ import APIClient.ApiClient;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
 import Model.SystemMessage;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +37,42 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
     public void setView(Login loginView) {
         this.loginView = loginView;
 
+    }
+
+    public void onLoginClicked(){
+        String email = loginView.edEmail();
+        String password = loginView.edPassword();
+        if (email.isEmpty()){
+            loginView.showUserNameError(R.string.user_name_error);
+            showDialog();
+        }
+        else if(password.isEmpty()){
+            loginView.showPasswordError(R.string.password_error);
+            showDialog();
+        }
+        else  if (Utils.isInternetOn(loginView))
+        {
+            int response = RequestLogin(loginView.edEmail(),
+                    loginView.edPassword());
+
+        }
+
+        else {
+            new SweetAlertDialog(loginView, SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("خطأ")
+                    .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
+
+
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override
@@ -62,10 +101,12 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
        String Return = "-1";
 
         Call<String> QueryCall = ServicesConnection.GetService().login("WS2",body.toString(), ServicesConnection.CONTENT_TYPE);
+        Log.w("content",ServicesConnection.CONTENT_TYPE);
         QueryCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String Body =   response.body();
+                Log.w("response",Body+"");
                 if (response.isSuccessful()) {
 
                     try {
@@ -200,6 +241,27 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         return null;
     }
 
+    @Override
+    public Call<String> GetAboutUsServiceProvidor(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> sendToUs(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> getOldTicks(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+
 
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {
 
@@ -230,5 +292,22 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         }
     }
 
+    private void showDialog(){
+        new SweetAlertDialog(loginView, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("خطأ")
+                .setContentText( "من فضلك استكمل البيانات الفارغة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+
+    }
 
 }

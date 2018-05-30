@@ -16,5 +16,11 @@ public interface BookingViwe {
     void hideLoader();
     void setSPList(ArrayList<ServiceProidveritem> ServiceProivderList);
     void NavigateToSPPAge( int ResponseCode);
-    void setServiceList(   ArrayList<Services> ServicesList );
+    void setServiceList(   ArrayList<Services> ServicesList,String language );
+    int getServiceItems();
+    String getServiceComment();
+    int getBranchId();
+    void showErrorInputs();
+    void sendBookingPhotos(int bookId);
+    void successUpload(int successNumb);
 }

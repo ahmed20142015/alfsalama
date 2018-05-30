@@ -76,8 +76,6 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
         customViewHolder.cardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 home.NavigateToSPDeatials(serviceProidveritem);
 
             }
