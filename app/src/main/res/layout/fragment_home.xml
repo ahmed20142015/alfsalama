@@ -83,7 +83,7 @@
                 android:textDirection="rtl"
                 app:ms_enableErrorLabel="false"
                 app:ms_enableFloatingLabel="false"
-                app:ms_hint="نوع الخدمة"
+
                 app:ms_hintColor="#fff"
                 app:ms_multiline="false"
                 android:textColorHint="#fff"
@@ -117,7 +117,7 @@
                 android:textDirection="rtl"
                 app:ms_enableErrorLabel="false"
                 app:ms_enableFloatingLabel="false"
-                app:ms_hint=" المدينة"
+
                 app:ms_hintColor="#fff"
                 app:ms_multiline="false"
                 android:layout_weight="1"
@@ -138,7 +138,6 @@
                 android:textDirection="rtl"
                 app:ms_enableErrorLabel="false"
                 app:ms_enableFloatingLabel="false"
-                app:ms_hint=" المنطقة"
                 app:ms_hintColor="#fff"
                 app:ms_multiline="false"
                 android:textColorHint="#fff"
