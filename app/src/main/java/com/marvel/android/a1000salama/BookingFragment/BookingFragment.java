@@ -57,8 +57,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Adapters.SelectedServicesAdapter;
@@ -106,6 +108,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     private Button addPicture;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private String filePath;
+    Uri file;
     private static final int REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE = 600,
             REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 601;
     private  ArrayList<Services> BookedServicesList = new ArrayList<>();
@@ -424,8 +427,29 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
     private void takeCameraPhoto()
     {
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, 200);
+//            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//            startActivityForResult(intent, 200);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        file = Uri.fromFile(getOutputMediaFile());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+
+        startActivityForResult(intent, 200);
+    }
+
+    private static File getOutputMediaFile(){
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
     }
 
     @Override
@@ -510,8 +534,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             }
             if (requestCode == 100&& resultCode == Activity.RESULT_OK && null != data) {
                 if (data != null) {
-                    Uri contentURI = data.getData();
-                    Uri selectedImage = data.getData();
+                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
                     Cursor cursor =  getActivity().getContentResolver().query(
@@ -542,12 +565,13 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
                 }
 
-            } else if (requestCode == 200) {
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                String path = saveImage(thumbnail);
-                String encodedImage = encodeImage(path);
-                bookingPhotos.add(encodedImage);
-                Bitmap yourSelectedImage = BitmapFactory.decodeFile(path);
+            }
+            else if (requestCode == 200&& resultCode == Activity.RESULT_OK && null != data) {
+//                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+//                String encodedImage = encodeImage(thumbnail);
+//                bookingPhotos.add(encodedImage);
+//                Log.w("path",encodedImage);
+              //  Bitmap yourSelectedImage = BitmapFactory.decodeFile(path);
 
                 ImageView imageView = new ImageView(getActivity());
                 LinearLayout.LayoutParams layoutParams =
@@ -557,10 +581,12 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(10, 10, 10, 10);
                 // imageView.setAdjustViewBounds(true);
-                imageView.setImageBitmap(yourSelectedImage);
+                //imageView.setImageBitmap(thumbnail);
+                imageView.setImageURI(file);
                 if (selectedImages.getVisibility() == View.GONE)
                     selectedImages.setVisibility(View.VISIBLE);
                 selectedImages.addView(imageView);
+                Toast.makeText(getActivity(), "ahmed el3hry", Toast.LENGTH_SHORT).show();
             }
         }
         catch (Exception e){
@@ -568,39 +594,36 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         }
 
 
-
-
-
     }
 
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(getActivity(),
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
+//    public String saveImage(Bitmap myBitmap) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+//        File wallpaperDirectory = new File(
+//                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+//        // have the object build the directory structure, if needed.
+//        if (!wallpaperDirectory.exists()) {
+//            wallpaperDirectory.mkdirs();
+//        }
+//
+//        try {
+//            File f = new File(wallpaperDirectory, Calendar.getInstance()
+//                    .getTimeInMillis() + ".jpg");
+//            f.createNewFile();
+//            FileOutputStream fo = new FileOutputStream(f);
+//            fo.write(bytes.toByteArray());
+//            MediaScannerConnection.scanFile(getActivity(),
+//                    new String[]{f.getPath()},
+//                    new String[]{"image/jpeg"}, null);
+//            fo.close();
+//            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+//
+//            return f.getAbsolutePath();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
+//        return "";
+//    }
 
     private String encodeImage(String path)
     {
@@ -619,6 +642,14 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         //Base64.de
         return encImage;
 
+    }
+    private String encodeImage(Bitmap bitmap)
+    {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return encoded;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
