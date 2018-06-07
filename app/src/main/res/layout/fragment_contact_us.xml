@@ -99,6 +99,7 @@
         android:hint="الرسـالـــه"
         android:textColor="#000"
         android:textDirection="rtl"
+
         />
 
     <Button

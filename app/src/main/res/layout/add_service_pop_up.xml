@@ -16,6 +16,13 @@
         android:layout_margin="10dp"
         >
         <TextView
+            android:id="@+id/english_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@drawable/english"
+             />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_service"
@@ -37,36 +44,36 @@
             />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        >
-        <Button
-            android:id="@+id/english_service"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/english"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:background="@color/Withe"
-            android:layout_margin="10dp"
-            />
-        <Button
-            android:id="@+id/arabic_service"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="@string/arabic"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:background="@color/Withe"
-            android:layout_margin="10dp"
-            />
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--&gt;-->
+        <!--<Button-->
+            <!--android:id="@+id/english_service"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="@string/english"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="15sp"-->
+            <!--android:background="@color/Withe"-->
+            <!--android:layout_margin="10dp"-->
+            <!--/>-->
+        <!--<Button-->
+            <!--android:id="@+id/arabic_service"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:text="@string/arabic"-->
+            <!--android:textColor="@color/colorPrimary"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textSize="15sp"-->
+            <!--android:background="@color/Withe"-->
+            <!--android:layout_margin="10dp"-->
+            <!--/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -100,7 +107,13 @@
 
 
     </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/service_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        >
 
-
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

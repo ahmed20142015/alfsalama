@@ -38,10 +38,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="@drawable/bg_signup"
+        android:background="#efefef"
         >
 
 
@@ -50,13 +50,17 @@
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:layoutDirection="ltr"
-            android:orientation="horizontal">
-            <Button
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            >
+            <ImageButton
                 android:id="@+id/searchbtn"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
                 android:layout_weight="0.2"
-         android:background="@mipmap/ic_launcher_foreground"
+                android:background="#3389d6"
+                android:src="@drawable/search"
+                android:drawableEnd="@drawable/search"
                 android:layout_gravity="center"
                 />
             <LinearLayout
@@ -67,37 +71,51 @@
         <LinearLayout
             android:id="@+id/advancedSearchLY"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:weightSum="3"
+            android:layout_height="42dp"
+            android:layout_marginLeft="5dp"
             android:orientation="horizontal">
             <com.jaredrummler.materialspinner.MaterialSpinner
-
                 android:id="@+id/goervnatre"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
                 android:layout_width="match_parent"
-                 android:layout_height="45dp"
+                 android:layout_height="42dp"
                 android:layout_marginLeft="5dp"
-
+                android:layout_marginRight="5dp"
                 android:textAlignment="center"
-                android:textColor="#fff"
+                android:textColor="#262626"
                 app:ms_arrowSize="10dp"
                 android:textDirection="rtl"
                 app:ms_enableErrorLabel="false"
                 app:ms_enableFloatingLabel="false"
-
-                app:ms_hintColor="#fff"
+                 app:ms_hintColor="#9b9b9b"
                 app:ms_multiline="false"
-                android:textColorHint="#fff"
-                app:ms_background_color="#3F51B5"
+                android:textColorHint="#9b9b9b"
+                app:ms_background_color="#fff"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                fontPath="fonts/GE_SS_Text_Light.otf"
+                tools:ignore="MissingPrefix"
                 />
-
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="إسم مزود الخدمة"
+                android:textColor="#262626"
+                android:textSize="16sp"
+                 android:background="#fff"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                  />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/advancedSearchLY2"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -108,41 +126,45 @@
                 android:id="@+id/city"
                 style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
                 android:layout_width="100dp"
-                android:layout_height="45dp"
+                android:layout_height="42dp"
                 android:layout_marginLeft="5dp"
-
+                android:layout_marginRight="5dp"
                 android:textAlignment="center"
-                android:textColor="#fff"
+                android:textColor="#262626"
                 app:ms_arrowSize="10dp"
                 android:textDirection="rtl"
                 app:ms_enableErrorLabel="false"
                 app:ms_enableFloatingLabel="false"
-
-                app:ms_hintColor="#fff"
+                app:ms_hintColor="#9b9b9b"
                 app:ms_multiline="false"
                 android:layout_weight="1"
-                android:textColorHint="#fff"
-                app:ms_background_color="#3F51B5"
-            />
+                android:textColorHint="#9b9b9b"
+                app:ms_background_color="#fff"
+                android:textSize="16sp"
+                fontPath="fonts/GE_SS_Text_Light.otf"
+                tools:ignore="MissingPrefix"
+             />
 
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/area"
                 style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
                 android:layout_width="100dp"
-                android:layout_height="45dp"
+                android:layout_height="42dp"
                 android:layout_marginLeft="5dp"
-
                 android:textAlignment="center"
-                android:textColor="#fff"
+                android:textColor="#262626"
                 app:ms_arrowSize="10dp"
                 android:textDirection="rtl"
                 app:ms_enableErrorLabel="false"
                 app:ms_enableFloatingLabel="false"
-                app:ms_hintColor="#fff"
+                app:ms_hintColor="#9b9b9b"
                 app:ms_multiline="false"
-                android:textColorHint="#fff"
+                android:textColorHint="#9b9b9b"
                 android:layout_weight="1"
-                app:ms_background_color="#3F51B5"
+                app:ms_background_color="#fff"
+                android:textSize="16sp"
+                fontPath="fonts/GE_SS_Text_Light.otf"
+                tools:ignore="MissingPrefix"
                 />
 
 
@@ -201,8 +223,7 @@
             android:id="@+id/serviceporviderlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:padding="10dp"
+            android:layout_marginTop="1dp"
             android:layout_centerInParent="true"/>
 
 

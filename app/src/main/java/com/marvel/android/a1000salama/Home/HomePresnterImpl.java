@@ -1,6 +1,7 @@
 package com.marvel.android.a1000salama.Home;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.marvel.android.a1000salama.DataBase.alfSamalaSDBHelper;
 
@@ -167,6 +168,7 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String Body =   response.body();
+                Log.w("eeeeeee",Body);
                 if (response.isSuccessful()) {
 
                     JSONArray Service_ProvidorList = null;

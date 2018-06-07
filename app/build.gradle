@@ -7,8 +7,8 @@ android {
         applicationId "com.marvel.android.a1000salama"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 7
-        versionName "2.2"
+        versionCode 10
+        versionName "2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,6 +22,14 @@ android {
             }
         }
     }
+
+    allprojects {
+        repositories{
+            maven { url 'https://jitpack.io' }
+        }
+    }
+
+
 }
 
 dependencies {
@@ -60,7 +68,8 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.6.1'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.6.1'
     implementation 'com.jaredrummler:material-spinner:1.2.5'
-
+    compile 'com.github.ome450901:SimpleRatingBar:1.4.1'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.BookingHistory.BookingHistoryFragment;
@@ -68,7 +71,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
     private LinearLayout  AdvancedSerachLY , AdvancedSerachLY2;
     private Button AdvancedSearch ,searchadvancedBtn;
     CustomEditText SearchET;
-    Button searchbtn;
+    ImageButton searchbtn;
     com.jaredrummler.materialspinner.MaterialSpinner GovesSpinner ,CitySpinner , AreaSpinner;
     String BookID  = "";
     String PatintID  = " ";
@@ -210,20 +213,20 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
                         CATID = Mycats.get(GovesSpinner.getSelectedIndex() ).getCatID() + "";
 
                   //  }
-                    if (cityID.equals("-1")) {
+                    if (cityID.equals("-1") || CitySpinner.getSelectedIndex()  == 0 ) {
                         cityID = "";
                     }
-                    if (AreaID.equals("-1")) {
+                    if (AreaID.equals("-1") || AreaSpinner.getSelectedIndex()  == 0 ) {
                         AreaID = "";
                     }
-                    if (CATID.equals("-1")) {
+                    if (CATID.equals("-1") || GovesSpinner.getSelectedIndex()  == 0 ) {
                         CATID = "";
                     }
                     homePersenter.GetAllServicesProivders("", "", cityID + "",
                             AreaID, series_ids,
                             CATID + "");
-
                 }
+
                 catch (Exception e)
                 {
 
@@ -359,6 +362,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
     }
 
+
+
     @Override
     public void setSPList(ArrayList<ServiceProidveritem> ServiceProivderList) {
 
@@ -418,7 +423,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         hideLoader();
 
         ArrayList<String> services = new ArrayList<>();
-
+        services.add("المنطقة");
         for(int i = 0 ; i < cities.size();i++)
         {
             services.add(cities.get(i).getCityName());
@@ -439,7 +444,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         hideLoader();
 
         ArrayList<String> services = new ArrayList<>();
-
+        services.add("المدينة");
         for(int i = 0 ; i < Areas.size();i++)
         {
             services.add(Areas.get(i).getAreaName());
@@ -460,7 +465,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         if(manager == null)
             manager  =  getActivity().getSupportFragmentManager();
         transaction = manager.beginTransaction();
-
         Bundle bundle = new Bundle();
         bundle.putParcelable("SP", sp);
         fragment.setArguments(bundle);
@@ -490,7 +494,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         hideLoader();
 
         ArrayList<String> services = new ArrayList<>();
-
+        services.add("نوع الخدمة");
         for(int i = 0 ; i < catoegries.size();i++)
         {
             services.add(catoegries.get(i).getCatName());

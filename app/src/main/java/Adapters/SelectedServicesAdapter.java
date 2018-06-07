@@ -25,7 +25,8 @@ public class SelectedServicesAdapter extends RecyclerView.Adapter<SelectedServic
     private Context mContext;
     private BookingFragment home;
 
-    public List<Services> getSelectedServicesAdapterItemList() {
+    public SelectedServicesAdapter(){}
+    public  List<Services> getSelectedServicesAdapterItemList() {
         return SelectedServicesAdapterItemList;
     }
 

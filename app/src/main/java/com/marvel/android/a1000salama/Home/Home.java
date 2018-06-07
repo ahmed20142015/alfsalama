@@ -1,5 +1,6 @@
 package com.marvel.android.a1000salama.Home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import com.marvel.android.a1000salama.ServicsDetails.BServiceDetailsFragment;
 import com.marvel.android.a1000salama.Ticks.TicksFragment;
 import com.marvel.android.a1000salama.Utils;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,
         AddServiceProviderFragment.OnFragmentInteractionListener ,
@@ -49,6 +52,7 @@ public class Home extends AppCompatActivity
     private FragmentManager manager;
     private FragmentTransaction transaction;
     public static TextView ToolBarTitle ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +174,11 @@ catch (Exception e)
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
@@ -277,6 +286,8 @@ catch (Exception e)
         return true;
     }
 
+
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -285,8 +296,8 @@ catch (Exception e)
 
 
 
-
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

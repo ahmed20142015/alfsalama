@@ -1,6 +1,7 @@
 package Adapters;
 
 import android.content.Context;
+import android.support.constraint.solver.LinearSystem;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -8,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.marvel.android.a1000salama.Home.HomeFragment;
 import com.marvel.android.a1000salama.R;
 import com.squareup.picasso.Picasso;
+import com.willy.ratingbar.ScaleRatingBar;
 
 import java.util.List;
 
@@ -47,7 +50,7 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
 
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.serviceproivderlistadapter, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.advet_item, null);
         CustomViewHolder viewHolder = new CustomViewHolder(view);
         return viewHolder;
     }
@@ -59,8 +62,7 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
         //Render image using Picasso library
         if (!TextUtils.isEmpty(serviceProidveritem.getImageURl())) {
             Picasso.with(mContext).load(serviceProidveritem.getImageURl()).placeholder(
-                    mContext.getResources().getDrawable(R.drawable.final_logo)
-            )
+                    mContext.getResources().getDrawable(R.drawable.error_looding))
                     .into(customViewHolder.imageView);
 
         }
@@ -73,13 +75,6 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
         customViewHolder.rate.setClickable(false);
         customViewHolder.rate.setIsIndicator(true);
 
-        customViewHolder.cardItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                home.NavigateToSPDeatials(serviceProidveritem);
-
-            }
-        });
 
 
     }
@@ -91,23 +86,27 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
         return (null != ServiceProivderItemList ? ServiceProivderItemList.size() : 0);
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder {
+    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected ImageView imageView;
         protected TextView title;
         protected TextView subtitle;
         protected TextView Distance;
-        protected RatingBar rate;
-        private android.support.design.widget.CoordinatorLayout cardItem ;
+        protected ScaleRatingBar rate;
 
         public CustomViewHolder(View view) {
             super(view);
             this.imageView =  view.findViewById(R.id.placeholder);
             this.title = (TextView) view.findViewById(R.id.title);
-          //  this.subtitle = (TextView) view.findViewById(R.id.Subtitle);
+          // this.subtitle = (TextView) view.findViewById(R.id.Subtitle);
             this.Distance = (TextView) view.findViewById(R.id.distance);
-            this.cardItem = view.findViewById(R.id.cardItem);
             this.rate = view.findViewById(R.id.ratingServiceProivder);
+            view.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            home.NavigateToSPDeatials(ServiceProivderItemList.get(position));
         }
     }
 

@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -103,12 +104,12 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
    // private  Button  AddRequestItemBtn;
     private Button addService;
     private ServiceProidveritem SP;
-    private  RecyclerView serviceaddedlistviwe;
+    private  RecyclerView serviceaddedlistviwe,servicesList;
     SelectedServicesAdapter mAdapter;
     private Button addPicture;
+    private File takePhotoFile;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private String filePath;
-    Uri file;
     private static final int REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE = 600,
             REQUEST_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 601;
     private  ArrayList<Services> BookedServicesList = new ArrayList<>();
@@ -342,11 +343,12 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View dialogView = inflater.inflate(R.layout.add_service_pop_up, null);
                 dialogBuilder.setView(dialogView);
-
-                Button serviceArabic = dialogView.findViewById(R.id.arabic_service);
-                Button serviceEnglish = dialogView.findViewById(R.id.english_service);
+                BookPersenter.getAllServices("ar");
+               // Button serviceArabic = dialogView.findViewById(R.id.arabic_service);
+                TextView serviceEnglish = dialogView.findViewById(R.id.english_service);
                 Button addRequestItemBtn =dialogView.findViewById(R.id.addservicerequestitembtn);
                 servicesSpinner = (Spinner) dialogView.findViewById(R.id.spinner);
+                servicesList = dialogView.findViewById(R.id.service_list);
                 TextView hide = dialogView.findViewById(R.id.hide_pop_up);
 
                 final AlertDialog alertDialog = dialogBuilder.create();
@@ -357,15 +359,19 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                     @Override
                     public void onClick(View view) {
                         alertDialog.dismiss();
+
+                        List<Services> list =new ArrayList<>();
+                        list =  mAdapter.getSelectedServicesAdapterItemList();
+                        addBookedService(list);
                     }
                 });
 
-                serviceArabic.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        BookPersenter.getAllServices("ar");
-                    }
-                });
+//                serviceArabic.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        BookPersenter.getAllServices("ar");
+//                    }
+//                });
 
                 serviceEnglish.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -377,8 +383,22 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
             addRequestItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BookedServicesList.add(ServicesList.get(servicesSpinner.getSelectedItemPosition()));
-                addBookedService(BookedServicesList);
+                if(BookedServicesList.contains(ServicesList.get(servicesSpinner.getSelectedItemPosition()))){
+                    errorMessage("تم إضافة الخدمة من قبل");
+                 }
+
+                else{
+                    BookedServicesList.add(ServicesList.get(servicesSpinner.getSelectedItemPosition()));
+                    mAdapter = new SelectedServicesAdapter(
+                            BookingFragment.this.getContext(), BookingFragment.this,
+                            BookedServicesList);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(  BookingFragment.this.getContext());
+                    servicesList.setLayoutManager(mLayoutManager);
+                    servicesList.setItemAnimator(new DefaultItemAnimator());
+                    servicesList.setAdapter(mAdapter);
+                }
+
+
             }
         });
 
@@ -389,6 +409,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
 
     }
+
 
     private boolean checkReadExternalPermission() {
         boolean isGranted = ContextCompat.checkSelfPermission(getActivity(),
@@ -425,32 +446,30 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         startActivityForResult(galleryIntent, 100);
     }
 
+
+
     private void takeCameraPhoto()
     {
-//            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//            startActivityForResult(intent, 200);
+//        String name = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").format(new Date());
+//        takePhotoFile = new File(Environment.getExternalStorageDirectory(), name + ".jpg");
+//
+//        if(takePhotoFile != null){
+//            Uri photoURI = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext()
+//                    .getPackageName() + ".my.package.name.provider", takePhotoFile);
+//
+//            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//            takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//            takePicture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            startActivityForResult(takePicture, 200);
+//        }
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        file = Uri.fromFile(getOutputMediaFile());
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
-
-        startActivityForResult(intent, 200);
-    }
-
-    private static File getOutputMediaFile(){
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "CameraDemo");
-
-        if (!mediaStorageDir.exists()){
-            if (!mediaStorageDir.mkdirs()){
-                return null;
-            }
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, 200);
         }
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -459,42 +478,44 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         addPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(bookingPhotos.size() <3) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle(getString(R.string.add_photo));
 
-                DialogInterface.OnClickListener onDialogClickWithImage;
+                    builder.setItems(new CharSequence[]{getString(R.string.choose_photo), getString(R.string.take_photo), getString(R.string.cancle_photo)}, onDialogClickWithImage);
 
-                {
-                    onDialogClickWithImage = new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            switch (item) {
-                                case 0:
-                                    if (checkReadExternalPermission())
-                                        openImageChooser();
-                                    break;
-                                case 1:
-                                    if (checkCameraPermission())
-                                        takeCameraPhoto();
-                                    break;
-
-                                case 2:
-                                    dialog.dismiss();
-                                    break;
-                            }
-                        }
-                    };
+                    AlertDialog alert = builder.create();
+                    alert.show();
                 }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle(getString(R.string.add_photo));
-
-                builder.setItems(new CharSequence[]{getString(R.string.choose_photo), getString(R.string.take_photo), getString(R.string.cancle_photo)}, onDialogClickWithImage);
-
-                AlertDialog alert = builder.create();
-                alert.show();
+                else
+                    errorMessage("لا يمكن إضافة أكثر من 3 صور");
 
             }
         });
     }
+    DialogInterface.OnClickListener onDialogClickWithImage;
 
+    {
+        onDialogClickWithImage = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0:
+                        if (checkReadExternalPermission())
+                             openImageChooser();
+                        break;
+                    case 1:
+                        if (checkCameraPermission())
+                             takeCameraPhoto();
+                        break;
+
+                    case 2:
+                        dialog.dismiss();
+                        break;
+                }
+            }
+        };
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -527,7 +548,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         try {
             if (resultCode == getActivity().RESULT_CANCELED) {
                 return;
@@ -566,14 +587,22 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                 }
 
             }
-            else if (requestCode == 200&& resultCode == Activity.RESULT_OK && null != data) {
-//                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-//                String encodedImage = encodeImage(thumbnail);
+            else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+//                filePath = takePhotoFile.getPath();
+//                Log.w("takePhotoFile",filePath);
+//                Bitmap captureImage = BitmapFactory.decodeFile(filePath);
+//                String encodedImage = encodeImage(filePath);
 //                bookingPhotos.add(encodedImage);
-//                Log.w("path",encodedImage);
-              //  Bitmap yourSelectedImage = BitmapFactory.decodeFile(path);
+//                Log.w("takePhotoFile",encodedImage);
 
-                ImageView imageView = new ImageView(getActivity());
+
+                Bundle extras = data.getExtras();
+                Bitmap captureImage = (Bitmap) extras.get("data");
+                String encodedImage = encodeImage(captureImage);
+                bookingPhotos.add(encodedImage);
+                Log.w("takePhotoFile",encodedImage);
+
+                 ImageView imageView = new ImageView(getActivity());
                 LinearLayout.LayoutParams layoutParams =
                         new LinearLayout.LayoutParams(250,
                                 270);
@@ -581,12 +610,11 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(10, 10, 10, 10);
                 // imageView.setAdjustViewBounds(true);
-                //imageView.setImageBitmap(thumbnail);
-                imageView.setImageURI(file);
-                if (selectedImages.getVisibility() == View.GONE)
+                imageView.setImageBitmap(captureImage);
+                 if (selectedImages.getVisibility() == View.GONE)
                     selectedImages.setVisibility(View.VISIBLE);
                 selectedImages.addView(imageView);
-                Toast.makeText(getActivity(), "ahmed el3hry", Toast.LENGTH_SHORT).show();
+
             }
         }
         catch (Exception e){
@@ -650,6 +678,23 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
         return encoded;
+    }
+
+    private void errorMessage(String message){
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("خطأ")
+                .setContentText(message)
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -783,7 +828,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
     }
 
 
-    public void addBookedService( ArrayList<Services> ServicesList ) {
+    public void addBookedService( List<Services> ServicesList ) {
 
          mAdapter = new SelectedServicesAdapter(
                 BookingFragment.this.getContext(), BookingFragment.this,
@@ -792,6 +837,7 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         serviceaddedlistviwe.setLayoutManager(mLayoutManager);
         serviceaddedlistviwe.setItemAnimator(new DefaultItemAnimator());
         serviceaddedlistviwe.setAdapter(mAdapter);
+
 
 
     }
@@ -847,8 +893,6 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
         return  true;
 
     }
-
-
 
 
 }
