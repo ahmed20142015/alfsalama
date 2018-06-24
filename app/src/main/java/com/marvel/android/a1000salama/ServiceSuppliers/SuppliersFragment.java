@@ -49,7 +49,6 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
     int index;
 
     SuppliersPresnterImpl presnter;
-    FlipProgressDialog progressDialog;
     private OnFragmentInteractionListener mListener;
 
     public SuppliersFragment() {
@@ -85,21 +84,7 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
         mMapView.onResume();
         initMap();
 
-        progressDialog = new FlipProgressDialog();
-        List<Integer> imageList = new ArrayList<Integer>();
-        imageList.add(R.drawable.ic_hourglass_empty_white_24dp);
-        imageList.add(R.drawable.ic_hourglass_full_white_24dp);
-        progressDialog.setImageList(imageList);
-        progressDialog.setOrientation("rotationY");
-        progressDialog.setCancelable(false);
-        progressDialog.setDimAmount(0.8f);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            progressDialog.setBackgroundColor(getActivity().getColor(R.color.colorPrimary));
-        } else {
-            progressDialog.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-        }
 
         presnter = new SuppliersPresnterImpl();
         presnter.setView(this);
@@ -174,13 +159,11 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
 
     @Override
     public void showLoader() {
-        progressDialog.show(getActivity().getFragmentManager(), "l");
-    }
+     }
 
     @Override
     public void hideLoader() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+
     }
 
     @Override
@@ -206,7 +189,6 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
 
         }
 
-        Toast.makeText(getActivity(), suppliers.size()+"", Toast.LENGTH_SHORT).show();
     }
 
 
