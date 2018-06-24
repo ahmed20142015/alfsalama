@@ -2,6 +2,9 @@ package com.marvel.android.a1000salama.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.marvel.android.a1000salama.AboutUs.AboutUsFragment;
@@ -22,16 +26,19 @@ import com.marvel.android.a1000salama.AddServiceProvider.AddServiceProviderFragm
 import com.marvel.android.a1000salama.BookingFragment.BookingFragment;
 import com.marvel.android.a1000salama.BookingHistory.BookingHistoryFragment;
 import com.marvel.android.a1000salama.ContactUs.ContactUsFragment;
+import com.marvel.android.a1000salama.EditAccount.EditUserAccount;
 import com.marvel.android.a1000salama.FireBase.MyFirebaseMessagingService;
 import com.marvel.android.a1000salama.Login.Login;
 import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Rating.RatingFragment;
 import com.marvel.android.a1000salama.ServiceDetials.DetailsFragment;
+import com.marvel.android.a1000salama.ServiceSuppliers.SuppliersFragment;
 import com.marvel.android.a1000salama.ServicesProviderInfo.ServiceProviderInfo;
 import com.marvel.android.a1000salama.ServicsDetails.BServiceDetailsFragment;
 import com.marvel.android.a1000salama.Ticks.TicksFragment;
 import com.marvel.android.a1000salama.Utils;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Home extends AppCompatActivity
@@ -40,19 +47,21 @@ public class Home extends AppCompatActivity
         HomeFragment.OnFragmentInteractionListener ,
         DetailsFragment.OnFragmentInteractionListener ,
         BServiceDetailsFragment.OnFragmentInteractionListener,
-        RatingFragment.OnFragmentInteractionListener
-       , ServiceProviderInfo.OnFragmentInteractionListener ,
+        RatingFragment.OnFragmentInteractionListener,
+        ServiceProviderInfo.OnFragmentInteractionListener ,
         BookingFragment.OnFragmentInteractionListener ,
-       BookingHistoryFragment.OnFragmentInteractionListener ,
-       AboutUsFragment.OnFragmentInteractionListener,
+        BookingHistoryFragment.OnFragmentInteractionListener ,
+        AboutUsFragment.OnFragmentInteractionListener,
         ContactUsFragment.OnFragmentInteractionListener ,
-        TicksFragment.OnFragmentInteractionListener{
+        TicksFragment.OnFragmentInteractionListener,
+        EditUserAccount.OnFragmentInteractionListener,
+        SuppliersFragment.OnFragmentInteractionListener{
 
 
     private FragmentManager manager;
     private FragmentTransaction transaction;
     public static TextView ToolBarTitle ;
-
+    private CircleImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +79,17 @@ public class Home extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        profileImage = header.findViewById(R.id.profile_image);
+
+        Drawable color = new ColorDrawable(getResources().getColor(R.color.Withe));
+        Drawable image = getResources().getDrawable(R.drawable.final_logo);
+
+        LayerDrawable ld = new LayerDrawable(new Drawable[]{color, image});
+        profileImage.setImageDrawable(ld);
+
 
         Fragment fragment = new HomeFragment();
 
@@ -229,6 +245,31 @@ catch (Exception e)
                     .commit();
 
         }
+
+        else if (id == R.id.editProfile){
+            ToolBarTitle.setText(getString(R.string.edit_profile));
+            Fragment fragment = new EditUserAccount();
+            manager = getSupportFragmentManager();
+            if(manager == null)
+                manager  =  getSupportFragmentManager();
+            transaction = manager.beginTransaction();
+            transaction.replace(R.id.content_home, fragment, "EditAccount");
+            transaction.addToBackStack(null)
+                    .commit();
+        }
+
+        else if (id == R.id.serviceProvidor){
+            ToolBarTitle.setText("مزودين الخدمة");
+            Fragment fragment = new SuppliersFragment();
+            manager = getSupportFragmentManager();
+            if(manager == null)
+                manager  =  getSupportFragmentManager();
+            transaction = manager.beginTransaction();
+            transaction.replace(R.id.content_home, fragment, "ServiceSuppliers");
+            transaction.addToBackStack(null)
+                    .commit();
+        }
+
         else if( id == R.id.aboutUs)
         {
 

@@ -361,8 +361,12 @@ public class BookingFragment extends BaseFragment  implements BookingViwe {
                         alertDialog.dismiss();
 
                         List<Services> list =new ArrayList<>();
-                        list =  mAdapter.getSelectedServicesAdapterItemList();
-                        addBookedService(list);
+
+                        if (list.size()>0){
+                            list =  mAdapter.getSelectedServicesAdapterItemList();
+                            addBookedService(list);
+                        }
+
                     }
                 });
 

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -52,6 +53,8 @@ public class AboutUsFragment extends Fragment {
 
     SimpleExoPlayerView playerView;
     SimpleExoPlayer player;
+    ImageView thumbnil,pause;
+    VideoView videoView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,14 +95,13 @@ public class AboutUsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootview =  inflater.inflate(R.layout.fragment_about_us, container, false);
-
-
-
-        VideoView view = rootview.findViewById(R.id.video_view);
+        thumbnil = rootview.findViewById(R.id.thumbnil);
+        pause = rootview.findViewById(R.id.pause);
+        videoView = rootview.findViewById(R.id.video_view);
      //   String path = "android.resource://" + this.getActivity().getPackageName() + "/" + R.raw.alfslama;
-        view.setVideoURI(Uri.parse("http://salama1000.com/promo-video.mp4\n" +
+        videoView.setVideoURI(Uri.parse("http://salama1000.com/promo-video.mp4\n" +
                 "\n"));
-        view.setMediaController(new MediaController(this.getContext()));
+        videoView.setMediaController(new MediaController(this.getContext()));
 
 
 //        DisplayMetrics metrics = new DisplayMetrics();
@@ -110,7 +112,25 @@ public class AboutUsFragment extends Fragment {
 //        params.height = metrics.heightPixels;
 //        params.leftMargin = 0;
 //        view.setLayoutParams(params);
-        view.start();
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pause.setVisibility(View.GONE);
+                thumbnil.setVisibility(View.GONE);
+                videoView.setVisibility(View.VISIBLE);
+                videoView.start();
+            }
+        });
+        thumbnil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pause.setVisibility(View.GONE);
+                thumbnil.setVisibility(View.GONE);
+                videoView.setVisibility(View.VISIBLE);
+                videoView.start();
+            }
+        });
+
         return  rootview;
     }
 

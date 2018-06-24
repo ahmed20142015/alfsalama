@@ -1,6 +1,7 @@
 package com.marvel.android.a1000salama.Registartion;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.marvel.android.a1000salama.Utils;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import APIClient.ApiClient;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
+import Model.ServiceSupplier;
 import Model.SystemMessage;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -59,8 +61,7 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
 
         }
 
-        else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                )
+        else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
             showErrorMessage("البريد الإلكتروني غير صحيح");
 
@@ -186,7 +187,7 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
 
         RegRequestBody +="}";
 
-
+        Log.w("registerffffff",RegRequestBody);
         Registration("WS1/",RegRequestBody, ServicesConnection.CONTENT_TYPE);
         return 0;
 
@@ -360,6 +361,15 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         return null;
     }
 
+    @Override
+    public Call<String> editUserData(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<ServiceSupplier> getServiceSuppliers() {
+        return null;
+    }
 
 
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {

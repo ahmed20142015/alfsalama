@@ -96,10 +96,12 @@
                 fontPath="fonts/GE_SS_Text_Light.otf"
                 tools:ignore="MissingPrefix"
                 />
-            <TextView
+            <EditText
+                android:id="@+id/service_providor_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="إسم مزود الخدمة"
+                android:hint="إسم مزود الخدمة"
+                android:textColorHint="#262626"
                 android:textColor="#262626"
                 android:textSize="16sp"
                  android:background="#fff"
@@ -107,6 +109,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:focusable="false"
                   />
         </LinearLayout>
 
@@ -222,8 +225,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/serviceporviderlist"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="1dp"
+            android:background="@color/Withe"
             android:layout_centerInParent="true"/>
 
 

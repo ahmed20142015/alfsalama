@@ -63,6 +63,7 @@ public class Registration extends AppCompatActivity implements RegistartionView 
         }
         registartionPresnterImpl = new RegistartionPresnterImpl();
         registartionPresnterImpl.setView(this);
+
         firstNameET = findViewById(R.id.firstname);
         secondNameEt = findViewById(R.id.secondname);
         surNameEt = findViewById(R.id.surname);

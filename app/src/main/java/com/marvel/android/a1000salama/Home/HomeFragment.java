@@ -13,10 +13,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -71,6 +73,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
     private LinearLayout  AdvancedSerachLY , AdvancedSerachLY2;
     private Button AdvancedSearch ,searchadvancedBtn;
     CustomEditText SearchET;
+    EditText serviceProvidorName;
     ImageButton searchbtn;
     com.jaredrummler.materialspinner.MaterialSpinner GovesSpinner ,CitySpinner , AreaSpinner;
     String BookID  = "";
@@ -138,6 +141,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         CitySpinner = viwe.findViewById(R.id.city);
         AreaSpinner = viwe.findViewById(R.id.area);
         searchadvancedBtn = viwe.findViewById(R.id.searchadvancedBtn);
+        serviceProvidorName = viwe.findViewById(R.id.service_providor_name);
         progressDialog = new FlipProgressDialog();
         List<Integer> imageList = new ArrayList<Integer>();
         imageList.add(R.drawable.ic_hourglass_empty_white_24dp);
@@ -157,6 +161,15 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         homePersenter = new HomePresnterImpl();
         homePersenter.setView(this);
 
+        serviceProvidorName.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                serviceProvidorName.setFocusableInTouchMode(true);
+
+                return false;
+            }
+        });
 
         if(Utils.isInternetOn(this.getContext())) {
             homePersenter.GetAllServicesProivders("", "", "",
@@ -194,7 +207,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         searchbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String branchName = "";
+                if (!serviceProvidorName.getText().toString().equalsIgnoreCase(""))
+                    branchName = serviceProvidorName.getText().toString();
                 try {
                     String cityID = "-1";
                     String AreaID = "-1";
@@ -222,7 +237,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
                     if (CATID.equals("-1") || GovesSpinner.getSelectedIndex()  == 0 ) {
                         CATID = "";
                     }
-                    homePersenter.GetAllServicesProivders("", "", cityID + "",
+                    homePersenter.GetAllServicesProivders(branchName, "", cityID + "",
                             AreaID, series_ids,
                             CATID + "");
                 }
@@ -369,7 +384,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
         adapter = new ServieProviderAdapter(this.getContext(),this ,ServiceProivderList );
-
+        if(ServiceProivderList.size()>0)
         mRecyclerView.setAdapter(adapter);
 
 

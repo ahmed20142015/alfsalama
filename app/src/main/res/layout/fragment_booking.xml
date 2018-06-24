@@ -20,8 +20,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
 
@@ -30,11 +30,10 @@
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layoutDirection="rtl"
             android:layout_gravity="right"
             android:dividerPadding="30dp"
-            android:layout_marginRight="20dp">
+           >
 
     <CheckBox
         android:id="@+id/radiotheraccount"
@@ -55,8 +54,8 @@
         android:id="@+id/otheraccountLy"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:orientation="vertical"
         android:background="#fff"
         android:layout_height="wrap_content">
@@ -70,8 +69,8 @@
             android:hint="@string/Name"
             android:drawableRight="@drawable/pass"
             android:textColorHint="#000"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:maxLines="1"
             android:textColor="#000"
             android:textDirection="rtl"
@@ -87,13 +86,13 @@
             android:hint="@string/mobilenumber"
             android:drawableRight="@drawable/pass"
             android:textColorHint="#000"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:phoneNumber="true"
             android:maxLines="1"
             android:textColor="#000"
             android:textDirection="rtl"
-
+            android:layout_marginBottom="10dp"
             />
 
 
@@ -109,6 +108,7 @@
     android:layout_marginRight="15dp"
     android:text="@string/Service"
     android:textSize="20sp"
+    android:visibility="gone"
     />
 
     <LinearLayout
@@ -132,6 +132,7 @@
             android:textSize="16sp"
             android:background="@color/Withe"
             android:padding="5dp"
+            android:visibility="gone"
             />
 
 
@@ -145,7 +146,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-
+        android:visibility="gone"
         />
         <LinearLayout
             android:layout_width="match_parent"

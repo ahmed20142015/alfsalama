@@ -48,15 +48,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/filter"
-
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/search"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
+                    android:visibility="gone"
                     />
+
 
 
 

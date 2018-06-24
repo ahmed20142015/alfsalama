@@ -17,6 +17,7 @@ import Model.Catoegry;
 import Model.City;
 import Model.Governrate;
 import Model.ServiceProidveritem;
+import Model.ServiceSupplier;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -344,6 +345,16 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
 
     @Override
     public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+    @Override
+    public Call<String> editUserData(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<ServiceSupplier> getServiceSuppliers() {
         return null;
     }
 

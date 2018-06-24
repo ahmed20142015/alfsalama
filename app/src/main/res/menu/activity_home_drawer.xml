@@ -13,6 +13,14 @@
             android:icon="@drawable/myrequests"
             android:title="@string/MyRequests" />
         <item
+            android:id="@+id/editProfile"
+            android:icon="@drawable/account_edit"
+            android:title="@string/edit_profile" />
+        <item
+            android:id="@+id/serviceProvidor"
+            android:icon="@drawable/providor_map"
+            android:title="مزودين الخدمة" />
+        <item
             android:id="@+id/share"
             android:icon="@drawable/share"
             android:title="شارك" />

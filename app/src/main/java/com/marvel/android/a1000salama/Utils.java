@@ -27,6 +27,7 @@ import Model.Area;
 import Model.Catoegry;
 import Model.City;
 import Model.Governrate;
+import Model.ServiceSupplier;
 import Model.SystemMessage;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -372,6 +373,15 @@ import static android.content.Context.MODE_PRIVATE;
         return null;
     }
 
+    @Override
+    public Call<String> editUserData(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<ServiceSupplier> getServiceSuppliers() {
+        return null;
+    }
 
 
     public static void slide_down(Context ctx, View v) {

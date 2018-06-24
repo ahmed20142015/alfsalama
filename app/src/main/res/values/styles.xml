@@ -34,4 +34,10 @@
         <item name="android:maxHeight">50dip</item>
     </style>
 
+    <style name="FacebookLoginButton">
+        <item name="android:textSize">13sp</item>
+        <item name="android:background">@drawable/button_round_corner</item>
+
+    </style>
+
 </resources>

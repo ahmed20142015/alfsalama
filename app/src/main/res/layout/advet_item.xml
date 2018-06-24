@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#f1f1f1"
+    android:background="#fff"
     >
 
     <android.support.v7.widget.CardView
@@ -27,7 +27,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/loogoo" />
+                android:src="@mipmap/appicon" />
 
             <ImageView
                 android:id="@+id/normal_image"
@@ -178,8 +178,8 @@
                     app:srb_starHeight="18dp"
                     app:srb_starPadding="3dp"
                     app:srb_stepSize="0.5"
-                    app:srb_drawableEmpty="@drawable/starempty"
-                    app:srb_drawableFilled="@drawable/starfull"
+                    app:srb_drawableEmpty="@mipmap/star_empty"
+                    app:srb_drawableFilled="@mipmap/star_full"
                     android:layout_gravity="right"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"

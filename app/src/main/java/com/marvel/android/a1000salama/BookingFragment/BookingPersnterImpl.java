@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import APIClient.ApiInterface;
 import APIClient.PhotoConnection;
 import APIClient.ServicesConnection;
+import Model.ServiceSupplier;
 import Model.Services;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -309,7 +310,15 @@ public class BookingPersnterImpl implements  BookingPresneter , ApiInterface {
         return null;
     }
 
+    @Override
+    public Call<String> editUserData(String body, String content_type) {
+        return null;
+    }
 
+    @Override
+    public Call<ServiceSupplier> getServiceSuppliers() {
+        return null;
+    }
 
 
     @Override

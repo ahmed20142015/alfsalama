@@ -16,6 +16,7 @@ import java.util.List;
 import APIClient.ApiClient;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
+import Model.ServiceSupplier;
 import Model.SystemMessage;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -87,6 +88,7 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         login("WS2",AuthBody.toString(), ServicesConnection.CONTENT_TYPE);
         return ResponseCode;
@@ -261,6 +263,15 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         return null;
     }
 
+    @Override
+    public Call<String> editUserData(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<ServiceSupplier> getServiceSuppliers() {
+        return null;
+    }
 
 
     public class GetSystemMessages extends AsyncTask<Object, Object, List<SystemMessage>> {

@@ -6,13 +6,33 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.marvel.android.a1000salama.Home.Home;
 import com.marvel.android.a1000salama.R;
@@ -20,26 +40,35 @@ import com.marvel.android.a1000salama.Registartion.Registration;
 import com.marvel.android.a1000salama.Utils;
 import com.taishi.flipprogressdialog.FlipProgressDialog;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class Login extends AppCompatActivity implements LoginView {
+public class Login extends AppCompatActivity implements LoginView,GoogleApiClient.OnConnectionFailedListener {
 
     FlipProgressDialog progressDialog;
     LoginPresneterImpl loginPresenter;
     Button RegistrationBtn  , LoginBtn;
     private EditText username , paasword;
     AppCompatCheckBox remberMe;
+    private SignInButton signInWithGoogle;
+    private LoginButton signInWithFacebook;
+    private GoogleApiClient googleApiClient;
+    private final static int googleRequest = 900;
+    CallbackManager callbackManager;
+
     LoginView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
-        Locale locale = new Locale("ar");
+        final Locale locale = new Locale("ar");
         Locale.setDefault(locale);
         final Resources resources = this.getResources();
         Configuration configuration = resources.getConfiguration();
@@ -57,6 +86,15 @@ public class Login extends AppCompatActivity implements LoginView {
         username = findViewById(R.id.username);
         paasword = findViewById(R.id.paasword);
         remberMe = findViewById(R.id.remberme);
+        signInWithGoogle = findViewById(R.id.login_with_google);
+        signInWithFacebook = findViewById(R.id.login_with_facebook);
+
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this)
+                                             .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions).build();
+        callbackManager = CallbackManager.Factory.create();
+
+
        // requestLogin("Abahaa","12345");
 
 //        Utils utl = new Utils();
@@ -94,6 +132,46 @@ public class Login extends AppCompatActivity implements LoginView {
             }
         });
 
+        signInWithGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+
+        signInWithFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                //   Toast.makeText(Login.this, loginResult.getAccessToken().getUserId(), Toast.LENGTH_SHORT).show();
+
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            Log.i("RESAULTS : ", object.getString("email"));
+                            Log.i("RESAULTS : ", object.toString());
+                            Toast.makeText(Login.this, "name: "+object.getString("name")+"\n email: "+object.getString("email"), Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){
+
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,first_name,last_name,email,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(Login.this, "Login Cancled", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
     }
 
     @Override
@@ -192,4 +270,47 @@ public class Login extends AppCompatActivity implements LoginView {
     }
 
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private void signIn(){
+
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(intent,googleRequest);
+    }
+    private void signOut(){
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                updateUI(false);
+            }
+        });
+    }
+    private void handleResult(GoogleSignInResult result){
+        if (result.isSuccess()){
+            GoogleSignInAccount account = result.getSignInAccount();
+            String name = account.getDisplayName();
+            String email = account.getEmail();
+            Toast.makeText(this, "name: "+name+"\n email: "+email, Toast.LENGTH_SHORT).show();
+            updateUI(true);
+        }
+        else
+            updateUI(false);
+
+    }
+    private void updateUI(Boolean isLogin){}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == googleRequest){
+
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleResult(result);
+        }
+    }
 }

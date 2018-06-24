@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import APIClient.ApiInterface;
 import APIClient.ServicesConnection;
 import Model.AboutServiceProvidor;
+import Model.ServiceSupplier;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -165,6 +166,16 @@ public class ServiceProviderInfoPresenterImp implements ServiceProviderInfoPrese
 
     @Override
     public Call<String> uploadBookingPhotos(int P1, int P2, String P3, String P4, String P5) {
+        return null;
+    }
+
+    @Override
+    public Call<String> editUserData(String body, String content_type) {
+        return null;
+    }
+
+    @Override
+    public Call<ServiceSupplier> getServiceSuppliers() {
         return null;
     }
 

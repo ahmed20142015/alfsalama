@@ -1,5 +1,6 @@
 package APIClient;
 
+import Model.ServiceSupplier;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -96,6 +97,10 @@ public interface ApiInterface {
                                      @Field("P4") String P4,@Field("P5") String P5);
 
 
+    @POST("alf/WS20/")
+    Call<String> editUserData(@Body String body, @Header("Content-Type") String content_type);
 
+    @GET("alf/WS25/")
+    Call<ServiceSupplier> getServiceSuppliers();
 
 }

@@ -1,94 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
-    tools:context=".Login.Login">
+     tools:context=".Login.Login">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent"
-        android:weightSum="3">
+        android:orientation="vertical"
+        android:weightSum="3"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1.75"
             android:orientation="vertical"
+            android:background="#fff"
+            >
 
-           >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/logo_login"/>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:weightSum="2"
-                android:orientation="vertical"
-
-                >
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:drawableRight="@drawable/username_mobile"
-                android:hint="@string/user_name_hint"
-              android:textColor="@android:color/white"
-                android:layout_weight="1"
-                android:backgroundTint="#fff"
-                android:textColorHint="#ddffffff"
-                android:textCursorDrawable="@drawable/cursoercolor"
-                android:textSize="20sp"
-                android:maxLines="1"
-                android:singleLine="true"
-                />
-
-
-            <EditText
-                android:id="@+id/paasword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:drawableRight="@drawable/pass"
-                android:textColor="@android:color/white"
-                android:hint="@string/password"
-                android:password="true"
-               android:layout_weight="1"
-                android:backgroundTint="#fff"
-                android:textColorHint="#ddffffff"
-                android:singleLine="true"
-                android:textCursorDrawable="@drawable/cursoercolor"
-                android:textSize="20sp"
-                android:maxLines="1"
-                />
+                android:background="#338cda"
+                android:orientation="vertical"
+                android:paddingBottom="70dp"
+                android:weightSum="1.75">
 
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/remberme"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:hint="@string/remember_me"
-                    android:textColorHint="@android:color/white"
-                    android:layout_weight="1"
-                    android:button="@null"
-                    android:textDirection="rtl"
-                    android:drawableRight="@drawable/check_box_selector"
-                    android:textSize="20sp"
-                    />
+                    android:layout_marginTop="50dp"
+                    android:background="@drawable/logo_login" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+
+                    >
+
+                    <EditText
+                        android:id="@+id/username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#fff"
+                        android:drawableRight="@drawable/username_mobile"
+                        android:hint="@string/user_name_hint"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="#ddffffff"
+                        android:textCursorDrawable="@drawable/cursoercolor"
+                        android:textSize="20sp" />
+
+
+                    <EditText
+                        android:id="@+id/paasword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#fff"
+                        android:drawableRight="@drawable/pass"
+                        android:hint="@string/password"
+                        android:maxLines="1"
+                        android:password="true"
+                        android:singleLine="true"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="#ddffffff"
+                        android:textCursorDrawable="@drawable/cursoercolor"
+                        android:textSize="20sp" />
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/remberme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:drawableRight="@drawable/check_box_selector"
+                        android:hint="@string/remember_me"
+                        android:textColorHint="@android:color/white"
+                        android:textDirection="rtl"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
 
+            <Button
+                android:id="@+id/RegBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/button_round_corner"
+                android:text="@string/registration"
+                android:textColor="#FFF"
+                android:textSize="20sp" />
 
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/button_round_corner"
+                android:text="@string/forget_password"
+                android:textColor="#FFF"
+                android:textSize="20sp" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_with_facebook"
+                android:layout_width="295dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:paddingLeft="15dp"
+                style="@style/FacebookLoginButton"
+                />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/login_with_google"
+                android:layout_width="295dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
+                 >
+
+            </com.google.android.gms.common.SignInButton>
 
         </LinearLayout>
 
@@ -96,41 +151,11 @@
             android:id="@+id/loginBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="bottom|center"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="300dp"
             android:background="@drawable/rond_button"
             android:text="@string/login"
-            android:textSize="20sp"
             android:textColor="#000"
-            />
-
-
-
-
-        <Button
-            android:id="@+id/RegBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="bottom|center"
-            android:background="@drawable/button_round_corner"
-            android:textColor="#FFF"
-            android:text="@string/registration"
-            android:textSize="20sp"
-            />
-
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="bottom|center"
-            android:background="@drawable/button_round_corner"
-            android:textColor="#FFF"
-            android:textSize="20sp"
-            android:text="@string/forget_password"
-            />
-
-    </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+            android:textSize="20sp" />
+    </FrameLayout>
+</ScrollView>

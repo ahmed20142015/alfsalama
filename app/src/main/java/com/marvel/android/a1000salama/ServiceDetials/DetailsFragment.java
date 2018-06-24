@@ -107,11 +107,15 @@ public class DetailsFragment extends BaseFragment {
         MapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new  Intent(DetailsFragment.this.getContext(), ServiceLocation.class);
-                i.putExtra("X",SP.getCordX());
-                i.putExtra("Y",SP.getCordY());
-                i.putExtra("Name",SP.getSP_Name());
-                startActivity(i);
+//                Intent i = new  Intent(DetailsFragment.this.getContext(), ServiceLocation.class);
+//                i.putExtra("X",SP.getCordX());
+//                i.putExtra("Y",SP.getCordY());
+//                i.putExtra("Name",SP.getSP_Name());
+//                startActivity(i);
+
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr="+ SP.getCordX()+","+SP.getCordY()));
+                startActivity(intent);
 
             }
         });

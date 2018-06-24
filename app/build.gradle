@@ -7,8 +7,8 @@ android {
         applicationId "com.marvel.android.a1000salama"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 10
-        versionName "2.5"
+        versionCode 12
+        versionName "2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,13 +22,17 @@ android {
             }
         }
     }
-
+    repositories {
+        jcenter()
+    }
     allprojects {
-        repositories{
+        repositories {
             maven { url 'https://jitpack.io' }
         }
     }
-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 
 }
 
@@ -63,6 +67,9 @@ dependencies {
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
 
+    implementation 'com.google.android.gms:play-services-auth:11.8.0'
+    implementation 'com.facebook.android:facebook-login:[4,5)'
+
     compile 'com.google.android.exoplayer:exoplayer:2.6.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.6.1'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.6.1'
@@ -70,9 +77,12 @@ dependencies {
     implementation 'com.jaredrummler:material-spinner:1.2.5'
     compile 'com.github.ome450901:SimpleRatingBar:1.4.1'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+
 
 
 
