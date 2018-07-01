@@ -108,7 +108,7 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
 
                 LatLng s = new LatLng(30.068650, 31.246454);
 
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(s, 7));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(s, 9));
 
                 mGoogleMap.setBuildingsEnabled(true);
 //                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -174,18 +174,39 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
         for (int i= 0 ;i < suppliers.size();i++){
 
 
+            // .defaultMarker(BitmapDescriptorFactory.HUE_RED
+
 
             ServiceSupplier.Supplier supplier = suppliers.get(i);
             LatLng latLng = new LatLng(supplier.getXCordinate(),supplier.getYCordinate());
-            MarkerOptions marker = new MarkerOptions().position(
-                    latLng).title(supplier.getSpName().toString()).snippet(i+"").icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_RED
-                    ));
+
+            if(supplier.getCategoryName().equalsIgnoreCase("صيدليات")){
+                MarkerOptions marker = new MarkerOptions().position(
+                        latLng).title(supplier.getSpName().toString()).snippet(i+"").icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.marker_pharmacy));
+                mGoogleMap.addMarker(marker);
+                mGoogleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
+            }
+            else if(supplier.getCategoryName().equalsIgnoreCase("معامل")){
+                MarkerOptions marker = new MarkerOptions().position(
+                        latLng).title(supplier.getSpName().toString()).snippet(i+"").icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.marker_lab));
+                mGoogleMap.addMarker(marker);
+                mGoogleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
+            }
+            else if(supplier.getCategoryName().equalsIgnoreCase("مستشفيات")){
+                MarkerOptions marker = new MarkerOptions().position(
+                        latLng).title(supplier.getSpName().toString()).snippet(i+"").icon(BitmapDescriptorFactory
+                        .fromResource(R.drawable.marker_hospital));
+                mGoogleMap.addMarker(marker);
+                mGoogleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
+            }
+
 
             // mGoogleMap.clear();
-            mGoogleMap.addMarker(marker);
 
-            mGoogleMap.setInfoWindowAdapter(new MarkerInfoWindowAdapter());
+
+
 
         }
 
@@ -239,8 +260,19 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
 
             if (supplier.getSpName() != null)
                 supplierName.setText(supplier.getSpName());
+            if (supplier.getOpeningHours() != null){
 
-            //    supplierWorkHour.setText(supplier.getOpeningHours().toString());
+                String workingHours = supplier.getOpeningHours();
+                String[] parts = workingHours.split("TO");
+                String fromHoure = parts[0];
+                String toHoure = parts[1];
+
+                String from = fromHoure.replace("AM","صباحاً");
+                String to = toHoure.replace("PM","مساءً");
+
+                supplierWorkHour.setText("من "+from+" إلى "+to);
+
+            }
 
             supplierRate.setRating(supplier.getOverAllRating());
 

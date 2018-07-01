@@ -7,8 +7,8 @@ android {
         applicationId "com.marvel.android.a1000salama"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 12
-        versionName "2.7"
+        versionCode 15
+        versionName "3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

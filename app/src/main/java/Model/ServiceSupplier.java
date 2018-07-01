@@ -41,7 +41,11 @@ public class ServiceSupplier {
         private float overAllRating;
         @SerializedName("opening_hours")
         @Expose
-        private Object openingHours;
+        private String openingHours;
+
+        @SerializedName("category_name")
+        @Expose
+        private String categoryName;
 
         public String getSpName() {
             return spName;
@@ -83,12 +87,20 @@ public class ServiceSupplier {
             this.overAllRating = overAllRating;
         }
 
-        public Object getOpeningHours() {
+        public String getOpeningHours() {
             return openingHours;
         }
 
-        public void setOpeningHours(Object openingHours) {
+        public void setOpeningHours(String openingHours) {
             this.openingHours = openingHours;
+        }
+
+        public String getCategoryName() {
+            return categoryName;
+        }
+
+        public void setCategoryName(String categoryName) {
+            this.categoryName = categoryName;
         }
 
 

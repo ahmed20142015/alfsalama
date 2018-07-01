@@ -199,7 +199,7 @@
         android:textDirection="rtl"
         android:singleLine="true"
         android:textCursorDrawable="@drawable/cursoercolor"
-
+        android:fontFamily="sans-serif-condensed"
         />
 
 
