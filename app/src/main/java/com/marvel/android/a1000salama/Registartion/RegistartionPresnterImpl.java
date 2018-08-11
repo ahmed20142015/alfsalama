@@ -38,57 +38,57 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
     }
 
     public void onRegisterClicked(){
-        String firstName = registartionView.getFirstName(),
-                secondName = registartionView.getSecondName(),
-                lastName = registartionView.getSurName(),
-                mobileNumber = registartionView.getMobileNumber(),
-                idNumber = registartionView.getNationalID(),
-                email = registartionView.getEmail(),
-                password = registartionView.getPass(),
-                conFirmPass = registartionView.getConfirmPass(),
-                UserName = registartionView.getEmail(),
-                DateOfBirth = registartionView.getDateOFBirth(),
-                Gender = registartionView.getGender();
-        if(firstName.isEmpty()||secondName.isEmpty()||lastName.isEmpty()||mobileNumber.isEmpty()
-                ||email.isEmpty()||password.isEmpty()||UserName.isEmpty()
-                ||DateOfBirth.isEmpty()||Gender.isEmpty()){
-
-            registartionView.showErrorInputs();
-        }
-        else if (!conFirmPass.equals(password))
-        {
-            showErrorMessage("كلمة المرور غير متطابقة");
-
-        }
-
-        else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
-        {
-            showErrorMessage("البريد الإلكتروني غير صحيح");
-
-        }
-
-
-        else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
-        {
-            showErrorMessage("رقم الهاتف غير صحيح ");
-
-        }
-
-
-
-
-
-
-
-        else {
-
-            if(Utils.isInternetOn(registartionView)) {
-                        RequestRegistration(firstName, secondName, lastName, mobileNumber, idNumber, email, password, UserName, DateOfBirth, Gender);
-            }
-            else
-                showErrorMessage("من فضلك تأكد من الإتصال بالإنترنت");
-
-        }
+//        String firstName = registartionView.getFirstName(),
+//                secondName = registartionView.getSecondName(),
+//                lastName = registartionView.getSurName(),
+//                mobileNumber = registartionView.getMobileNumber(),
+//                idNumber = registartionView.getNationalID(),
+//                email = registartionView.getEmail(),
+//                password = registartionView.getPass(),
+//                conFirmPass = registartionView.getConfirmPass(),
+//                UserName = registartionView.getEmail(),
+//                DateOfBirth = registartionView.getDateOFBirth(),
+//                Gender = registartionView.getGender();
+//        if(firstName.isEmpty()||secondName.isEmpty()||lastName.isEmpty()||mobileNumber.isEmpty()
+//                ||email.isEmpty()||password.isEmpty()||UserName.isEmpty()
+//                ||DateOfBirth.isEmpty()||Gender.isEmpty()){
+//
+//            registartionView.showErrorInputs();
+//        }
+//        else if (!conFirmPass.equals(password))
+//        {
+//            showErrorMessage("كلمة المرور غير متطابقة");
+//
+//        }
+//
+//        else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+//        {
+//            showErrorMessage("البريد الإلكتروني غير صحيح");
+//
+//        }
+//
+//
+//        else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
+//        {
+//            showErrorMessage("رقم الهاتف غير صحيح ");
+//
+//        }
+//
+//
+//
+//
+//
+//
+//
+//        else {
+//
+//            if(Utils.isInternetOn(registartionView)) {
+//                        RequestRegistration(firstName, secondName, lastName, mobileNumber, idNumber, email, password, UserName, DateOfBirth, Gender);
+//            }
+//            else
+//                showErrorMessage("من فضلك تأكد من الإتصال بالإنترنت");
+//
+//        }
     }
 
     @Override
@@ -212,7 +212,7 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
                 String Body =   response.body();
                 if (response.isSuccessful()) {
 
-
+                    Log.w("RegisterResponse",Body.toString());
 
                     try {
 
@@ -317,6 +317,11 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
     }
 
     @Override
+    public Call<String> getAllVersionList() {
+        return null;
+    }
+
+    @Override
     public Call<String> getCat(String body, String content_type) {
         return null;
     }
@@ -401,22 +406,7 @@ public class RegistartionPresnterImpl implements RegistartionPresnter , ApiInter
         }
     }
 
-    private void showErrorMessage(String message){
-        new SweetAlertDialog(registartionView, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("خطأ")
-                .setContentText(message)
-                .setConfirmText("تم")
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sDialog) {
-                        // reuse previous dialog instance
-                        sDialog.dismiss();
 
-
-                    }
-                })
-                .show();
-    }
 
 
 

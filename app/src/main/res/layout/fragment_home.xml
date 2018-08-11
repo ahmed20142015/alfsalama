@@ -122,11 +122,8 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-
-
-
             <com.jaredrummler.materialspinner.MaterialSpinner
-                android:id="@+id/city"
+                android:id="@+id/area"
                 style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
                 android:layout_width="100dp"
                 android:layout_height="42dp"
@@ -140,21 +137,25 @@
                 app:ms_enableFloatingLabel="false"
                 app:ms_hintColor="#9b9b9b"
                 app:ms_multiline="false"
-                android:layout_weight="1"
                 android:textColorHint="#9b9b9b"
+                android:layout_weight="1"
                 app:ms_background_color="#fff"
                 android:textSize="16sp"
                 fontPath="fonts/GE_SS_Text_Light.otf"
                 tools:ignore="MissingPrefix"
-             />
+                app:ms_dropdown_max_height="350dp"
+                app:ms_dropdown_height="wrap_content"
+
+                />
+
 
             <com.jaredrummler.materialspinner.MaterialSpinner
-                android:id="@+id/area"
+                android:id="@+id/city"
                 style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
                 android:layout_width="100dp"
                 android:layout_height="42dp"
                 android:layout_marginLeft="5dp"
-                android:textAlignment="center"
+                 android:textAlignment="center"
                 android:textColor="#262626"
                 app:ms_arrowSize="10dp"
                 android:textDirection="rtl"
@@ -162,15 +163,15 @@
                 app:ms_enableFloatingLabel="false"
                 app:ms_hintColor="#9b9b9b"
                 app:ms_multiline="false"
-                android:textColorHint="#9b9b9b"
                 android:layout_weight="1"
+                android:textColorHint="#9b9b9b"
                 app:ms_background_color="#fff"
                 android:textSize="16sp"
                 fontPath="fonts/GE_SS_Text_Light.otf"
                 tools:ignore="MissingPrefix"
-                />
-
-
+                app:ms_dropdown_max_height="100dp"
+                app:ms_dropdown_height="wrap_content"
+             />
 
 
 
@@ -226,8 +227,7 @@
             android:id="@+id/serviceporviderlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="1dp"
-            android:background="@color/Withe"
+             android:background="@color/Withe"
             android:layout_centerInParent="true"/>
 
 

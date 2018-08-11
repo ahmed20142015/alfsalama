@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,11 +25,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.BookingHistory.BookingHistoryFragment;
 import com.marvel.android.a1000salama.BookingHistory.BookingHistoryView;
 import com.marvel.android.a1000salama.BookingHistory.RatingDialogFragment;
 import com.marvel.android.a1000salama.CustomEditText;
+import com.marvel.android.a1000salama.DataBase.alfSamalaSDBHelper;
 import com.marvel.android.a1000salama.DrawableClickListener;
 import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.ServiceDetials.DetailsFragment;
@@ -54,7 +58,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * create an instance of this fragment.
  */
 
- public class HomeFragment  extends BaseFragment  implements HomeViwe{
+public class HomeFragment extends BaseFragment implements HomeViwe {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -70,20 +74,29 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
     private List<ServiceProidveritem> ServiceProidveritemList;
     private RecyclerView mRecyclerView;
     private ServieProviderAdapter adapter;
-    private LinearLayout  AdvancedSerachLY , AdvancedSerachLY2;
-    private Button AdvancedSearch ,searchadvancedBtn;
+    private LinearLayout AdvancedSerachLY, AdvancedSerachLY2;
+    private Button AdvancedSearch, searchadvancedBtn;
     CustomEditText SearchET;
     EditText serviceProvidorName;
     ImageButton searchbtn;
-    com.jaredrummler.materialspinner.MaterialSpinner GovesSpinner ,CitySpinner , AreaSpinner;
-    String BookID  = "";
-    String PatintID  = " ";
+    com.jaredrummler.materialspinner.MaterialSpinner GovesSpinner, CitySpinner, AreaSpinner;
+    String BookID = "";
+    String PatintID = " ";
     String SC_BRANCH_ID = " ";
 
-    private   ArrayList<City> Mycities = new ArrayList<>();
-    private ArrayList<Area>   MyAreas = new ArrayList<>();
+    private ArrayList<City> Mycities = new ArrayList<>();
+    private ArrayList<Area> MyAreas = new ArrayList<>();
     private ArrayList<Catoegry> Mycats = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
+
+    String city = "المدينة";
+    String area = "المنطقة";
+    String category = "نوع الخدمة";
+    String cityID = "-1";
+    String areaID = "-1";
+    String catID = "-1";
+
+    short xxxx=1;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -112,6 +125,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -120,9 +134,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
                 BookID = getArguments().getString("BookeID");
                 PatintID = getArguments().getString("PatintID");
                 SC_BRANCH_ID = getArguments().getString("SC_BRANCH_ID");
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
 
@@ -161,6 +173,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         homePersenter = new HomePresnterImpl();
         homePersenter.setView(this);
 
+        xxxx = 1;
+
+
         serviceProvidorName.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -171,16 +186,15 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
             }
         });
 
-        if(Utils.isInternetOn(this.getContext())) {
+        if (Utils.isInternetOn(this.getContext())) {
             homePersenter.GetAllServicesProivders("", "", "",
                     "", series_ids, "");
 
 
-        }
-        else {
+        } else {
             new SweetAlertDialog(this.getContext(), SweetAlertDialog.ERROR_TYPE)
                     .setTitleText("خطأ")
-                    .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                    .setContentText("من فضلك تأكد من الإتصال بالإنترنت")
                     .setConfirmText("تم")
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
@@ -194,56 +208,103 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
                     .show();
         }
 
-        AdvancedSearch  = viwe.findViewById(R.id.searchBtn);
+        AdvancedSearch = viwe.findViewById(R.id.searchBtn);
         SearchET = viwe.findViewById(R.id.searchEt);
 
         AdvancedSerachLY2 = viwe.findViewById(R.id.advancedSearchLY2);
         AdvancedSerachLY = viwe.findViewById(R.id.advancedSearchLY);
-    //  toggle_contents(AdvancedSerachLY2);
+        //  toggle_contents(AdvancedSerachLY2);
 
 
         searchbtn = viwe.findViewById(R.id.searchbtn);
 
+
+        GovesSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                category = item.toString();
+                if (position != 0)
+                    catID = Mycats.get(position-1).getCatID() + "";
+
+            }
+        });
+
+        CitySpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                city = item.toString();
+
+                if (position != 0){
+                    cityID = Mycities.get(position-1).getId() + "";
+                    alfSamalaSDBHelper helper = new alfSamalaSDBHelper(getActivity());
+                    ArrayList<Area> areas = new ArrayList<>();
+                    areas = helper.getCityAreaies(Integer.parseInt(cityID));
+                    setAreaList(areas);
+                }
+
+                else {
+                    alfSamalaSDBHelper helper = new alfSamalaSDBHelper(getActivity());
+                    ArrayList<Area> areas = new ArrayList<>();
+                    areas = helper.getAllAreaies();
+                    setAreaList(areas);
+                }
+
+
+            }
+        });
+
+        AreaSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                area = item.toString();
+                if (position != 0){}
+                    areaID = MyAreas.get(position-1).getID() + "";
+            }
+        });
+
+
         searchbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 String branchName = "";
                 if (!serviceProvidorName.getText().toString().equalsIgnoreCase(""))
                     branchName = serviceProvidorName.getText().toString();
                 try {
-                    String cityID = "-1";
-                    String AreaID = "-1";
-                    String CATID = "-1";
 
-                ///    if (CitySpinner.getSelectedIndex() != 0) {
 
-                        cityID = Mycities.get(CitySpinner.getSelectedIndex() ).getId() + "";
+                    ///    if (CitySpinner.getSelectedIndex() != 0) {
 
-                   // }
+                    //   cityID = Mycities.get(CitySpinner.getSelectedIndex() ).getId() + "";
+
+                    // }
                     // if (AreaSpinner.getSelectedIndex() != 0) {
-                        AreaID = MyAreas.get(AreaSpinner.getSelectedIndex() ).getID() + "";
-                   // }
+                    //    areaID = MyAreas.get(AreaSpinner.getSelectedIndex() ).getID() + "";
+                    // }
 
-                   //// if (GovesSpinner.getSelectedIndex() != 0) {
-                        CATID = Mycats.get(GovesSpinner.getSelectedIndex() ).getCatID() + "";
+                    //// if (GovesSpinner.getSelectedIndex() != 0) {
 
-                  //  }
-                    if (cityID.equals("-1") || CitySpinner.getSelectedIndex()  == 0 ) {
+
+                    //  }
+                    if (cityID.equals("-1") || city.equalsIgnoreCase("المدينة")) {
                         cityID = "";
                     }
-                    if (AreaID.equals("-1") || AreaSpinner.getSelectedIndex()  == 0 ) {
-                        AreaID = "";
+                    if (areaID.equals("-1") || area.equalsIgnoreCase("المنطقة")) {
+                        areaID = "";
                     }
-                    if (CATID.equals("-1") || GovesSpinner.getSelectedIndex()  == 0 ) {
-                        CATID = "";
+                    if (catID.equals("-1") || category.equalsIgnoreCase("نوع الخدمة")) {
+                        catID = "";
                     }
-                    homePersenter.GetAllServicesProivders(branchName, "", cityID + "",
-                            AreaID, series_ids,
-                            CATID + "");
-                }
 
-                catch (Exception e)
-                {
+
+                    homePersenter.GetAllServicesProivders(branchName, "", cityID + "",
+                            areaID, series_ids,
+                            catID + "");
+                    Log.w("ServerResponse", "City id " + cityID + " Area id " + areaID + " Category id " + catID);
+
+                } catch (Exception e) {
 
                 }
 
@@ -278,14 +339,13 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
                     case LEFT:
 
 
-                        if(Utils.isInternetOn(HomeFragment.this.getContext()))
-                        homePersenter.GetAllServicesProivders(SearchET.getEditableText().toString(),"","",
-                                "", series_ids,"");
-                        else
-                        {
+                        if (Utils.isInternetOn(HomeFragment.this.getContext()))
+                            homePersenter.GetAllServicesProivders(SearchET.getEditableText().toString(), "", "",
+                                    "", series_ids, "");
+                        else {
                             new SweetAlertDialog(HomeFragment.this.getContext(), SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("خطأ")
-                                    .setContentText( "من فضلك تأكد من الإتصال بالإنترنت")
+                                    .setContentText("من فضلك تأكد من الإتصال بالإنترنت")
                                     .setConfirmText("تم")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
@@ -308,7 +368,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
             }
 
         });
-        return  viwe;
+        return viwe;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -318,35 +378,35 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         }
     }
 
-    public void toggle_contents(View v){
+    public void toggle_contents(View v) {
 
-        AdvancedSerachLY2.setVisibility( AdvancedSerachLY2.isShown()
+        AdvancedSerachLY2.setVisibility(AdvancedSerachLY2.isShown()
                 ? View.VISIBLE
-                : View.GONE );
-        AdvancedSerachLY.setVisibility( AdvancedSerachLY.isShown()
+                : View.GONE);
+        AdvancedSerachLY.setVisibility(AdvancedSerachLY.isShown()
                 ? View.VISIBLE
-                : View.GONE );
+                : View.GONE);
     }
 
-    public void ShowAdvncedSearch(View v){
+    public void ShowAdvncedSearch(View v) {
 
-            if(AdvancedSerachLY2.isShown()&& AdvancedSerachLY.isShown()){
-                Utils.slide_up(this.getActivity(), AdvancedSerachLY2);
-                Utils.slide_up(this.getActivity(), AdvancedSerachLY);
+        if (AdvancedSerachLY2.isShown() && AdvancedSerachLY.isShown()) {
+            Utils.slide_up(this.getActivity(), AdvancedSerachLY2);
+            Utils.slide_up(this.getActivity(), AdvancedSerachLY);
 
-                AdvancedSerachLY.setVisibility(View.GONE);
-                AdvancedSerachLY2.setVisibility(View.GONE);
-            }
-            else{
-                AdvancedSerachLY2.setVisibility(View.VISIBLE);
-                AdvancedSerachLY.setVisibility(View.VISIBLE);
-                Utils.slide_down(this.getActivity(), AdvancedSerachLY2);
-                Utils.slide_down(this.getActivity(), AdvancedSerachLY);
+            AdvancedSerachLY.setVisibility(View.GONE);
+            AdvancedSerachLY2.setVisibility(View.GONE);
+        } else {
+            AdvancedSerachLY2.setVisibility(View.VISIBLE);
+            AdvancedSerachLY.setVisibility(View.VISIBLE);
+            Utils.slide_down(this.getActivity(), AdvancedSerachLY2);
+            Utils.slide_down(this.getActivity(), AdvancedSerachLY);
 
 
-            }
+        }
 
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -378,59 +438,87 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
     }
 
 
-
     @Override
     public void setSPList(ArrayList<ServiceProidveritem> ServiceProivderList) {
 
 
-        adapter = new ServieProviderAdapter(this.getContext(),this ,ServiceProivderList );
-        if(ServiceProivderList.size()>0)
-        mRecyclerView.setAdapter(adapter);
+        adapter = new ServieProviderAdapter(this.getContext(), this, ServiceProivderList);
+        if (ServiceProivderList.size() > 0){
+            mRecyclerView.setAdapter(adapter);
+            LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this.getContext());
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            adapter.notifyDataSetChanged();
+        }
+          else {
+            adapter = new ServieProviderAdapter(this.getContext(), this, ServiceProivderList);
+            mRecyclerView.setAdapter(adapter);
+            LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this.getContext());
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            adapter.notifyDataSetChanged();
+
+            new SweetAlertDialog(HomeFragment.this.getContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText("عفواً")
+                    .setContentText("لا يوجد مزودين خدمة حسب البحث")
+                    .setConfirmText("تم")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            // reuse previous dialog instance
+                            sDialog.dismiss();
 
 
-        if (!BookID.equals(""))
-        {
-            FragmentManager manager = ((AppCompatActivity)HomeFragment.this.getActivity()).getSupportFragmentManager();
+                        }
+                    })
+                    .show();
+        }
+
+
+        if (!BookID.equals("")) {
+            FragmentManager manager = ((AppCompatActivity) HomeFragment.this.getActivity()).getSupportFragmentManager();
             RatingDialogFragment ratingDialogFragment =
                     new RatingDialogFragment();
             ratingDialogFragment.setPatientID(Integer.parseInt(PatintID));
             ratingDialogFragment.setBookID(BookID);
-            ratingDialogFragment.setServicProviderID(SC_BRANCH_ID+"");
+            ratingDialogFragment.setServicProviderID(SC_BRANCH_ID + "");
             BookingHistoryView bookingFragment = new BookingHistoryFragment();
             ratingDialogFragment.setBookingFragment(bookingFragment);
             ratingDialogFragment.setCancelable(false);
             ratingDialogFragment.show(manager, "rating" +
                     " Dialog");
         }
-        LinearLayoutManager mLinearLayoutManager =   new LinearLayoutManager(this.getContext());
-
-        DividerItemDecoration    mDividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(),
-                mLinearLayoutManager.getOrientation()
-        );
-        mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
 
-        homePersenter.GetCats(this.getContext());
+//        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(
+//                mRecyclerView.getContext(),
+//                mLinearLayoutManager.getOrientation()
+//        );
+//        mRecyclerView.addItemDecoration(mDividerItemDecoration);
+
+        if(xxxx == 1){
+            homePersenter.GetCats(this.getContext());
+            xxxx++;
+        }
 
     }
 
     @Override
     public void setGovList(ArrayList<Governrate> governrates) {
-        hideLoader();
-
-        ArrayList<String> services = new ArrayList<>();
-
-        for(int i = 0 ; i < governrates.size();i++)
-        {
-            services.add(governrates.get(i).getName());
-        }
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1,
-                services);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-        CitySpinner.setAdapter(adapter);
+//        hideLoader();
+//
+//        ArrayList<String> services = new ArrayList<>();
+//
+//        for(int i = 0 ; i < governrates.size();i++)
+//        {
+//            services.add(governrates.get(i).getName());
+//        }
+//        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1,
+//                services);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//
+//        CitySpinner.setAdapter(adapter);
     }
 
     @Override
@@ -438,12 +526,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         hideLoader();
 
         ArrayList<String> services = new ArrayList<>();
-        services.add("المنطقة");
-        for(int i = 0 ; i < cities.size();i++)
-        {
+        services.add("المدينة");
+        for (int i = 0; i < cities.size(); i++) {
             services.add(cities.get(i).getCityName());
         }
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1,
                 services);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -459,15 +546,14 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
         hideLoader();
 
         ArrayList<String> services = new ArrayList<>();
-        services.add("المدينة");
-        for(int i = 0 ; i < Areas.size();i++)
-        {
+        services.add("المنطقة");
+        for (int i = 0; i < Areas.size(); i++) {
             services.add(Areas.get(i).getAreaName());
         }
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1,
                 services);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-  MyAreas = Areas;
+        MyAreas = Areas;
 
         AreaSpinner.setAdapter(adapter);
     }
@@ -477,8 +563,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
         Fragment fragment = new DetailsFragment();
         manager = getActivity().getSupportFragmentManager();
-        if(manager == null)
-            manager  =  getActivity().getSupportFragmentManager();
+        if (manager == null)
+            manager = getActivity().getSupportFragmentManager();
         transaction = manager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putParcelable("SP", sp);
@@ -491,9 +577,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
             String PatintID = extras.getString("PatintID");
             String SC_BRANCH_ID = extras.getString("SC_BRANCH_ID");
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
 
@@ -510,20 +594,18 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
         ArrayList<String> services = new ArrayList<>();
         services.add("نوع الخدمة");
-        for(int i = 0 ; i < catoegries.size();i++)
-        {
+        for (int i = 0; i < catoegries.size(); i++) {
             services.add(catoegries.get(i).getCatName());
         }
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1,
                 services);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         Mycats =catoegries;
+        Mycats = catoegries;
         GovesSpinner.setAdapter(adapter);
 
 
         homePersenter.GetCities(this.getContext());
     }
-
 
 
     /**
@@ -547,7 +629,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
         getActivity().finish();
-            return true;
+        return true;
 
     }
 }

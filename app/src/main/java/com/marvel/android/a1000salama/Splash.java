@@ -125,47 +125,50 @@ public class Splash extends Activity{
         protected List<SystemMessage> doInBackground(Object... params) {
             utils = new Utils(Splash.this);
             utils.getSystemMessages();
-            alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(Splash.this);
-            ArrayList<Governrate> govs =Dbhelper.getAllGovernrate();
-            if(govs.size()>0)
-            {
 
-            }
-            else
-            utils.getGovernates();
+            utils.getAllVersionList();
 
-
-            ArrayList<City> cityArrayList =Dbhelper.getAllCities();
-            if(cityArrayList.size()>0)
-            {
-
-            }
-            else
-                utils.getCities();
-
-
-            ArrayList<Area> areaArrayList =Dbhelper.getAllAreaies();
-            if(areaArrayList.size()>0)
-            {
-
-            }
-            else
-                utils.getAreas();
-
-
-            ArrayList<Catoegry> CatoegryArrayList =Dbhelper.getAllCats();
-            if(CatoegryArrayList.size()>0)
-            {
-
-            }
-            else {
-                String Body = "\n" +
-                        "{\n" +
-                        "\t\"P1\":\"tab02j\"\n" +
-                        "}";
-
-                utils.getCat(Body , ServicesConnection.CONTENT_TYPE);
-            }
+//            alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(Splash.this);
+//            ArrayList<Governrate> govs =Dbhelper.getAllGovernrate();
+//            if(govs.size()>0)
+//            {
+//
+//            }
+//            else
+//            utils.getGovernates();
+//
+//
+//            ArrayList<City> cityArrayList =Dbhelper.getAllCities();
+//            if(cityArrayList.size()>0)
+//            {
+//
+//            }
+//            else
+//                utils.getCities();
+//
+//
+//            ArrayList<Area> areaArrayList =Dbhelper.getAllAreaies();
+//            if(areaArrayList.size()>0)
+//            {
+//
+//            }
+//            else
+//                utils.getAreas();
+//
+//
+//            ArrayList<Catoegry> CatoegryArrayList =Dbhelper.getAllCats();
+//            if(CatoegryArrayList.size()>0)
+//            {
+//
+//            }
+//            else {
+//                String Body = "\n" +
+//                        "{\n" +
+//                        "\t\"P1\":\"tab02j\"\n" +
+//                        "}";
+//
+//                utils.getCat(Body , ServicesConnection.CONTENT_TYPE);
+//            }
 
             return SysMessageList;
 

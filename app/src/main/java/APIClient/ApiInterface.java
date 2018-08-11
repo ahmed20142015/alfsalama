@@ -60,7 +60,8 @@ public interface ApiInterface {
     @GET("alf/WS10/")
     Call<String> getAreas();
 
-
+    @GET("alf/WS18/")
+    Call<String> getAllVersionList();
 
     @POST("alf/WS21/")
     Call<String> getCat(@Body String body, @Header("Content-Type") String content_type);

@@ -29,6 +29,7 @@ import Model.City;
 import Model.Governrate;
 import Model.ServiceSupplier;
 import Model.SystemMessage;
+import Model.SystemVersion;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +43,7 @@ import static android.content.Context.MODE_PRIVATE;
  public class Utils implements ApiInterface {
     Context context;
     Login loginView ;
-
+    ArrayList<SystemVersion> systemVersions = new ArrayList<>();
 
     private static final String[] System_Message_Column = {
             Contract.alfsalamaEntry._ID,
@@ -147,8 +148,8 @@ import static android.content.Context.MODE_PRIVATE;
 
                 String Body =   response.body();
                 if (response.isSuccessful()) {
-
-
+                    alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+                    Dbhelper.deleteGovernorate();
                     try {
                         JSONObject responCodeObj = new JSONObject(Body);
                         JSONArray items = responCodeObj.getJSONArray("items");
@@ -157,7 +158,7 @@ import static android.content.Context.MODE_PRIVATE;
                             Governrate gov = new Governrate();
                             gov.setID( items.getJSONObject(i).getInt("id"));
                            gov.setName(items.getJSONObject(i).getString("governorate_name"));
-                            alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+
                             Dbhelper.InsertGovernate(gov);
                         }
 
@@ -194,7 +195,8 @@ import static android.content.Context.MODE_PRIVATE;
 
                 String Body =   response.body();
                 if (response.isSuccessful()) {
-
+                    alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+                    Dbhelper.deleteCity();
 
                     try {
                         JSONObject responCodeObj = new JSONObject(Body);
@@ -205,7 +207,7 @@ import static android.content.Context.MODE_PRIVATE;
                             city.setId( items.getJSONObject(i).getInt("id"));
                             city.setCityName(items.getJSONObject(i).getString("city_name"));
                             city.setGov_id(items.getJSONObject(i).getInt("governorate_id"));
-                            alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+
                             Dbhelper.InsertCity(city);
                         }
 
@@ -244,8 +246,8 @@ import static android.content.Context.MODE_PRIVATE;
 
                 String Body =   response.body();
                 if (response.isSuccessful()) {
-
-
+                    alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+                    Dbhelper.deleteArea();
                     try {
                         JSONObject responCodeObj = new JSONObject(Body);
                         ContentValues values = new ContentValues();
@@ -257,7 +259,7 @@ import static android.content.Context.MODE_PRIVATE;
                             area.setID( systemMessageArray.getJSONObject(i).getInt("id"));
                             area.setAreaName(systemMessageArray.getJSONObject(i).getString("area_name"));
                             area.setCity_ID(systemMessageArray.getJSONObject(i).getInt("city_id"));
-                            alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+
                             Dbhelper.InsertArea(area);
                         }
 
@@ -288,6 +290,99 @@ import static android.content.Context.MODE_PRIVATE;
     }
 
     @Override
+    public Call<String> getAllVersionList() {
+        Call<String> getSystemVersion = ServicesConnection.GetService().getAllVersionList();
+        getSystemVersion.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+                String Body =   response.body();
+                if (response.isSuccessful()){
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(Body);
+                        JSONArray  array = jsonObject.getJSONArray("items");
+                        for(int i=0;i<array.length();i++){
+                            SystemVersion systemVersion = new SystemVersion();
+                            systemVersion.setId(array.getJSONObject(i).getInt("id"));
+                            systemVersion.setCode(array.getJSONObject(i).getString("code"));
+                            systemVersion.setValue(array.getJSONObject(i).getDouble("value"));
+                            systemVersion.setDescribtion(array.getJSONObject(i).getString("describtion"));
+                            systemVersions.add(systemVersion);
+                        }
+
+                        for (int i=0;i<systemVersions.size();i++){
+                            if(systemVersions.get(i).getCode().equalsIgnoreCase("governorate")){
+                                if (SharedPrefManager.getInstance(context).getGovernorateVersion() !=
+                                        (float) systemVersions.get(i).getValue() ){
+                                    getGovernates();
+                                    SharedPrefManager.getInstance(context).setGovernorateVersion((float) systemVersions.get(i).getValue());
+
+                                }
+
+
+                            }
+
+                            if(systemVersions.get(i).getCode().equalsIgnoreCase("city")){
+                                if (SharedPrefManager.getInstance(context).getCityVersion() !=
+                                        (float) systemVersions.get(i).getValue() ){
+                                    getCities();
+                                    SharedPrefManager.getInstance(context).setCityVersion((float) systemVersions.get(i).getValue());
+
+                                }
+
+
+                            }
+
+                            if(systemVersions.get(i).getCode().equalsIgnoreCase("area")){
+                                if (SharedPrefManager.getInstance(context).getAreaVersion() !=
+                                        (float) systemVersions.get(i).getValue() ){
+                                    getAreas();
+                                    SharedPrefManager.getInstance(context).setAreaVersion((float) systemVersions.get(i).getValue());
+
+                                }
+
+
+                            }
+
+
+                            if(systemVersions.get(i).getCode().equalsIgnoreCase("category")){
+                                if (SharedPrefManager.getInstance(context).getCategoryVersion() !=
+                                        (float) systemVersions.get(i).getValue() ){
+                                    String body = "\n" +
+                                            "{\n" +
+                                            "\t\"P1\":\"tab02j\"\n" +
+                                            "}";
+
+                                    getCat(body , ServicesConnection.CONTENT_TYPE);
+                                    SharedPrefManager.getInstance(context).setCategoryVersion((float) systemVersions.get(i).getValue());
+
+                                }
+
+
+
+                            }
+
+                        }
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
+        return null;
+    }
+
+    @Override
     public Call<String> getCat( String body, String content_type) {
         Call<String> QueryCall = ServicesConnection.GetService().getCat(body,content_type);
         QueryCall.enqueue(new Callback<String>() {
@@ -297,6 +392,8 @@ import static android.content.Context.MODE_PRIVATE;
                 String Body =   response.body();
                 if (response.isSuccessful()) {
 
+                    alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
+                    Dbhelper.deleteCategory();
 
                     try {
                        JSONArray responCodeObj = new JSONArray(Body);
@@ -306,8 +403,8 @@ import static android.content.Context.MODE_PRIVATE;
                             Catoegry catoegry = new Catoegry();
                             catoegry.setCatID( responCodeObj.getJSONObject(i).getString("LOOKUP_ID"));
                             catoegry.setCatName(responCodeObj.getJSONObject(i).getString("LOOKUP_DESC"));
-                            alfSamalaSDBHelper Dbhelper = new alfSamalaSDBHelper(context);
-                          Dbhelper.InsertCAT(catoegry);
+
+                            Dbhelper.InsertCAT(catoegry);
                         }
 
 

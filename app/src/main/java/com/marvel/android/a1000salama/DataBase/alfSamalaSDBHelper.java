@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,9 +25,11 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     static final String DATABASE_NAME = "alfsamala.db";
+    Context context;
 
     public alfSamalaSDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
     }
 
     @Override
@@ -242,7 +245,7 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
             do {
                 Area td = new Area();
                 // td.setID(c.getInt((c.getColumnIndex("_id"))));
-                // td.setId(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_CITY_ID))));
+                 td.setID(c.getInt(1));
                 td.setAreaName((c.getString(c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_AREA_NAME))));
                 td.setCity_ID(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_AREA_CITY_ID))));
 
@@ -254,6 +257,30 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
         return todos;
     }
 
+    public ArrayList<Area>getCityAreaies(int cityId){
+        ArrayList<Area> todos = new ArrayList<Area>();
+        String selectQuery = "SELECT  * FROM " + Contract.alfsalamaEntry.AREATABLE + " WHERE AREA_CITY_ID = "+cityId;
+
+        //Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Area td = new Area();
+                td.setID(c.getInt(1));
+                td.setAreaName((c.getString(c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_AREA_NAME))));
+                td.setCity_ID(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_AREA_CITY_ID))));
+
+                // adding to todo list
+                todos.add(td);
+            } while (c.moveToNext());
+        }
+
+        return todos;
+    }
 
 
 
@@ -314,7 +341,7 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
             do {
                 City td = new City();
                // td.setID(c.getInt((c.getColumnIndex("_id"))));
-               // td.setId(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_CITY_ID))));
+                td.setId(c.getInt(1));
                 td.setCityName((c.getString(c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_CITY_NAME))));
                 td.setGov_id(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_CITY_GOV_ID))));
 
@@ -381,8 +408,8 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 Governrate td = new Governrate();
-                td.setID(c.getInt((c.getColumnIndex("_id"))));
-                //td.setID(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_GOVERNRATE_ID))));
+               // td.setID(c.getInt((c.getColumnIndex("_id"))));
+                td.setID(c.getInt((c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_GOVERNRATE_ID))));
                 td.setName((c.getString(c.getColumnIndex( Contract.alfsalamaEntry.COLUMN_GOVERNRATE_NAME))));
 
 
@@ -393,4 +420,42 @@ public class alfSamalaSDBHelper extends SQLiteOpenHelper {
 
         return todos;
     }
+
+    public void deleteGovernorate() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteGovernorate = "DELETE FROM "+Contract.alfsalamaEntry.GOVERNRATETABLE;
+        db.execSQL(deleteGovernorate);
+        db.close();
+    }
+
+    public void deleteCity() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteGovernorate = "DELETE FROM "+Contract.alfsalamaEntry.CITYETABLE;
+        db.execSQL(deleteGovernorate);
+        db.close();
+    }
+
+    public void deleteArea() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteGovernorate = "DELETE FROM "+Contract.alfsalamaEntry.AREATABLE;
+        db.execSQL(deleteGovernorate);
+        Log.w("areaDeleted","areaDeleted");
+        db.close();
+    }
+
+    public void deleteCategory() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String deleteGovernorate = "DELETE FROM "+Contract.alfsalamaEntry.CATTable;
+        db.execSQL(deleteGovernorate);
+        db.close();
+    }
+
+
+
+
+
+
+
+
+
 }

@@ -151,6 +151,11 @@ public class ServiceDetlaisPresnterImpl implements ServiceDetalisPresneter , Api
     }
 
     @Override
+    public Call<String> getAllVersionList() {
+        return null;
+    }
+
+    @Override
     public Call<String> getCat(String body, String content_type) {
         return null;
     }

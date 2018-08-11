@@ -301,6 +301,11 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
     }
 
     @Override
+    public Call<String> getAllVersionList() {
+        return null;
+    }
+
+    @Override
     public Call<String> getCat(String body, String content_type) {
 
 

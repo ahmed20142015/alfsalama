@@ -81,7 +81,90 @@ public class Registration extends AppCompatActivity implements RegistartionView 
         RegistrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registartionPresnterImpl.onRegisterClicked();
+              //  registartionPresnterImpl.onRegisterClicked();
+
+                String firstName = getFirstName(),
+                        secondName = getSecondName(),
+                        lastName = getSurName(),
+                        mobileNumber = getMobileNumber(),
+                        idNumber = getNationalID(),
+                        email = getEmail(),
+                        password = getPass(),
+                        conFirmPass = getConfirmPass(),
+                        UserName = getEmail(),
+                        DateOfBirth = getDateOFBirth(),
+                        Gender = getGender();
+//                if(firstName.isEmpty()||secondName.isEmpty()||lastName.isEmpty()||mobileNumber.isEmpty()
+//                        ||email.isEmpty()||password.isEmpty()||UserName.isEmpty()
+//                        ||DateOfBirth.isEmpty()||Gender.isEmpty()){
+//
+//                    showErrorInputs();
+//                }
+                if(firstName.isEmpty()){
+                    firstNameET.setError("الإسم الأول لا يمكن أن يكون فارغاً");
+                }
+
+                else if(secondName.isEmpty()){
+                    secondNameEt.setError("الإسم الثاني لا يمكن أن يكون فارغاً");
+                }
+                else if(lastName.isEmpty()){
+                    surNameEt.setError("اللقب لا يمكن أن يكون فارغاً");
+                }
+                else if(mobileNumber.isEmpty()){
+                    mobileNumberEt.setError("رقم الموبايل لا يمكن أن يكون فارغاً");
+                }
+                else if(password.isEmpty()){
+                    passwordEt.setError("الرقم السري لا يمكن أن يكون فارغاً");
+                }
+
+                else if(conFirmPass.isEmpty()){
+                    confirmPasswordEt.setError("الرقم السري لا يمكن أن يكون فارغاً");
+                }
+
+                else if(email.isEmpty()){
+                    emailEt.setError("الإيميل لا يمكن أن يكون فارغاً");
+                }
+
+                else if(DateOfBirth.isEmpty()){
+                    dateOfBirthTV.setError("تاريخ الميلاد لا يمكن أن يكون فارغاً");
+                }
+
+                else if (!conFirmPass.equals(password))
+                {
+                    showErrorMessage("كلمة المرور غير متطابقة");
+
+                }
+
+                else if ( !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                {
+                    showErrorMessage("البريد الإلكتروني غير صحيح");
+
+                }
+
+
+                else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
+                {
+                    showErrorMessage("رقم الهاتف غير صحيح ");
+
+                }
+
+
+
+
+
+
+
+                else {
+
+                    if(Utils.isInternetOn(Registration.this)) {
+                        registartionPresnterImpl.RequestRegistration(
+                                firstName, secondName, lastName, mobileNumber, idNumber, email, password, UserName, DateOfBirth, Gender);
+                    }
+                    else
+                        showErrorMessage("من فضلك تأكد من الإتصال بالإنترنت");
+
+                }
+
             }
         });
 
@@ -270,6 +353,23 @@ public class Registration extends AppCompatActivity implements RegistartionView 
         new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("خطأ")
                 .setContentText("من فضلك أكمل البيانات الفارغة")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+
+
+                    }
+                })
+                .show();
+    }
+
+    private void showErrorMessage(String message){
+        new SweetAlertDialog(Registration.this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("خطأ")
+                .setContentText(message)
                 .setConfirmText("تم")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override

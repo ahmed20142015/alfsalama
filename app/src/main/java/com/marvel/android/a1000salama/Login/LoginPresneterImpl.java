@@ -219,6 +219,11 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
     }
 
     @Override
+    public Call<String> getAllVersionList() {
+        return null;
+    }
+
+    @Override
     public Call<String> getCat(String body, String content_type) {
         return null;
     }
