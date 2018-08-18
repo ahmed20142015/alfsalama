@@ -189,6 +189,8 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
                             ServiceProidveritem SP = new ServiceProidveritem();
                             SP.setSP_ID(Service_ProvidorList.getJSONObject(i).getInt("SC_ID"));
                             SP.setBRANCH_ID(Service_ProvidorList.getJSONObject(i).getInt("SC_BRANCH_ID"));
+                            SP.setSubtitle(Service_ProvidorList.getJSONObject(i).getString("BRANCH_NAME"));
+                            SP.setDiscoundValue(Service_ProvidorList.getJSONObject(i).getInt("DISCOUNT_PERCENT"));
                             SP.setSP_Name(Service_ProvidorList.getJSONObject(i).getString("SP_NAME"));
                             SP.setImageURl(Service_ProvidorList.getJSONObject(i).getString("LOGO_URL").replace("\\",""));
 

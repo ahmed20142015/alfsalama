@@ -68,27 +68,27 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@mipmap/pin_item" />
+                    android:src="@drawable/discount_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="المسافة"
+                    android:text="الخصم"
                     android:textColor="#9f9f9f"
-                    android:textSize="9sp"
+                    android:textSize="10sp"
                     android:textStyle="bold"
 
                     />
 
                 <TextView
-                    android:id="@+id/distance"
+                    android:id="@+id/discount_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="4.5"
                     android:textColor="#9f9f9f"
-                    android:textSize="9sp"
+                    android:textSize="10sp"
                     android:textStyle="bold"
 
                     />
@@ -97,9 +97,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="كـم"
+                    android:text="%"
                     android:textColor="#9f9f9f"
-                    android:textSize="9sp"
+                    android:textSize="10sp"
                     android:textStyle="bold"
 
                     />
@@ -134,23 +134,50 @@
                     android:textStyle="bold"
 
                     />
-                <TextView
-                    android:id="@+id/brand_rate"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="right"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="فرع مصر الجديدة"
-                    android:textColor="#bebebe"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="5dp"
+                    >
+                    <TextView
+                        android:id="@+id/branch_name"
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="right"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="right"
+                        android:maxLines="1"
+                        android:textColor="#bebebe"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        />
+                    <!--<TextView-->
+                        <!--android:layout_width="12dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentTop="true"-->
+                        <!--android:layout_centerHorizontal="true"-->
+                        <!--android:layout_gravity="right"-->
+                        <!--android:layout_marginEnd="5dp"-->
+                        <!--android:layout_marginBottom="5dp"-->
+                        <!--android:gravity="right"-->
+                        <!--android:maxLines="1"-->
+                        <!--android:text="فرع مصر الجديده"-->
+                        <!--android:textColor="#bebebe"-->
+                        <!--android:textSize="12sp"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_weight="1"-->
+                        <!--/>-->
 
-                    />
+
+                </LinearLayout>
+
+
                 <!--in Code  mRatingBar.setRating(int)-->
 
 

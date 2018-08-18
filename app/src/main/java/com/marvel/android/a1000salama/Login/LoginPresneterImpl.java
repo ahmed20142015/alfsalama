@@ -94,6 +94,10 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         return ResponseCode;
     }
 
+    @Override
+    public int loginWithSocial(String email) {
+        return 0;
+    }
 
 
     @Override

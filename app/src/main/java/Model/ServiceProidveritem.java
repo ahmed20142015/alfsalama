@@ -12,9 +12,13 @@ public class ServiceProidveritem implements Parcelable {
     private String SP_Name;
     private String Subtitle;
     private String Distance;
+    private int discoundValue;
     private int Rating;
     private String ImageURl;
     private  int SP_ID ;
+
+
+
     private int GOVERNORATE_ID ;
     private int CITY_ID;
     private int AREA_ID;
@@ -44,6 +48,7 @@ public class ServiceProidveritem implements Parcelable {
             mServiceProidveritem.ImageURl = source.readString();
             mServiceProidveritem.cordX = source.readString();
             mServiceProidveritem.cordY = source.readString();
+            mServiceProidveritem.discoundValue = source.readInt();
 
             return mServiceProidveritem;
         }
@@ -63,6 +68,7 @@ public class ServiceProidveritem implements Parcelable {
         parcel.writeString(Distance);
         parcel.writeString(Subtitle);
         parcel.writeString(SP_Name);
+        parcel.writeInt(discoundValue);
         parcel.writeInt(BRANCH_ID);
         parcel.writeInt(StreetID);
         parcel.writeInt(AREA_ID);
@@ -184,5 +190,13 @@ public class ServiceProidveritem implements Parcelable {
 
     public void setBRANCH_ID(int BRANCH_ID) {
         this.BRANCH_ID = BRANCH_ID;
+    }
+
+    public int getDiscoundValue() {
+        return discoundValue;
+    }
+
+    public void setDiscoundValue(int discoundValue) {
+        this.discoundValue = discoundValue;
     }
 }

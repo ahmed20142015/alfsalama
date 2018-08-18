@@ -8,7 +8,5 @@ public interface LoginPresenter {
 
     public void setView(Login loginView);
     public int RequestLogin (String UserName , String Password );
-
-
-
+    public int loginWithSocial(String email);
 }

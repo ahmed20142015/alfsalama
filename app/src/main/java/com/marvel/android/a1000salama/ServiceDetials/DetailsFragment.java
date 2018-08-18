@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.BookingFragment.BookingFragment;
@@ -113,9 +114,16 @@ public class DetailsFragment extends BaseFragment {
 //                i.putExtra("Name",SP.getSP_Name());
 //                startActivity(i);
 
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?daddr="+ SP.getCordX()+","+SP.getCordY()));
-                startActivity(intent);
+                if (SP.getCordX() != null && SP.getCordY() !=null) {
+
+                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("http://maps.google.com/maps?daddr=" + SP.getCordX() + "," + SP.getCordY()));
+                    startActivity(intent);
+                }
+
+                else {
+                    Toast.makeText(getActivity(), "لا توجد إحداثيات لمذود الخدمة", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

@@ -69,8 +69,8 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
 
         //Setting text view title
         customViewHolder.title.setText(Html.fromHtml(serviceProidveritem.getSP_Name()));
-       // customViewHolder.subtitle.setText(Html.fromHtml(serviceProidveritem.getSubtitle()));
-       // customViewHolder.Distance.setText(Html.fromHtml(serviceProidveritem.getDistance()));
+        customViewHolder.discountValue.setText(Html.fromHtml(serviceProidveritem.getDiscoundValue()+""));
+        customViewHolder.branchName.setText("فرع "+Html.fromHtml(serviceProidveritem.getSubtitle()));
         customViewHolder.rate.setRating(serviceProidveritem.getOverallRating());
         customViewHolder.rate.setClickable(false);
         customViewHolder.rate.setIsIndicator(true);
@@ -91,6 +91,8 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
         protected TextView title;
         protected TextView subtitle;
         protected TextView Distance;
+        protected TextView branchName;
+        protected TextView discountValue;
         protected ScaleRatingBar rate;
 
         public CustomViewHolder(View view) {
@@ -100,6 +102,8 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
           // this.subtitle = (TextView) view.findViewById(R.id.Subtitle);
             this.Distance = (TextView) view.findViewById(R.id.distance);
             this.rate = view.findViewById(R.id.ratingServiceProivder);
+            this.branchName = view.findViewById(R.id.branch_name);
+            this.discountValue = view.findViewById(R.id.discount_value);
             view.setOnClickListener(this);
         }
 
