@@ -150,7 +150,9 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
                         try {
                             Log.i("RESAULTS : ", object.getString("email"));
                             Log.i("RESAULTS : ", object.toString());
-                            Toast.makeText(Login.this, "name: "+object.getString("name")+"\n email: "+object.getString("email"), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(Login.this, "name: "+object.getString("name")+"\n email: "+object.getString("email"), Toast.LENGTH_SHORT).show();
+
+                            loginPresenter.loginWithSocial(object.getString("email"));
                         }catch (Exception e){
 
                         }
@@ -293,7 +295,8 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
             GoogleSignInAccount account = result.getSignInAccount();
             String name = account.getDisplayName();
             String email = account.getEmail();
-            Toast.makeText(this, "name: "+name+"\n email: "+email, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "name: "+name+"\n email: "+email, Toast.LENGTH_SHORT).show();
+            loginPresenter.loginWithSocial(email);
             updateUI(true);
         }
         else
