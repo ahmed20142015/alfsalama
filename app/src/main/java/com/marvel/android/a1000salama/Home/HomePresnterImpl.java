@@ -104,6 +104,8 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
         viwe.showLoader();
         getAllServiceProvider("WS4",GetAllSpBody.toString(), ServicesConnection.CONTENT_TYPE);
 
+        Log.w("aaaaaaaaaaa",GetAllSpBody.toString());
+
         return 0;
     }
 
@@ -176,6 +178,7 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
                     try {
                         ServiceProivderList = new ArrayList<>();
                          Service_ProvidorList = new JSONArray(Body);
+                  //      Log.w("aaaaaaaaaaa",Service_ProvidorList.length()+"");
                       //  JSONArray Service_ProvidorList =responCodeObj.getJSONArray("Service Providor");
                         for(int i= 0 ; i < Service_ProvidorList.length() ; i++)
                         {
@@ -189,11 +192,24 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
                             ServiceProidveritem SP = new ServiceProidveritem();
                             SP.setSP_ID(Service_ProvidorList.getJSONObject(i).getInt("SC_ID"));
                             SP.setBRANCH_ID(Service_ProvidorList.getJSONObject(i).getInt("SC_BRANCH_ID"));
-                            SP.setSubtitle(Service_ProvidorList.getJSONObject(i).getString("BRANCH_NAME"));
                             SP.setDiscoundValue(Service_ProvidorList.getJSONObject(i).getInt("DISCOUNT_PERCENT"));
                             SP.setSP_Name(Service_ProvidorList.getJSONObject(i).getString("SP_NAME"));
-                            SP.setImageURl(Service_ProvidorList.getJSONObject(i).getString("LOGO_URL").replace("\\",""));
 
+                            try {
+                                 SP.setSubtitle(Service_ProvidorList.getJSONObject(i).getString("BRANCH_NAME"));
+                            }
+                            catch (Exception e){
+
+                            }
+
+                            try {
+                                SP.setImageURl(Service_ProvidorList.getJSONObject(i).getString("LOGO_URL").replace("\\",""));
+                            }
+
+                            catch (Exception e)
+                            {
+
+                            }
                            try {
 
                                SP.setCordX(Service_ProvidorList.getJSONObject(i).getString("X_CORDINATE"));
@@ -241,9 +257,11 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
 
                             }
                             ServiceProivderList.add(SP);
-
+                            Log.w("aaaaaaaaaaa",ServiceProivderList.size()+"");
 
                         }
+
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

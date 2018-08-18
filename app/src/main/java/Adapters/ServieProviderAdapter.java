@@ -60,17 +60,27 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
         final ServiceProidveritem serviceProidveritem = ServiceProivderItemList.get(i);
 
         //Render image using Picasso library
-        if (!TextUtils.isEmpty(serviceProidveritem.getImageURl())) {
-            Picasso.with(mContext).load(serviceProidveritem.getImageURl()).placeholder(
-                    mContext.getResources().getDrawable(R.drawable.error_looding))
-                    .into(customViewHolder.imageView);
+        try {
+            if (!TextUtils.isEmpty(serviceProidveritem.getImageURl())) {
+                Picasso.with(mContext).load(serviceProidveritem.getImageURl()).placeholder(
+                        mContext.getResources().getDrawable(R.drawable.error_looding))
+                        .into(customViewHolder.imageView);
+
+            }
+        }
+        catch (Exception e){
 
         }
 
         //Setting text view title
         customViewHolder.title.setText(Html.fromHtml(serviceProidveritem.getSP_Name()));
         customViewHolder.discountValue.setText(Html.fromHtml(serviceProidveritem.getDiscoundValue()+""));
-        customViewHolder.branchName.setText("فرع "+Html.fromHtml(serviceProidveritem.getSubtitle()));
+        try {
+            customViewHolder.branchName.setText("فرع "+Html.fromHtml(serviceProidveritem.getSubtitle()));
+        }
+        catch (Exception e){
+
+        }
         customViewHolder.rate.setRating(serviceProidveritem.getOverallRating());
         customViewHolder.rate.setClickable(false);
         customViewHolder.rate.setIsIndicator(true);
