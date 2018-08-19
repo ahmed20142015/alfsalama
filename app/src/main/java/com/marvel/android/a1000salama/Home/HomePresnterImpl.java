@@ -171,7 +171,7 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String Body =   response.body();
-                Log.w("eeeeeee",Body);
+
                 if (response.isSuccessful()) {
 
                     JSONArray Service_ProvidorList = null;
@@ -257,7 +257,7 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
 
                             }
                             ServiceProivderList.add(SP);
-                            Log.w("aaaaaaaaaaa",ServiceProivderList.size()+"");
+
 
                         }
 

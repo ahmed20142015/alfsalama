@@ -1,0 +1,3 @@
+Jks : alfsAlamAndroid.jks
+Key Alaies  : AlfSalama 
+Password :  123456

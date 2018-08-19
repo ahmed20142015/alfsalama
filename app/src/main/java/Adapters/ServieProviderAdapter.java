@@ -74,7 +74,7 @@ public class ServieProviderAdapter extends RecyclerView.Adapter<ServieProviderAd
 
         //Setting text view title
         customViewHolder.title.setText(Html.fromHtml(serviceProidveritem.getSP_Name()));
-        customViewHolder.discountValue.setText(Html.fromHtml(serviceProidveritem.getDiscoundValue()+""));
+        customViewHolder.discountValue.setText(Html.fromHtml(serviceProidveritem.getDiscoundValue()+""+"%"));
         try {
             customViewHolder.branchName.setText("فرع "+Html.fromHtml(serviceProidveritem.getSubtitle()));
         }

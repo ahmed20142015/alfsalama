@@ -257,8 +257,9 @@ public class HomeFragment extends BaseFragment implements HomeViwe {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 area = item.toString();
-                if (position != 0){}
-                    areaID = MyAreas.get(position-1).getID() + "";
+                if (position != 0) {
+                    areaID = MyAreas.get(position - 1).getID() + "";
+                }
             }
         });
 
@@ -555,7 +556,10 @@ public class HomeFragment extends BaseFragment implements HomeViwe {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         MyAreas = Areas;
 
+        adapter.notifyDataSetChanged();
         AreaSpinner.setAdapter(adapter);
+        AreaSpinner.setSelectedIndex(0);
+        areaID = "-1";
     }
 
     @Override

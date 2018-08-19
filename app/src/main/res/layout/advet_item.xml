@@ -28,7 +28,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
-                android:src="@mipmap/appicon" />
+                android:src="@mipmap/ic_launcher_foreground" />
 
             <ImageView
                 android:id="@+id/normal_image"
@@ -67,7 +67,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/discount_icon" />
 
                 <TextView
@@ -75,8 +75,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="الخصم"
-                    android:textColor="#9f9f9f"
-                    android:textSize="10sp"
+                    android:textColor="#686868"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -87,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="4.5"
-                    android:textColor="#9f9f9f"
-                    android:textSize="10sp"
+                    android:textColor="#717171"
+                    android:textSize="16sp"
                     android:textStyle="bold"
 
                     />
@@ -101,6 +101,7 @@
                     android:textColor="#9f9f9f"
                     android:textSize="10sp"
                     android:textStyle="bold"
+                    android:visibility="invisible"
 
                     />
             </LinearLayout>

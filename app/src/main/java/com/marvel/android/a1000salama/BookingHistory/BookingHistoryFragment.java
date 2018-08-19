@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -102,10 +103,8 @@ public class BookingHistoryFragment extends BaseFragment implements BookingHisto
         }
 
         mRecyclerView = viwe.findViewById(R.id.oldreuqestsLv);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(  BookingHistoryFragment.this.getContext()
-        );
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         int id = Utils.getUserID(getContext());
 
         BooKingHistoryPresneter = new BookingPresnterimpl();
