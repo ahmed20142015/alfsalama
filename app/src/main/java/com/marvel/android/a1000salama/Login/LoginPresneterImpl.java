@@ -85,6 +85,7 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
             AuthBody.put("P1" , UserName);
             AuthBody.put("P2" , Password);
             AuthBody.put("P3", FirebaseInstanceId.getInstance().getToken());
+            AuthBody.put("P4" , "N");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,7 +97,20 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
 
     @Override
     public int loginWithSocial(String email) {
-        return 0;
+        loginView.showLoader();
+        JSONObject AuthBody = new JSONObject();
+        try {
+            AuthBody.put("P1" , email);
+            AuthBody.put("P2" , "");
+            AuthBody.put("P3", FirebaseInstanceId.getInstance().getToken());
+            AuthBody.put("P4" , "Y");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        login("WS2",AuthBody.toString(), ServicesConnection.CONTENT_TYPE);
+        return ResponseCode;
     }
 
 

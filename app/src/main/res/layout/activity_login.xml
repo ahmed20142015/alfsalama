@@ -132,8 +132,7 @@
                 android:paddingLeft="15dp"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
-                android:visibility="gone"
-                />
+                 />
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/login_with_google"
@@ -142,8 +141,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
-                android:visibility="gone"
-                >
+                 >
 
             </com.google.android.gms.common.SignInButton>
 
