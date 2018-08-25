@@ -66,7 +66,8 @@ public interface ApiInterface {
     @POST("alf/WS21/")
     Call<String> getCat(@Body String body, @Header("Content-Type") String content_type);
 
-
+    @POST("alf/WS3/")
+    Call<String> retrivePassword(@Body String body, @Header("Content-Type") String content_type);
 
     @POST("alf/WS6/")
     Call<String> rateService(@Body String body, @Header("Content-Type") String content_type);

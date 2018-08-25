@@ -113,6 +113,7 @@
 
 
             <Button
+                android:id="@+id/retrive_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
@@ -121,6 +122,19 @@
                 android:text="@string/forget_password"
                 android:textColor="#FFF"
                 android:textSize="20sp" />
+
+            <!--<Button-->
+                <!--android:id="@+id/login_with_facebook"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom|center"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@drawable/button_round_corner"-->
+                <!--android:text="تسجيل دخول بالفيس بوك"-->
+                <!--android:textColor="#FFF"-->
+                <!--android:drawableLeft="@drawable/facebook"-->
+                <!--android:paddingLeft="15dp"-->
+                <!--android:textSize="17sp" />-->
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_with_facebook"

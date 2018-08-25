@@ -21,5 +21,7 @@ public interface LoginView {
     void requestWaring(String string);
     void showUserNameError(int resId);
     void showPasswordError(int resId);
+    void passwordRetrived();
+    void errorRetrived();
 
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,7 +151,7 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
 
     @Override
     public void setServiceProviderAbout(ArrayList<AboutServiceProvidor> aboutUs) {
-        aboutServiceProvidor.setText(aboutUs.get(0).getAboutUs());
+        aboutServiceProvidor.setText(Html.fromHtml(aboutUs.get(0).getAboutUs()));
     }
 
     @Override

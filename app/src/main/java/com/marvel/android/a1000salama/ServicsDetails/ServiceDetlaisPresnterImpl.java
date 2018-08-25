@@ -161,6 +161,11 @@ public class ServiceDetlaisPresnterImpl implements ServiceDetalisPresneter , Api
     }
 
     @Override
+    public Call<String> retrivePassword(String body, String content_type) {
+        return null;
+    }
+
+    @Override
     public Call<String> rateService(String body, String content_type) {
         return null;
     }

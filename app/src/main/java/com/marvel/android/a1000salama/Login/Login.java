@@ -1,5 +1,7 @@
 package com.marvel.android.a1000salama.Login;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -48,20 +52,22 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class Login extends AppCompatActivity implements LoginView,GoogleApiClient.OnConnectionFailedListener {
+public class Login extends AppCompatActivity implements LoginView, GoogleApiClient.OnConnectionFailedListener {
 
     FlipProgressDialog progressDialog;
     LoginPresneterImpl loginPresenter;
-    Button RegistrationBtn  , LoginBtn;
-    private EditText username , paasword;
+    Button RegistrationBtn, LoginBtn, retrivePasswordBtn;
+    private EditText username, paasword;
     AppCompatCheckBox remberMe;
     private SignInButton signInWithGoogle;
     private LoginButton signInWithFacebook;
     private GoogleApiClient googleApiClient;
     private final static int googleRequest = 900;
     CallbackManager callbackManager;
+    AlertDialog alertDialog;
 
     LoginView view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,21 +87,22 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
         loginPresenter = new LoginPresneterImpl();
 
         loginPresenter.setView(this);
-        RegistrationBtn  = findViewById(R.id.RegBtn);
-        LoginBtn  = findViewById(R.id.loginBtn);
+        RegistrationBtn = findViewById(R.id.RegBtn);
+        LoginBtn = findViewById(R.id.loginBtn);
         username = findViewById(R.id.username);
         paasword = findViewById(R.id.paasword);
         remberMe = findViewById(R.id.remberme);
+        retrivePasswordBtn = findViewById(R.id.retrive_password);
         signInWithGoogle = findViewById(R.id.login_with_google);
         signInWithFacebook = findViewById(R.id.login_with_facebook);
 
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this)
-                                             .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions).build();
+        googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions).build();
         callbackManager = CallbackManager.Factory.create();
 
 
-       // requestLogin("Abahaa","12345");
+        // requestLogin("Abahaa","12345");
 
 //        Utils utl = new Utils();
 //        utl.getSystemMessages();
@@ -116,10 +123,75 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
 
         }
 
+        retrivePasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Login.this);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View dialogView = inflater.inflate(R.layout.retreive_password, null);
+                dialogBuilder.setView(dialogView);
+
+                TextView exit = dialogView.findViewById(R.id.exit);
+                final EditText enteredEmail = dialogView.findViewById(R.id.entered_email);
+                Button retrivePassBtn = dialogView.findViewById(R.id.retvire_pass_btn);
+
+                alertDialog = dialogBuilder.create();
+                alertDialog.setCancelable(true);
+                alertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                alertDialog.show();
+
+                exit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                retrivePassBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (Utils.isInternetOn(Login.this)) {
+
+                            String email  = enteredEmail.getText().toString().trim();
+
+                            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                                showalert("البريد الإلكتروني غير صحيح");
+
+                            }
+                            else
+                            loginPresenter.retrivePassword(email);
+
+                        } else {
+                            new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("خطأ")
+                                    .setContentText("من فضلك تأكد من الإتصال بالإنترنت")
+                                    .setConfirmText("تم")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            // reuse previous dialog instance
+                                            sDialog.dismiss();
+
+
+                                        }
+                                    })
+                                    .show();
+                        }
+
+
+                    }
+                });
+
+
+            }
+        });
+
         RegistrationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(Login.this, Registration.class);
+                Intent i = new Intent(Login.this, Registration.class);
                 startActivity(i);
             }
         });
@@ -150,10 +222,10 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
                         try {
                             Log.i("RESAULTS : ", object.getString("email"));
                             Log.i("RESAULTS : ", object.toString());
-                         //   Toast.makeText(Login.this, "name: "+object.getString("name")+"\n email: "+object.getString("email"), Toast.LENGTH_SHORT).show();
+                            //   Toast.makeText(Login.this, "name: "+object.getString("name")+"\n email: "+object.getString("email"), Toast.LENGTH_SHORT).show();
 
                             loginPresenter.loginWithSocial(object.getString("email"));
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                     }
@@ -226,7 +298,7 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
     public void showalert(String Message) {
         new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("خطأ")
-                .setContentText( Message)
+                .setContentText(Message)
                 .setConfirmText("تم")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
@@ -241,19 +313,19 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
     @Override
     public void NavigateToHome(int ID) {
 
-       if(remberMe.isChecked() ) {
-           SharedPreferences.Editor editor = getSharedPreferences("RemeberMe", MODE_PRIVATE).edit();
-           editor.putInt("id",ID);
-           editor.apply();
-       }
-        Intent i =new Intent(Login.this, Home.class);
+        if (remberMe.isChecked()) {
+            SharedPreferences.Editor editor = getSharedPreferences("RemeberMe", MODE_PRIVATE).edit();
+            editor.putInt("id", ID);
+            editor.apply();
+        }
+        Intent i = new Intent(Login.this, Home.class);
         startActivity(i);
         finish();
     }
 
     @Override
-    public void requestLogin(String userName , String Password) {
-       loginPresenter.RequestLogin(userName , Password);
+    public void requestLogin(String userName, String Password) {
+        loginPresenter.RequestLogin(userName, Password);
     }
 
     @Override
@@ -271,18 +343,53 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
         paasword.setError(getString(resId));
     }
 
+    @Override
+    public void passwordRetrived() {
+        new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("حسناً")
+                .setContentText("تم إرسال الرقم السري للايميل")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+                        alertDialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void errorRetrived() {
+        new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("خطأ")
+                .setContentText("خطأ فى إرسال الرقم السري")
+                .setConfirmText("تم")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        // reuse previous dialog instance
+                        sDialog.dismiss();
+                        alertDialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
-    private void signIn(){
+    private void signIn() {
 
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(intent,googleRequest);
+        startActivityForResult(intent, googleRequest);
     }
-    private void signOut(){
+
+    private void signOut() {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -290,27 +397,29 @@ public class Login extends AppCompatActivity implements LoginView,GoogleApiClien
             }
         });
     }
-    private void handleResult(GoogleSignInResult result){
-        if (result.isSuccess()){
+
+    private void handleResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
             String name = account.getDisplayName();
             String email = account.getEmail();
-           // Toast.makeText(this, "name: "+name+"\n email: "+email, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "name: "+name+"\n email: "+email, Toast.LENGTH_SHORT).show();
             loginPresenter.loginWithSocial(email);
             updateUI(true);
-        }
-        else
+        } else
             updateUI(false);
 
     }
-    private void updateUI(Boolean isLogin){}
+
+    private void updateUI(Boolean isLogin) {
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == googleRequest){
+        if (requestCode == googleRequest) {
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleResult(result);

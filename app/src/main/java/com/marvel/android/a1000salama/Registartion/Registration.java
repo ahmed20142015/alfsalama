@@ -142,11 +142,11 @@ public class Registration extends AppCompatActivity implements RegistartionView 
                 }
 
 
-                else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
-                {
-                    showErrorMessage("رقم الهاتف غير صحيح ");
-
-                }
+//                else if ( mobileNumber.length()!=11 || mobileNumber.charAt(0)!='0'|| mobileNumber.charAt(1)!='1')
+//                {
+//                    showErrorMessage("رقم الهاتف غير صحيح ");
+//
+//                }
 
 
 

@@ -108,7 +108,7 @@ public class SuppliersFragment extends BaseFragment implements SuppliersView {
 
                 LatLng s = new LatLng(30.068650, 31.246454);
 
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(s, 9));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(s, 12));
 
                 mGoogleMap.setBuildingsEnabled(true);
 //                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&

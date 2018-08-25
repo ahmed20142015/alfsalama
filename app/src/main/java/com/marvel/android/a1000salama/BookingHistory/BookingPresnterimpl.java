@@ -209,6 +209,11 @@ public class BookingPresnterimpl implements BooKingHistoryPresneter , ApiInterfa
     }
 
     @Override
+    public Call<String> retrivePassword(String body, String content_type) {
+        return null;
+    }
+
+    @Override
     public Call<String> rateService(String body, String content_type) {
         Call<String> QueryCall = ServicesConnection.GetService().rateService(body,content_type);
         QueryCall.enqueue(new Callback<String>() {

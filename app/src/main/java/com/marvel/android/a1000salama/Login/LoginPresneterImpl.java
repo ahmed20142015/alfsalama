@@ -101,7 +101,7 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         JSONObject AuthBody = new JSONObject();
         try {
             AuthBody.put("P1" , email);
-            AuthBody.put("P2" , "");
+            AuthBody.put("P2" , null);
             AuthBody.put("P3", FirebaseInstanceId.getInstance().getToken());
             AuthBody.put("P4" , "Y");
         } catch (JSONException e) {
@@ -113,6 +113,77 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
         return ResponseCode;
     }
 
+    @Override
+    public int retrivePassword(String email) {
+        loginView.showLoader();
+        JSONObject AuthBody = new JSONObject();
+        try {
+            AuthBody.put("P1" , email);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        retrivePassword(AuthBody.toString(), ServicesConnection.CONTENT_TYPE);
+
+        return 0;
+    }
+
+    @Override
+    public Call<String> retrivePassword(String body, String content_type) {
+
+        Call<String> call = ServicesConnection.GetService().retrivePassword(body,ServicesConnection.CONTENT_TYPE);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String Body =   response.body();
+                JSONObject responCodeObj = null;
+
+                if (response.isSuccessful()){
+
+
+                    try {
+                        responCodeObj = new JSONObject(Body);
+                        int respons =      responCodeObj.getInt("P1OUT");
+                        if (respons > 0){
+                            loginView.hideLoader();
+                            loginView.passwordRetrived();
+                        }
+
+                        else {
+
+                            loginView.hideLoader();
+                            loginView.errorRetrived();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                else {
+                    loginView.hideLoader();
+                    loginView.errorRetrived();
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                loginView.hideLoader();
+                loginView.errorRetrived();
+
+            }
+        });
+
+        return null;
+    }
 
     @Override
     public Call<String> login(String webserviceNumber, String body, String content_type) {
@@ -245,6 +316,8 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
     public Call<String> getCat(String body, String content_type) {
         return null;
     }
+
+
 
     @Override
     public Call<String> rateService(String body, String content_type) {
