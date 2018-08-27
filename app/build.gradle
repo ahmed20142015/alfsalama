@@ -7,8 +7,8 @@ android {
         applicationId "com.marvel.android.a1000salama"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 17
-        versionName "6"
+        versionCode 19
+        versionName "8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -78,6 +78,7 @@ dependencies {
     implementation 'com.jaredrummler:material-spinner:1.2.5'
     compile 'com.github.ome450901:SimpleRatingBar:1.4.1'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    implementation 'com.karumi:dexter:4.2.0'
 
 }
 

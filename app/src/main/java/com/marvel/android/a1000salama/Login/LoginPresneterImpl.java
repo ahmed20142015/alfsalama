@@ -85,6 +85,7 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
             AuthBody.put("P1" , UserName);
             AuthBody.put("P2" , Password);
             AuthBody.put("P3", FirebaseInstanceId.getInstance().getToken());
+            Log.w("response",FirebaseInstanceId.getInstance().getToken());
             AuthBody.put("P4" , "N");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -138,6 +139,7 @@ public class LoginPresneterImpl implements LoginPresenter  , ApiInterface{
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String Body =   response.body();
+
                 JSONObject responCodeObj = null;
 
                 if (response.isSuccessful()){

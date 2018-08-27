@@ -439,6 +439,8 @@ public class HomeFragment extends BaseFragment implements HomeViwe {
     }
 
 
+
+
     @Override
     public void setSPList(ArrayList<ServiceProidveritem> ServiceProivderList) {
 

@@ -171,7 +171,7 @@ public class DetailsFragment extends BaseFragment {
         SerivceProivderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = ServiceProviderInfo.newInstance(SP.getBRANCH_ID());
+                Fragment fragment = ServiceProviderInfo.newInstance(SP.getBRANCH_ID() , SP.getMobileNumber());
                 manager = getActivity().getSupportFragmentManager();
                 if(manager == null)
                     manager  =  getActivity().getSupportFragmentManager();

@@ -194,7 +194,7 @@ public class HomePresnterImpl  implements HomePersenter  , ApiInterface {
                             SP.setBRANCH_ID(Service_ProvidorList.getJSONObject(i).getInt("SC_BRANCH_ID"));
                             SP.setDiscoundValue(Service_ProvidorList.getJSONObject(i).getInt("DISCOUNT_PERCENT"));
                             SP.setSP_Name(Service_ProvidorList.getJSONObject(i).getString("SP_NAME"));
-
+                            SP.setMobileNumber(Service_ProvidorList.getJSONObject(i).getString("HOTLINE"));
                             try {
                                  SP.setSubtitle(Service_ProvidorList.getJSONObject(i).getString("BRANCH_NAME"));
                             }

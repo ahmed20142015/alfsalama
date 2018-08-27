@@ -1,18 +1,31 @@
 package com.marvel.android.a1000salama.ServicesProviderInfo;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+ import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Utils;
@@ -34,10 +47,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class ServiceProviderInfo extends BaseFragment implements ServiceProviderInfoView {
     ServiceProviderInfoPresenterImp presenterImp;
-    TextView aboutServiceProvidor;
+    TextView aboutServiceProvidor,serviceProviderMobile;
+    ImageView callServiceProvider;
     FlipProgressDialog progressDialog;
     int serviceItemId;
-
+    String mobileNumber;
 
 
 
@@ -47,10 +61,11 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
         // Required empty public constructor
     }
 
-    public static ServiceProviderInfo newInstance(int serviceItemId) {
+    public static ServiceProviderInfo newInstance(int serviceItemId , String mobileNumber) {
         ServiceProviderInfo fragment = new ServiceProviderInfo();
         Bundle args = new Bundle();
         args.putInt("serviceItemId", serviceItemId);
+        args.putString("mobileNumber", mobileNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +75,7 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             serviceItemId = getArguments().getInt("serviceItemId");
+            mobileNumber = getArguments().getString("mobileNumber");
         }
     }
 
@@ -71,6 +87,8 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
         presenterImp = new ServiceProviderInfoPresenterImp();
         presenterImp.setView(this);
         aboutServiceProvidor = view.findViewById(R.id.about_service_provider);
+        serviceProviderMobile = view.findViewById(R.id.service_provider_mobile);
+        callServiceProvider =  view.findViewById(R.id.call_service_provider);
         return view;
     }
 
@@ -112,7 +130,55 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
                     })
                     .show();
         }
+
+        if (getArguments().getString("mobileNumber") != null ||
+                !getArguments().getString("mobileNumber").equalsIgnoreCase("")){
+            serviceProviderMobile.setText(getArguments().getString("mobileNumber"));
+        }
+
+        callServiceProvider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String number = getArguments().getString("mobileNumber");
+
+                if (!number.equalsIgnoreCase("") || !number.equalsIgnoreCase(null)) {
+                    String uri = "tel:" + number;
+                    callServiceProvider(uri);
+                }
+
+            }
+        });
+
     }
+
+    private void callServiceProvider(final String uri) {
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.CALL_PHONE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        intent.setData(Uri.parse(uri));
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        // check for permanent denial of permission
+                        if (response.isPermanentlyDenied()) {
+                            Toast.makeText(getActivity(), "Please enable permissions", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

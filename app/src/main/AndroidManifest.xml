@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -70,12 +71,12 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
 
-        AIzaSyDeZUsZvpY_14nyRG525L0iwfZqAehY0Tw
-
+    release     AIzaSyDeZUsZvpY_14nyRG525L0iwfZqAehY0Tw
+    singing     AIzaSyDjlq3nrJxhQIJRNjzNYsGCXwuHeweaKuo
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDeZUsZvpY_14nyRG525L0iwfZqAehY0Tw" />
+            android:value="AIzaSyDjlq3nrJxhQIJRNjzNYsGCXwuHeweaKuo" />
 
         <activity
             android:name=".Map.ServiceLocation"

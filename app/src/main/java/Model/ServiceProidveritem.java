@@ -26,6 +26,7 @@ public class ServiceProidveritem implements Parcelable {
     private  int BRANCH_ID;
     private String cordX ;
     private String cordY ;
+    private String mobileNumber;
     private float overallRating;
 
 
@@ -48,6 +49,7 @@ public class ServiceProidveritem implements Parcelable {
             mServiceProidveritem.ImageURl = source.readString();
             mServiceProidveritem.cordX = source.readString();
             mServiceProidveritem.cordY = source.readString();
+            mServiceProidveritem.mobileNumber = source.readString();
             mServiceProidveritem.discoundValue = source.readInt();
 
             return mServiceProidveritem;
@@ -60,6 +62,15 @@ public class ServiceProidveritem implements Parcelable {
     public int describeContents() {
         return 0;
     }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
     public void writeToParcel(Parcel parcel, int flags) {
 
         parcel.writeString(cordX);
@@ -68,8 +79,10 @@ public class ServiceProidveritem implements Parcelable {
         parcel.writeString(Distance);
         parcel.writeString(Subtitle);
         parcel.writeString(SP_Name);
+        parcel.writeString(mobileNumber);
         parcel.writeInt(discoundValue);
         parcel.writeInt(BRANCH_ID);
+
         parcel.writeInt(StreetID);
         parcel.writeInt(AREA_ID);
         parcel.writeInt(CITY_ID);
