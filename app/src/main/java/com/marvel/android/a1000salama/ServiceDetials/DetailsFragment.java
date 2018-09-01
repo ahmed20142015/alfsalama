@@ -1,12 +1,15 @@
 package com.marvel.android.a1000salama.ServiceDetials;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +18,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.marvel.android.a1000salama.BaseFragment;
 import com.marvel.android.a1000salama.BookingFragment.BookingFragment;
 import com.marvel.android.a1000salama.Home.Home;
 import com.marvel.android.a1000salama.Home.HomeFragment;
+import com.marvel.android.a1000salama.Login.Login;
 import com.marvel.android.a1000salama.Map.ServiceLocation;
 import com.marvel.android.a1000salama.R;
 import com.marvel.android.a1000salama.Rating.RatingFragment;
 import com.marvel.android.a1000salama.ServicesProviderInfo.ServiceProviderInfo;
 import com.marvel.android.a1000salama.ServicsDetails.BServiceDetailsFragment;
+import com.marvel.android.a1000salama.Utils;
 import com.squareup.picasso.Picasso;
 
 import ClientComments.ClientComments;
@@ -54,6 +65,7 @@ public class DetailsFragment extends BaseFragment {
     private FragmentTransaction transaction;
     private OnFragmentInteractionListener mListener;
     private ServiceProidveritem SP;
+    ImageView callServiceProvider;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -94,8 +106,9 @@ public class DetailsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
       View viwe = inflater.inflate(R.layout.fragment_details, container, false);
+        callServiceProvider =  viwe.findViewById(R.id.call_service_provider);
 
-      SPname = viwe.findViewById(R.id.spname);
+        SPname = viwe.findViewById(R.id.spname);
       Logo = viwe.findViewById(R.id.logo);
 
       SPname.setText(SP.getSP_Name());
@@ -171,7 +184,7 @@ public class DetailsFragment extends BaseFragment {
         SerivceProivderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = ServiceProviderInfo.newInstance(SP.getBRANCH_ID() , SP.getMobileNumber());
+                Fragment fragment = ServiceProviderInfo.newInstance(SP.getBRANCH_ID());
                 manager = getActivity().getSupportFragmentManager();
                 if(manager == null)
                     manager  =  getActivity().getSupportFragmentManager();
@@ -187,19 +200,49 @@ public class DetailsFragment extends BaseFragment {
         BookBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new BookingFragment();
-                manager = getActivity().getSupportFragmentManager();
-                if(manager == null)
-                    manager  =  getActivity().getSupportFragmentManager();
-                transaction = manager.beginTransaction();
-                Home.ToolBarTitle.setText(getString(R.string.SendBook));
+
+                if(Utils.getUserID(getActivity()) != -1){
+
+                    Fragment fragment = new BookingFragment();
+                    manager = getActivity().getSupportFragmentManager();
+                    if(manager == null)
+                        manager  =  getActivity().getSupportFragmentManager();
+                    transaction = manager.beginTransaction();
+                    Home.ToolBarTitle.setText(getString(R.string.SendBook));
 
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("SP", SP);
-                fragment.setArguments(bundle);
-                transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
-                transaction.replace(R.id.content_home, fragment, "Bookservice").addToBackStack("Bookservice").commit();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("SP", SP);
+                    fragment.setArguments(bundle);
+                    transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_left);
+                    transaction.replace(R.id.content_home, fragment, "Bookservice").addToBackStack("Bookservice").commit();
+
+                }
+
+
+                else {
+
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("يرجى تسجيل الدخول أولاً");
+                    builder.setPositiveButton("تسجيل الدخول", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivity(new Intent(getActivity(),Login.class));
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("متابعه كزائر", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    dialog.setCancelable(false);
+
+                }
+
             }
         });
 
@@ -224,8 +267,48 @@ public class DetailsFragment extends BaseFragment {
             }
         });
 
+        callServiceProvider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String number = SP.getMobileNumber();
+
+                if (!number.equalsIgnoreCase("") || !number.equalsIgnoreCase(null)) {
+                    String uri = "tel:" + number;
+                    callServiceProvider(uri);
+                }
+
+            }
+        });
 
       return  viwe;
+    }
+
+    private void callServiceProvider(final String uri) {
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.CALL_PHONE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse(uri));
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        // check for permanent denial of permission
+                        if (response.isPermanentlyDenied()) {
+                            Toast.makeText(getActivity(), "Please enable permissions", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

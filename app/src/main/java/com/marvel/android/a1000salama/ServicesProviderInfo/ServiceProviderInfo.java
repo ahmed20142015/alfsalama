@@ -47,11 +47,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public class ServiceProviderInfo extends BaseFragment implements ServiceProviderInfoView {
     ServiceProviderInfoPresenterImp presenterImp;
-    TextView aboutServiceProvidor,serviceProviderMobile;
-    ImageView callServiceProvider;
+    TextView aboutServiceProvidor;
     FlipProgressDialog progressDialog;
     int serviceItemId;
-    String mobileNumber;
 
 
 
@@ -61,11 +59,10 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
         // Required empty public constructor
     }
 
-    public static ServiceProviderInfo newInstance(int serviceItemId , String mobileNumber) {
+    public static ServiceProviderInfo newInstance(int serviceItemId ) {
         ServiceProviderInfo fragment = new ServiceProviderInfo();
         Bundle args = new Bundle();
         args.putInt("serviceItemId", serviceItemId);
-        args.putString("mobileNumber", mobileNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,7 +72,6 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             serviceItemId = getArguments().getInt("serviceItemId");
-            mobileNumber = getArguments().getString("mobileNumber");
         }
     }
 
@@ -87,8 +83,6 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
         presenterImp = new ServiceProviderInfoPresenterImp();
         presenterImp.setView(this);
         aboutServiceProvidor = view.findViewById(R.id.about_service_provider);
-        serviceProviderMobile = view.findViewById(R.id.service_provider_mobile);
-        callServiceProvider =  view.findViewById(R.id.call_service_provider);
         return view;
     }
 
@@ -131,53 +125,13 @@ public class ServiceProviderInfo extends BaseFragment implements ServiceProvider
                     .show();
         }
 
-        if (getArguments().getString("mobileNumber") != null ||
-                !getArguments().getString("mobileNumber").equalsIgnoreCase("")){
-            serviceProviderMobile.setText(getArguments().getString("mobileNumber"));
-        }
 
-        callServiceProvider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                String number = getArguments().getString("mobileNumber");
 
-                if (!number.equalsIgnoreCase("") || !number.equalsIgnoreCase(null)) {
-                    String uri = "tel:" + number;
-                    callServiceProvider(uri);
-                }
-
-            }
-        });
 
     }
 
-    private void callServiceProvider(final String uri) {
-        Dexter.withActivity(getActivity())
-                .withPermission(Manifest.permission.CALL_PHONE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-                        Intent intent = new Intent(Intent.ACTION_CALL);
-                        intent.setData(Uri.parse(uri));
-                        startActivity(intent);
-                    }
 
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        // check for permanent denial of permission
-                        if (response.isPermanentlyDenied()) {
-                            Toast.makeText(getActivity(), "Please enable permissions", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).check();
-
-    }
 
 
     // TODO: Rename method, update argument and hook method into UI event

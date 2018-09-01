@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
 
     FlipProgressDialog progressDialog;
     LoginPresneterImpl loginPresenter;
-    Button RegistrationBtn, LoginBtn, retrivePasswordBtn;
+    Button RegistrationBtn, LoginBtn, retrivePasswordBtn,loginAsVisitor;
     private EditText username, paasword;
     AppCompatCheckBox remberMe;
     private SignInButton signInWithGoogle;
@@ -92,6 +92,7 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
         username = findViewById(R.id.username);
         paasword = findViewById(R.id.paasword);
         remberMe = findViewById(R.id.remberme);
+        loginAsVisitor = findViewById(R.id.login_as_visitor);
         retrivePasswordBtn = findViewById(R.id.retrive_password);
         signInWithGoogle = findViewById(R.id.login_with_google);
         signInWithFacebook = findViewById(R.id.login_with_facebook);
@@ -122,6 +123,13 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
             progressDialog.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         }
+
+        loginAsVisitor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Login.this,Home.class));
+            }
+        });
 
         retrivePasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,8 +234,18 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
 
                             loginPresenter.loginWithSocial(object.getString("email"));
                         } catch (Exception e) {
-
-                        }
+                            new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("خطأ")
+                                    .setContentText("لا يمكن الحصول على الايميل من فضلك انشأ حساب جديد")
+                                    .setConfirmText("تم")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            // reuse previous dialog instance
+                                            sDialog.dismiss();
+                                        }
+                                    })
+                                    .show();                        }
                     }
                 });
                 Bundle parameters = new Bundle();
@@ -243,7 +261,7 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
 
             @Override
             public void onError(FacebookException error) {
-
+                Toast.makeText(Login.this, "Login error", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -354,7 +372,6 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
                     public void onClick(SweetAlertDialog sDialog) {
                         // reuse previous dialog instance
                         sDialog.dismiss();
-                        alertDialog.dismiss();
                     }
                 })
                 .show();
@@ -404,8 +421,25 @@ public class Login extends AppCompatActivity implements LoginView, GoogleApiClie
             String name = account.getDisplayName();
             String email = account.getEmail();
             // Toast.makeText(this, "name: "+name+"\n email: "+email, Toast.LENGTH_SHORT).show();
-            loginPresenter.loginWithSocial(email);
-            updateUI(true);
+            if(!email.equalsIgnoreCase(null)) {
+                loginPresenter.loginWithSocial(email);
+                updateUI(true);
+            }
+            else {
+                new SweetAlertDialog(Login.this, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("خطأ")
+                        .setContentText("لا يمكن الحصول على الايميل من فضلك انشأ حساب جديد")
+                        .setConfirmText("تم")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                // reuse previous dialog instance
+                                sDialog.dismiss();
+                                alertDialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
         } else
             updateUI(false);
 
